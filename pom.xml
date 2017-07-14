@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.yoshikawaa.gfw</groupId>
+    <artifactId>terasoluna-gfw-thymeleaf</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    
+    <name>Thymeleaf Dialect for TERASOLUNA Server Framework for Java (5.x) Build</name>
+    <description>Thymeleaf Dialect for TERASOLUNA Server Framework for Java (5.x) Build</description>
+    <url>https://github.com/yoshikawaa</url>
+    <inceptionYear>2017</inceptionYear>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+    
+    <modules>
+        <module>thymeleaf-extras-terasoluna-gfw</module>
+        <module>terasoluna-gfw-thymeleaf-functionaltest</module>
+    </modules>
+
+</project>
