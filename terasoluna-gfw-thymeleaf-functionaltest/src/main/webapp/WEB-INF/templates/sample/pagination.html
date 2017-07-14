@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:t="http://www.terasoluna.org">
+<head>
+<meta charset="utf-8" />
+<title>Pagination</title>
+<link rel="stylesheet" href="../../../../resources/app/css/styles.css" th:href="@{/resources/app/css/styles.css}" />
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Pagination</h1>
+        <div>
+            <ul id="pagination-1" t:pagination=""></ul>
+            <ul id="pagination-2" class="pagination" t:pagination=""></ul>
+            <div id="pagination-3" t:pagination="" t:inner-element="span"></div>
+            <ul id="pagination-4" t:pagination="" t:active-class="a" t:disabled-class="d"></ul>
+            <ul id="pagination-5" t:pagination="" t:first-link-text="first" t:previous-link-text="prev"
+                t:next-link-text="next" t:last-link-text="last"></ul>
+            <ul id="pagination-6" t:pagination="" t:max-display-count="5" t:enable-link-of-current-page="true"></ul>
+            <ul id="pagination-7" t:pagination="" t:href-tmpl="@{/sample/pagination/{page}(page=${page},size=${size})}"></ul>
+            <ul id="pagination-8" t:pagination="${pagination}"></ul>
+        </div>
+        <div th:if="${page.content != null}">
+            <ul th:each="i : ${page.content}" th:remove="all-but-first">
+                <li th:text="|row-${i}|"></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
