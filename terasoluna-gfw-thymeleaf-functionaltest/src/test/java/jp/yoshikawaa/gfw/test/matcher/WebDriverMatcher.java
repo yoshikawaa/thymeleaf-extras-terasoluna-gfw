@@ -1,4 +1,4 @@
-package jp.yoshikawaa.gfw.app;
+package jp.yoshikawaa.gfw.test.matcher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;

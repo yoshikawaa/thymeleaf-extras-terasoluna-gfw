@@ -1,17 +1,17 @@
 package jp.yoshikawaa.gfw.app.sample;
 
-import static jp.yoshikawaa.gfw.app.WebClientMatcher.click;
-import static jp.yoshikawaa.gfw.app.WebClientMatcher.exists;
-import static jp.yoshikawaa.gfw.app.WebClientMatcher.hasText;
-import static jp.yoshikawaa.gfw.app.WebClientMatcher.notExists;
+import static jp.yoshikawaa.gfw.test.matcher.WebClientMatcher.click;
+import static jp.yoshikawaa.gfw.test.matcher.WebClientMatcher.exists;
+import static jp.yoshikawaa.gfw.test.matcher.WebClientMatcher.hasText;
+import static jp.yoshikawaa.gfw.test.matcher.WebClientMatcher.notExists;
 
 import org.junit.Test;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-import jp.yoshikawaa.gfw.app.WebClientConfigurator;
+import jp.yoshikawaa.gfw.test.support.WebClientTestSupport;
 
-public class TransactionTokenControllerTest extends WebClientConfigurator {
+public class TransactionTokenControllerTest extends WebClientTestSupport {
 
     @Override
     protected String path() {

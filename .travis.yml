@@ -8,4 +8,4 @@ cache:
 install:
 before_script:
 script:
-  - mvn clean install
+  - mvn clean install -Dlogback.level.spring-test=info

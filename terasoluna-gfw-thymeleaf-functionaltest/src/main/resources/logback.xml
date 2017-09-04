@@ -33,7 +33,7 @@
     </appender>
 
     <!-- Application Loggers -->
-    <logger name="org.terasoluna.gfw">
+    <logger name="jp.yoshikawaa.gfw">
         <level value="debug" />
     </logger>
 
@@ -65,10 +65,6 @@
         <level value="debug" />
     </logger>
     
-    <logger name="jp.yoshikawaa.gfw">
-        <level value="info" />
-    </logger>
-
     <!-- only for development -->
     <logger name="jdbc.resultsettable">
         <level value="debug" />
