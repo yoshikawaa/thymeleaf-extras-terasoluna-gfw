@@ -12,11 +12,11 @@ import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
 public class ThymeleafPaginationInfo extends PaginationInfo {
 
-    Arguments arguments;
-    String expression;
+    private final Arguments arguments;
+    private final String expression;
 
-    private int pageSize;
-    private Sort pageSort;
+    private final int pageSize;
+    private final Sort pageSort;
 
     public ThymeleafPaginationInfo(Arguments arguments, Page<?> page, String expression, int maxDisplayCount) {
         this(arguments, page, expression, null, false, maxDisplayCount);
@@ -28,9 +28,9 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
                 disableHtmlEscapeOfCriteriaQuery, maxDisplayCount);
 
         this.arguments = arguments;
+        this.expression = expression;
         this.pageSize = page.getSize();
         this.pageSort = page.getSort();
-        this.expression = expression;
     }
 
     public String getPageUrl(int pageIndex) {

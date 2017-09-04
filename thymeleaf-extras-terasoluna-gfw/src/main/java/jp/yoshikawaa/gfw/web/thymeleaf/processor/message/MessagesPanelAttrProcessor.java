@@ -25,26 +25,12 @@ import org.thymeleaf.dom.Text;
 import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
-import jp.yoshikawaa.gfw.web.thymeleaf.util.ProcessorUtils;
 
 public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcessor {
+
     private static final Logger logger = LoggerFactory.getLogger(MessagesPanelAttrProcessor.class);
 
     private static final String ATTRIBUTE_NAME = "message-panel";
-
-    private static final String ATTRIBUTE_PANEL_CLASS_NAME = "panel-class-name";
-    private static final String ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX = "panel-type-class-prefix";
-    private static final String ATTRIBUTE_MESSAGES_TYPE = "message-type";
-    private static final String ATTRIBUTE_OUTER_ELEMENT = "outer-element";
-    private static final String ATTRIBUTE_INNER_ELEMENT = "inner-element";
-    private static final String ATTRIBUTE_DISABLE_HTML_ESCAPE = "disable-html-escape";
-
-    private static final String DEFAULT_PANEL_CLASS_NAME = "alert";
-    private static final String DEFAULT_PANEL_TYPE_CLASS_PREFIX = "alert-";
-    private static final String DEFAULT_MESSAGES_TYPE = null;
-    private static final String DEFAULT_OUTER_ELEMENT = "ul";
-    private static final String DEFAULT_INNER_ELEMENT = "li";
-    private static final boolean DEFAULT_DISABLE_HTML_ESCAPE = false;
 
     private final String dialectPrefix;
     private final MessageSource messageSource;
@@ -68,19 +54,8 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
         final Object messages = getResultMessages(arguments, attributeValue);
 
         // find relative attributes.
-        final String panelClassName = ProcessorUtils.getAttributeValue(element, dialectPrefix,
-                ATTRIBUTE_PANEL_CLASS_NAME, DEFAULT_PANEL_CLASS_NAME);
-        final String panelTypeClassPrefix = ProcessorUtils.getAttributeValue(element, dialectPrefix,
-                ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX, DEFAULT_PANEL_TYPE_CLASS_PREFIX);
-        final String messagesType = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE,
-                DEFAULT_MESSAGES_TYPE);
-        final String outerElement = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_OUTER_ELEMENT,
-                DEFAULT_OUTER_ELEMENT);
-        final String innerElement = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
-                DEFAULT_INNER_ELEMENT);
-        final boolean disableHtmlEscape = ProcessorUtils.getAttributeValue(element, dialectPrefix,
-                ATTRIBUTE_DISABLE_HTML_ESCAPE, DEFAULT_DISABLE_HTML_ESCAPE);
-        removeRelativeAttributes(element);
+        MessagesPanelAttrAccessor attrs = new MessagesPanelAttrAccessor(element, dialectPrefix);
+        attrs.removeAttributes(element);
 
         // exist messages?
         if (messages == null) {
@@ -89,8 +64,8 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
         }
 
         // build element.
-        buildElement(element, messages, messagesType, panelClassName, panelTypeClassPrefix);
-        buildBody(arguments, element, messages, outerElement, innerElement, disableHtmlEscape);
+        buildElement(element, messages, attrs);
+        buildBody(arguments, element, messages, attrs);
 
         return RemovalType.NONE;
     }
@@ -106,28 +81,20 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
         }
     }
 
-    private void removeRelativeAttributes(Element element) {
+    private void buildElement(Element element, Object messages, MessagesPanelAttrAccessor attrs) {
 
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_OUTER_ELEMENT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE);
-    }
+        final String panelClassName = attrs.getPanelClassName();
+        final String panelTypeClass = attrs.getPanelTypeClass(messages);
 
-    private void buildElement(Element element, Object messages, String messagesType, String panelClassName,
-            String panelTypeClassPrefix) {
-
-        final String panelTypeClassSuffix = StringUtils.hasText(messagesType) ? messagesType
-                : messages instanceof ResultMessages ? ((ResultMessages) messages).getType().getType() : null;
-        final String panelTypeClass = panelTypeClassPrefix + panelTypeClassSuffix;
         element.setAttribute("class",
                 StringUtils.hasText(panelClassName) ? panelClassName + " " + panelTypeClass : panelTypeClass);
     }
 
-    private void buildBody(Arguments arguments, Element element, Object messages, String outerElement,
-            String innerElement, boolean disableHtmlEscape) {
+    private void buildBody(Arguments arguments, Element element, Object messages, MessagesPanelAttrAccessor attrs) {
+
+        final String outerElement = attrs.getOuterElement();
+        final String innerElement = attrs.getInnerElement();
+        final boolean disableHtmlEscape = attrs.isDisableHtmlEscape();
 
         List<Element> inner = buildInnerElements(arguments, messages, innerElement, disableHtmlEscape);
 

@@ -26,17 +26,25 @@ public class TerasolunaGfwDialect extends AbstractDialect implements IExpression
     private static final String DIALECT_PREFIX = "t";
     private static final String EXPRESSION_NAME = "f";
 
+    private final String dialectPrefix;
     private final MessageSource messageSource;
 
     public TerasolunaGfwDialect(MessageSource messageSource) {
+        this(DIALECT_PREFIX, messageSource);
+    }
+
+    public TerasolunaGfwDialect(String dialectPrefix, MessageSource messageSource) {
+        super();
+        this.dialectPrefix = dialectPrefix;
         this.messageSource = messageSource;
     }
 
+    
     @Override
     public String getPrefix() {
-        return DIALECT_PREFIX;
+        return dialectPrefix;
     }
-
+    
     @Override
     public boolean isLenient() {
         return false;
@@ -44,7 +52,6 @@ public class TerasolunaGfwDialect extends AbstractDialect implements IExpression
 
     @Override
     public Set<IProcessor> getProcessors() {
-        String dialectPrefix = getPrefix();
         Set<IProcessor> processors = new HashSet<IProcessor>();
         processors.add(new MessagesPanelAttrProcessor(dialectPrefix, messageSource));
         processors.add(new TransactionTokenAttrProcessor());

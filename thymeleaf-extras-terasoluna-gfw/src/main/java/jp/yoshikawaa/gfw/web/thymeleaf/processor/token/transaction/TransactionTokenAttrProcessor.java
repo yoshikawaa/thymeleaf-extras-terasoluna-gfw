@@ -13,6 +13,7 @@ import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
 
 public class TransactionTokenAttrProcessor extends AbstractMarkupRemovalAttrProcessor {
+
     private static final Logger logger = LoggerFactory.getLogger(TransactionTokenAttrProcessor.class);
 
     private static final String ATTRIBUTE_NAME = "transaction-token";
