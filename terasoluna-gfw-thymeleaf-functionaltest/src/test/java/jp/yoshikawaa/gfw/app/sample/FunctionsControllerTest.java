@@ -1,14 +1,14 @@
 package jp.yoshikawaa.gfw.app.sample;
 
-import static jp.yoshikawaa.gfw.app.WebClientMatcher.hasText;
+import static jp.yoshikawaa.gfw.test.matcher.WebClientMatcher.hasText;
 
 import org.junit.Test;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-import jp.yoshikawaa.gfw.app.WebClientConfigurator;
+import jp.yoshikawaa.gfw.test.support.WebClientTestSupport;
 
-public class FunctionsControllerTest extends WebClientConfigurator {
+public class FunctionsControllerTest extends WebClientTestSupport {
 
     @Override
     protected String path() {

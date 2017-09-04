@@ -1,7 +1,7 @@
 package jp.yoshikawaa.gfw.app.sample;
 
-import static jp.yoshikawaa.gfw.app.WebClientMatcher.hasText;
-import static jp.yoshikawaa.gfw.app.WebClientMatcher.hasTexts;
+import static jp.yoshikawaa.gfw.test.matcher.WebClientMatcher.hasText;
+import static jp.yoshikawaa.gfw.test.matcher.WebClientMatcher.hasTexts;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -11,9 +11,9 @@ import org.junit.Test;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-import jp.yoshikawaa.gfw.app.WebClientConfigurator;
+import jp.yoshikawaa.gfw.test.support.WebClientTestSupport;
 
-public class MessagePanelControllerTest extends WebClientConfigurator {
+public class MessagePanelControllerTest extends WebClientTestSupport {
 
     @Override
     protected String path() {

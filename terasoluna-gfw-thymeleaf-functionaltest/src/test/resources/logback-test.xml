@@ -33,7 +33,7 @@
     </appender>
 
     <!-- Application Loggers -->
-    <logger name="org.terasoluna.gfw">
+    <logger name="jp.yoshikawaa.gfw">
         <level value="debug" />
     </logger>
 
@@ -65,17 +65,13 @@
         <level value="debug" />
     </logger>
     
-    <logger name="jp.yoshikawaa.gfw">
-        <level value="info" />
-    </logger>
-
     <!-- only for development -->
     <logger name="jdbc.resultsettable">
         <level value="debug" />
     </logger>
     
     <logger name="org.springframework.test.web.servlet.result">
-        <level value="debug" />
+        <level value="${logback.level.spring-test:-debug}" />
     </logger>
 
     <root level="warn">

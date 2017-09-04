@@ -10,9 +10,9 @@ import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-import jp.yoshikawaa.gfw.app.WebClientConfigurator;
+import jp.yoshikawaa.gfw.test.support.WebClientTestSupport;
 
-public class PaginationControllerTest extends WebClientConfigurator {
+public class PaginationControllerTest extends WebClientTestSupport {
 
     @Override
     protected String path() {
