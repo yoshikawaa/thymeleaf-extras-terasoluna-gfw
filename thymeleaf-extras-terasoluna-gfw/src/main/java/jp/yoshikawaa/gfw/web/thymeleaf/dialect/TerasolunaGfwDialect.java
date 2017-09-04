@@ -33,8 +33,7 @@ public class TerasolunaGfwDialect extends AbstractProcessorDialect implements IE
     private final MessageSource messageSource;
 
     public TerasolunaGfwDialect(MessageSource messageSource) {
-        super(DIALECT_NAME, DIALECT_PREFIX, StandardDialect.PROCESSOR_PRECEDENCE);
-        this.messageSource = messageSource;
+        this(DIALECT_PREFIX, messageSource);
     }
 
     public TerasolunaGfwDialect(String dialectPrefix, MessageSource messageSource) {

@@ -23,7 +23,6 @@ import org.unbescape.html.HtmlEscape;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractHtmlAttributeProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
-import jp.yoshikawaa.gfw.web.thymeleaf.util.ProcessorUtils;
 
 public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProcessor {
 
@@ -31,20 +30,6 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
 
     private static final String ATTRIBUTE_NAME = "messages-panel";
     private static final int PRECEDENCE = 12000;
-
-    private static final String ATTRIBUTE_PANEL_CLASS_NAME = "panel-class-name";
-    private static final String ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX = "panel-type-class-prefix";
-    private static final String ATTRIBUTE_MESSAGES_TYPE = "message-type";
-    private static final String ATTRIBUTE_OUTER_ELEMENT = "outer-element";
-    private static final String ATTRIBUTE_INNER_ELEMENT = "inner-element";
-    private static final String ATTRIBUTE_DISABLE_HTML_ESCAPE = "disable-html-escape";
-
-    private static final String DEFAULT_PANEL_CLASS_NAME = "alert";
-    private static final String DEFAULT_PANEL_TYPE_CLASS_PREFIX = "alert-";
-    private static final String DEFAULT_MESSAGES_TYPE = null;
-    private static final String DEFAULT_OUTER_ELEMENT = "ul";
-    private static final String DEFAULT_INNER_ELEMENT = "li";
-    private static final boolean DEFAULT_DISABLE_HTML_ESCAPE = false;
 
     private final MessageSource messageSource;
 
@@ -61,19 +46,8 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
         final Object messages = getResultMessages(context, attributeValue);
 
         // find relative attributes.
-        final String messagesType = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE,
-                DEFAULT_MESSAGES_TYPE);
-        final String panelClassName = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME,
-                DEFAULT_PANEL_CLASS_NAME);
-        final String panelTypeClassPrefix = ProcessorUtils.getAttributeValue(tag, dialectPrefix,
-                ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX, DEFAULT_PANEL_TYPE_CLASS_PREFIX);
-        final String outerElement = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_OUTER_ELEMENT,
-                DEFAULT_OUTER_ELEMENT);
-        final String innerElement = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
-                DEFAULT_INNER_ELEMENT);
-        final boolean disableHtmlEscape = ProcessorUtils.getAttributeValue(tag, dialectPrefix,
-                ATTRIBUTE_DISABLE_HTML_ESCAPE, DEFAULT_DISABLE_HTML_ESCAPE);
-        removeRelativeAttributes(structureHandler);
+        MessagesPanelAttributeAccessor attrs = new MessagesPanelAttributeAccessor(tag, dialectPrefix);
+        attrs.removeAttributes(structureHandler);
 
         // exist messages?
         if (messages == null) {
@@ -82,9 +56,8 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
         }
 
         // build element.
-        buildElement(structureHandler, tag, messages, messagesType, panelClassName, panelTypeClassPrefix);
-        structureHandler.setBody(buildBody(context, tag, messages, outerElement, innerElement, disableHtmlEscape),
-                false);
+        buildElement(structureHandler, messages, attrs);
+        structureHandler.setBody(buildBody(context, messages, attrs), false);
     }
 
     private Object getResultMessages(ITemplateContext context, String attributeValue) {
@@ -98,28 +71,21 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
         }
     }
 
-    private void removeRelativeAttributes(IElementTagStructureHandler structureHandler) {
+    private void buildElement(IElementTagStructureHandler structureHandler, Object messages,
+            MessagesPanelAttributeAccessor attrs) {
 
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_MESSAGES_TYPE);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_OUTER_ELEMENT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE);
-    }
+        final String panelClassName = attrs.getPanelClassName();
+        final String panelTypeClass = attrs.getPanelTypeClass(messages);
 
-    private void buildElement(IElementTagStructureHandler structureHandler, IProcessableElementTag tag,
-            Object messages, String messagesType, String panelClassName, String panelTypeClassPrefix) {
-
-        final String panelTypeClassSuffix = StringUtils.hasText(messagesType) ? messagesType
-                : messages instanceof ResultMessages ? ((ResultMessages) messages).getType().getType() : null;
-        final String panelTypeClass = panelTypeClassPrefix + panelTypeClassSuffix;
         structureHandler.setAttribute("class",
                 StringUtils.hasText(panelClassName) ? panelClassName + " " + panelTypeClass : panelTypeClass);
     }
 
-    private IModel buildBody(ITemplateContext context, IProcessableElementTag tag, Object messages, String outerElement,
-            String innerElement, boolean disableHtmlEscape) {
+    private IModel buildBody(ITemplateContext context, Object messages, MessagesPanelAttributeAccessor attrs) {
+
+        final String outerElement = attrs.getOuterElement();
+        final String innerElement = attrs.getInnerElement();
+        final boolean disableHtmlEscape = attrs.isDisableHtmlEscape();
 
         final IModelFactory modelFactory = context.getModelFactory();
         final IModel model = modelFactory.createModel();
