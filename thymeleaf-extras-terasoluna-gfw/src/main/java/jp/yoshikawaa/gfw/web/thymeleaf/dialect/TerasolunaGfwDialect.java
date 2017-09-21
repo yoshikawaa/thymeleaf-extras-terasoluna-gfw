@@ -61,16 +61,15 @@ public class TerasolunaGfwDialect extends AbstractProcessorDialect implements IE
 
             @Override
             public Object buildObject(IExpressionContext context, String expressionObjectName) {
-                if (expressionObjectName.equals(EXPRESSION_NAME)) {
-                    try {
-                        Constructor<Functions> constructor = Functions.class.getDeclaredConstructor();
-                        constructor.setAccessible(true);
-                        return constructor.newInstance();
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
-                    }
+                Object expressionObject = null;
+                try {
+                    Constructor<Functions> constructor = Functions.class.getDeclaredConstructor();
+                    constructor.setAccessible(true);
+                    expressionObject = constructor.newInstance();
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
                 }
-                return null;
+                return expressionObject;
             }
 
             @Override

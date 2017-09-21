@@ -132,7 +132,8 @@ public class PaginationAttributeProcessor extends AbstractHtmlAttributeProcessor
         model.add(modelFactory.createOpenElementTag(innerElement, PaginationInfo.CLASS_ATTR, activeOrDisabled));
 
         if (StringUtils.hasText(href) && StringUtils.hasText(text)) {
-            model.add(modelFactory.createOpenElementTag(PaginationInfo.A_ELM, PaginationInfo.HREF_ATTR, href));
+            model.add(modelFactory.createOpenElementTag(PaginationInfo.A_ELM, PaginationInfo.HREF_ATTR,
+                    HtmlEscape.escapeHtml5(href)));
             model.add(modelFactory.createText(HtmlEscape.escapeHtml5(text)));
             model.add(modelFactory.createCloseElementTag(PaginationInfo.A_ELM));
         } else {

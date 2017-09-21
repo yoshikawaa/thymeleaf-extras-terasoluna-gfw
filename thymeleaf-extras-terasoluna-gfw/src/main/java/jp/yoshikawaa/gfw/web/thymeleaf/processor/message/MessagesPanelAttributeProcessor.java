@@ -8,13 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessageUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.engine.AttributeName;
+import org.thymeleaf.exceptions.TemplateInputException;
 import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -35,6 +35,9 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
 
     public MessagesPanelAttributeProcessor(String dialectPrefix, MessageSource messageSource) {
         super(dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
+        if (messageSource == null) {
+            throw new TemplateInputException("messageSource must not be null.");
+        }
         this.messageSource = messageSource;
     }
 
@@ -65,8 +68,7 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
         if (StringUtils.hasText(attributeValue)) {
             return ExpressionUtils.execute(context, attributeValue);
         } else {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                    .getRequest();
+            HttpServletRequest request = ((WebEngineContext)context).getRequest();
             return request.getAttribute(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME);
         }
     }
@@ -139,15 +141,13 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
     private String resolveMessage(Object message, Locale locale) {
 
         if (message instanceof ResultMessage) {
-            ResultMessage resultMessage = (ResultMessage) message;
-            return (messageSource == null) ? resultMessage.getText()
-                    : ResultMessageUtils.resolveMessage(resultMessage, messageSource, locale);
+            return ResultMessageUtils.resolveMessage((ResultMessage) message, messageSource, locale);
         } else if (message instanceof String) {
             return (String) message;
         } else if (message instanceof Throwable) {
             return ((Throwable) message).getMessage();
         }
-        return null;
+        return message.toString();
     }
 
 }

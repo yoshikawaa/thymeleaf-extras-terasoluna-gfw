@@ -12,7 +12,7 @@ public class MessagesPanelAttributeAccessor implements IAttributeAccessor {
 
     private static final String ATTRIBUTE_PANEL_CLASS_NAME = "panel-class-name";
     private static final String ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX = "panel-type-class-prefix";
-    private static final String ATTRIBUTE_MESSAGES_TYPE = "message-type";
+    private static final String ATTRIBUTE_MESSAGES_TYPE = "messages-type";
     private static final String ATTRIBUTE_OUTER_ELEMENT = "outer-element";
     private static final String ATTRIBUTE_INNER_ELEMENT = "inner-element";
     private static final String ATTRIBUTE_DISABLE_HTML_ESCAPE = "disable-html-escape";
@@ -53,9 +53,9 @@ public class MessagesPanelAttributeAccessor implements IAttributeAccessor {
 
     public void removeAttributes(IElementTagStructureHandler structureHandler) {
 
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_MESSAGES_TYPE);
         structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME);
         structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX);
+        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_MESSAGES_TYPE);
         structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_OUTER_ELEMENT);
         structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
         structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE);
@@ -63,7 +63,7 @@ public class MessagesPanelAttributeAccessor implements IAttributeAccessor {
 
     public String getPanelTypeClass(Object messages) {
         final String panelTypeClassSuffix = StringUtils.hasText(messagesType) ? messagesType
-                : messages instanceof ResultMessages ? ((ResultMessages) messages).getType().getType() : null;
+                : messages instanceof ResultMessages ? ((ResultMessages) messages).getType().getType() : "";
         return panelTypeClassPrefix + panelTypeClassSuffix;
     }
 

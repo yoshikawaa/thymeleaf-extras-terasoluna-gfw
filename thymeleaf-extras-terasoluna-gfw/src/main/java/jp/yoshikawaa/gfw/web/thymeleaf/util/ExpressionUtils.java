@@ -20,10 +20,7 @@ public class ExpressionUtils {
     @SuppressWarnings("unchecked")
     public static <T> T execute(final ITemplateContext context, String expressionString, Class<T> clazz) {
 
-        final IEngineConfiguration configuration = context.getConfiguration();
-        final IStandardExpressionParser parser = StandardExpressions.getExpressionParser(configuration);
-        final IStandardExpression expression = parser.parseExpression(context, expressionString);
-        Object result = expression.execute(context);
+        Object result = execute(context, expressionString);
         if (result != null && !clazz.isAssignableFrom(result.getClass())) {
             throw new TemplateInputException("expression result is not expected. expected:" + clazz.getName()
                     + " actual:" + result.getClass().getName());

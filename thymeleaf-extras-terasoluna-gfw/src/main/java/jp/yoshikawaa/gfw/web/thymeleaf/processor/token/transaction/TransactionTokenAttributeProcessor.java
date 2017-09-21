@@ -4,11 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.terasoluna.gfw.web.token.transaction.TransactionToken;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
@@ -31,7 +30,7 @@ public class TransactionTokenAttributeProcessor extends AbstractHtmlAttributePro
             String attributeValue, IElementTagStructureHandler structureHandler) {
 
         // find token.
-        TransactionToken nextToken = getTransactionToken();
+        TransactionToken nextToken = getTransactionToken(context);
         
         // exist token?
         if (nextToken == null) {
@@ -43,10 +42,9 @@ public class TransactionTokenAttributeProcessor extends AbstractHtmlAttributePro
         buildElement(structureHandler, nextToken);
     }
 
-    private TransactionToken getTransactionToken() {
+    private TransactionToken getTransactionToken(ITemplateContext context) {
 
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                .getRequest();
+        HttpServletRequest request = ((WebEngineContext)context).getRequest();
         return (TransactionToken) request.getAttribute(TransactionTokenInterceptor.NEXT_TOKEN_REQUEST_ATTRIBUTE_NAME);
     }
 

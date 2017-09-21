@@ -23,8 +23,8 @@ public class PaginationController {
     @GetMapping
     public String pagination(Model model, Pageable pageable) {
         int size = pageable.getPageSize();
-        int current = pageable.getPageNumber() * size + 1;
-        List<Integer> content = IntStream.rangeClosed(current, current + size).boxed().collect(Collectors.toList());
+        int offset = pageable.getOffset();
+        List<Integer> content = IntStream.rangeClosed(offset, offset + size + 1).boxed().collect(Collectors.toList());
 
         Page<Integer> page = new PageImpl<Integer>(content, pageable, total);
         model.addAttribute("page", page);
