@@ -13,15 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessageUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.Arguments;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Macro;
 import org.thymeleaf.dom.Text;
+import org.thymeleaf.exceptions.TemplateInputException;
 import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
@@ -30,13 +30,16 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
 
     private static final Logger logger = LoggerFactory.getLogger(MessagesPanelAttrProcessor.class);
 
-    private static final String ATTRIBUTE_NAME = "message-panel";
+    private static final String ATTRIBUTE_NAME = "messages-panel";
 
     private final String dialectPrefix;
     private final MessageSource messageSource;
 
     public MessagesPanelAttrProcessor(String dialectPrefix, MessageSource messageSource) {
         super(ATTRIBUTE_NAME);
+        if (messageSource == null) {
+            throw new TemplateInputException("messageSource must not be null.");
+        }
         this.dialectPrefix = dialectPrefix;
         this.messageSource = messageSource;
     }
@@ -70,13 +73,12 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
         return RemovalType.NONE;
     }
 
-    private ResultMessages getResultMessages(Arguments arguments, String attributeValue) {
+    private Object getResultMessages(Arguments arguments, String attributeValue) {
 
         if (StringUtils.hasText(attributeValue)) {
-            return ExpressionUtils.execute(arguments, attributeValue, ResultMessages.class);
+            return ExpressionUtils.execute(arguments, attributeValue);
         } else {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                    .getRequest();
+            HttpServletRequest request = ((WebContext) arguments.getContext()).getHttpServletRequest();
             return (ResultMessages) request.getAttribute(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME);
         }
     }
@@ -134,14 +136,13 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
     private String resolveMessage(Object message, Locale locale) {
 
         if (message instanceof ResultMessage) {
-            ResultMessage resultMessage = (ResultMessage) message;
-            return (messageSource == null) ? resultMessage.getText()
-                    : ResultMessageUtils.resolveMessage(resultMessage, messageSource, locale);
+            return ResultMessageUtils.resolveMessage((ResultMessage) message, messageSource, locale);
         } else if (message instanceof String) {
             return (String) message;
         } else if (message instanceof Throwable) {
             return ((Throwable) message).getMessage();
         }
-        return null;
+        return message.toString();
     }
+
 }

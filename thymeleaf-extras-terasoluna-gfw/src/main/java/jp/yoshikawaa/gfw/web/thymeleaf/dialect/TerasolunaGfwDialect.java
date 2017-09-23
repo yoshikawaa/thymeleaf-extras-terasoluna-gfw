@@ -1,7 +1,7 @@
 package jp.yoshikawaa.gfw.web.thymeleaf.dialect;
 
 import java.lang.reflect.Constructor;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -61,14 +61,14 @@ public class TerasolunaGfwDialect extends AbstractDialect implements IExpression
 
     @Override
     public Map<String, Object> getAdditionalExpressionObjects(IProcessingContext processingContext) {
-        Constructor<Functions> constructor;
+        Map<String, Object> expressionObjects = new HashMap<>();
         try {
-            constructor = Functions.class.getDeclaredConstructor();
+            Constructor<Functions> constructor = Functions.class.getDeclaredConstructor();
             constructor.setAccessible(true);
-            return Collections.singletonMap(EXPRESSION_NAME, constructor.newInstance());
+            expressionObjects.put(EXPRESSION_NAME, constructor.newInstance());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        return null;
+        return expressionObjects;
     }
 }

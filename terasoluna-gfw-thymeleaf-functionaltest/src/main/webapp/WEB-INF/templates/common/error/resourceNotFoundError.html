@@ -9,7 +9,7 @@
     <div id="wrapper">
         <h1>Resource Not Found Error!</h1>
         <div class="error" th:text="${#strings.isEmpty(exceptionCode)} ? #{e.xx.fw.5001} : |[${exceptionCode}] #{e.xx.fw.5001}|"></div>
-        <div t:message-panel="" ></div>
+        <div t:messages-panel="" ></div>
     <br />
     <br />
     <br />

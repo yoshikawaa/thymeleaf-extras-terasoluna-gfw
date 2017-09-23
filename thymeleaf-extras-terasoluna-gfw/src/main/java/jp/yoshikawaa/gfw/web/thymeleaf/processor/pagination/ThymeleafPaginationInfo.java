@@ -60,7 +60,7 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
         // append criteria query
         String criteriaQuery = getCriteriaQuery();
         if (StringUtils.hasLength(criteriaQuery)) {
-            return (expression.contains("?")) ? pageUrl + "&" + criteriaQuery : pageUrl + "?" + criteriaQuery;
+            return (pageUrl.contains("?")) ? pageUrl + "&" + criteriaQuery : pageUrl + "?" + criteriaQuery;
         }
         return pageUrl;
     }

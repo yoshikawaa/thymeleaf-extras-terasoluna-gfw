@@ -9,7 +9,7 @@
     <div id="wrapper">
         <h1>Data Access Error!</h1>
         <div class="error" th:text="${#strings.isEmpty(exceptionCode)} ? #{e.xx.fw.9002} : |[${exceptionCode}] #{e.xx.fw.9002}|"></div>
-        <div t:message-panel="" ></div>
+        <div t:messages-panel="" ></div>
     <br />
     <br />
     <br />
