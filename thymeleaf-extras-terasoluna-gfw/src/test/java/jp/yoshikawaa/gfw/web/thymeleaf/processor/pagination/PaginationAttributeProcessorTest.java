@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.TerasolunaGfwAttributeProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttributeProcessorTestSupport;
 
 public class PaginationAttributeProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
 

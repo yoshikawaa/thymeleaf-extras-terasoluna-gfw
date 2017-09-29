@@ -12,7 +12,7 @@ import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.exceptions.TemplateInputException;
 import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.TerasolunaGfwAttributeProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttributeProcessorTestSupport;
 
 public class MessagesPanelAttributeProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
 

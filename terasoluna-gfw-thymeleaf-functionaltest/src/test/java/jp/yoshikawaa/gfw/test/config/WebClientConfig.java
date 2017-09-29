@@ -1,20 +1,17 @@
 package jp.yoshikawaa.gfw.test.config;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -39,12 +36,12 @@ public class WebClientConfig {
 
     @Profile({ "default", "mockmvc" })
     @Configuration
+    @Import(MockMvcConfig.class)
     public class MockMvcWebClientConfig {
 
         @Bean
-        public WebClient webClient() {
+        public WebClient webClient(MockMvc mvc) {
             logger.info("[Setup WebClient] use WebClient connected with MockMvc.");
-            MockMvc mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).alwaysDo(log()).build();
             WebClient client = MockMvcWebClientBuilder.mockMvcSetup(mvc).contextPath(contextPath).build();
             client.getOptions().setThrowExceptionOnFailingStatusCode(false);
             return client;

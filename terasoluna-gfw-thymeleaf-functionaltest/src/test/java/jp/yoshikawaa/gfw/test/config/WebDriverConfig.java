@@ -1,8 +1,5 @@
 package jp.yoshikawaa.gfw.test.config;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -12,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @Configuration
@@ -40,12 +37,12 @@ public class WebDriverConfig {
 
     @Profile({ "default", "mockmvc" })
     @Configuration
+    @Import(MockMvcConfig.class)
     public class MockMvcWebDriverConfig {
 
         @Bean
-        public WebDriver webDriver() {
+        public WebDriver webDriver(MockMvc mvc) {
             logger.info("[Setup WebDriver] use HtmlUnitDriver connected with MockMvc.");
-            MockMvc mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).alwaysDo(log()).build();
             return MockMvcHtmlUnitDriverBuilder.mockMvcSetup(mvc).contextPath(contextPath).build();
         }
     }

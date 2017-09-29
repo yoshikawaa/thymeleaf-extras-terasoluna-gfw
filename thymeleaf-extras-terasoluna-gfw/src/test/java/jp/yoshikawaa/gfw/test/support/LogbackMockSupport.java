@@ -1,4 +1,4 @@
-package test.logback;
+package jp.yoshikawaa.gfw.test.support;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
@@ -17,7 +17,7 @@ import ch.qos.logback.core.Appender;
 
 public abstract class LogbackMockSupport {
 
-    protected final Class<?> mockLoggerClass;
+    private final Class<?> mockLoggerClass;
 
     @SuppressWarnings("unchecked")
     private final Appender<ILoggingEvent> mockAppender = mock(Appender.class);
@@ -25,7 +25,7 @@ public abstract class LogbackMockSupport {
     public LogbackMockSupport() {
         this(null);
     }
-    
+
     public LogbackMockSupport(Class<?> mockLoggerClass) {
         this.mockLoggerClass = mockLoggerClass;
     }

@@ -22,10 +22,10 @@ public class TerasolunaGfwDialectTest {
     @Test
     public void testDialect() {
         // setup.
-        String dialectPrefix = "terasoluna";
+        String dialectPrefix = "t";
 
         // execute.
-        TerasolunaGfwDialect dialect = new TerasolunaGfwDialect(dialectPrefix, new StaticMessageSource());
+        TerasolunaGfwDialect dialect = new TerasolunaGfwDialect(new StaticMessageSource());
 
         // assert.
         assertThat(dialect.getPrefix()).isEqualTo(dialectPrefix);
@@ -38,6 +38,7 @@ public class TerasolunaGfwDialectTest {
 
         IExpressionObjectFactory factory = dialect.getExpressionObjectFactory();
         factory.getAllExpressionObjectNames().stream().forEach(n -> {
+            assertThat(n).isEqualTo("f");
             assertThat(factory.buildObject(null, n)).isInstanceOf(Functions.class);
             assertThat(factory.isCacheable(n)).isFalse();
         });
@@ -45,11 +46,14 @@ public class TerasolunaGfwDialectTest {
 
     @Test
     public void testDialectPrefix() {
+        // setup.
+        String dialectPrefix = "terasoluna";
+
         // execute.
-        TerasolunaGfwDialect dialect = new TerasolunaGfwDialect(new StaticMessageSource());
+        TerasolunaGfwDialect dialect = new TerasolunaGfwDialect(dialectPrefix, new StaticMessageSource());
 
         // assert.
-        assertThat(dialect.getPrefix()).isEqualTo("t");
+        assertThat(dialect.getPrefix()).isEqualTo(dialectPrefix);
     }
 
 }

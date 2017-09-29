@@ -1,4 +1,4 @@
-package jp.yoshikawaa.gfw.web.thymeleaf.processor;
+package jp.yoshikawaa.gfw.test.support;
 
 import static org.junit.Assert.fail;
 
@@ -13,7 +13,7 @@ import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect;
-import test.logback.LogbackMockSupport;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractHtmlAttributeProcessor;
 
 public abstract class TerasolunaGfwAttributeProcessorTestSupport extends LogbackMockSupport {
 

@@ -65,9 +65,9 @@ public class TestWebEngineContextBuilder {
     public WebEngineContext build() {
         final IEngineConfiguration configuration = TestEngineConfigurationBuilder.build(dialects);
         final TemplateData templateData = TestTemplateDataBuilder.build(template, TemplateMode.HTML);
-        final MockHttpServletRequest request = new MockHttpServletRequest();
-        final MockHttpServletResponse response = new MockHttpServletResponse();
         final MockServletContext servletContext = new MockServletContext();
+        final MockHttpServletRequest request = new MockHttpServletRequest(servletContext);
+        final MockHttpServletResponse response = new MockHttpServletResponse();
         final Locale locale = request.getLocale();
 
         attributes.entrySet().forEach(a -> request.setAttribute(a.getKey(), a.getValue()));
