@@ -5,7 +5,6 @@ import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.util.StringUtils;
 import org.terasoluna.gfw.web.pagination.PaginationInfo;
 import org.terasoluna.gfw.web.pagination.PaginationInfo.BeginAndEnd;
 import org.thymeleaf.context.ITemplateContext;
@@ -14,35 +13,36 @@ import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.util.StringUtils;
 import org.unbescape.html.HtmlEscape;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractHtmlAttributeProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractRemovalAttributeTagProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
-public class PaginationAttributeProcessor extends AbstractHtmlAttributeProcessor {
-    private static final Logger logger = LoggerFactory.getLogger(PaginationAttributeProcessor.class);
+public class PaginationTagProcessor extends AbstractRemovalAttributeTagProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(PaginationTagProcessor.class);
 
+    private static final TemplateMode TEMPLATE_MODE = TemplateMode.HTML;
     private static final String ATTRIBUTE_NAME = "pagination";
-    private static final int PRECEDENCE = 12000;
+    private static final int PRECEDENCE = 1200;
 
     private static final String DEFAULT_PAGE_EXPRESSION = "${page}";
 
-    public PaginationAttributeProcessor(String dialectPrefix) {
-        super(dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
+    public PaginationTagProcessor(String dialectPrefix) {
+        super(TEMPLATE_MODE, dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
     }
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
             String attributeValue, IElementTagStructureHandler structureHandler) {
 
-        // find page.
-        Page<?> page = getPage(context, attributeValue);
-
         // find relative attributes.
-        PaginationAttributeAccessor attrs = new PaginationAttributeAccessor(tag, dialectPrefix);
+        PaginationTagAccessor attrs = new PaginationTagAccessor(tag, getDialectPrefix());
         attrs.removeAttributes(structureHandler);
 
-        // exist page?
+        // find page.
+        Page<?> page = getPage(context, attributeValue);
         if (page == null) {
             logger.debug("cannot found page.");
             return;
@@ -53,12 +53,12 @@ public class PaginationAttributeProcessor extends AbstractHtmlAttributeProcessor
     }
 
     private Page<?> getPage(ITemplateContext context, String attributeValue) {
-
         return ExpressionUtils.execute(context,
-                (StringUtils.hasText(attributeValue)) ? attributeValue : DEFAULT_PAGE_EXPRESSION, Page.class);
+                (StringUtils.isEmptyOrWhitespace(attributeValue)) ? DEFAULT_PAGE_EXPRESSION : attributeValue,
+                Page.class);
     }
 
-    private IModel buildBody(ITemplateContext context, Page<?> page, PaginationAttributeAccessor attrs) {
+    private IModel buildBody(ITemplateContext context, Page<?> page, PaginationTagAccessor attrs) {
 
         final String innerElement = attrs.getInnerElement();
         final String disabledClass = attrs.getDisabledClass();
@@ -131,13 +131,13 @@ public class PaginationAttributeProcessor extends AbstractHtmlAttributeProcessor
 
         model.add(modelFactory.createOpenElementTag(innerElement, PaginationInfo.CLASS_ATTR, activeOrDisabled));
 
-        if (StringUtils.hasText(href) && StringUtils.hasText(text)) {
+        if (StringUtils.isEmptyOrWhitespace(href) || StringUtils.isEmptyOrWhitespace(text)) {
+            model.add(modelFactory.createText(HtmlEscape.escapeHtml5(text)));
+        } else {
             model.add(modelFactory.createOpenElementTag(PaginationInfo.A_ELM, PaginationInfo.HREF_ATTR,
                     HtmlEscape.escapeHtml5(href)));
             model.add(modelFactory.createText(HtmlEscape.escapeHtml5(text)));
             model.add(modelFactory.createCloseElementTag(PaginationInfo.A_ELM));
-        } else {
-            model.add(modelFactory.createText(HtmlEscape.escapeHtml5(text)));
         }
 
         model.add(modelFactory.createCloseElementTag(innerElement));

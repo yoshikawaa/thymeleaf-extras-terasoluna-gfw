@@ -2,41 +2,42 @@ package jp.yoshikawaa.gfw.web.thymeleaf.processor.message;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.util.StringUtils;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessageUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.engine.AttributeName;
-import org.thymeleaf.exceptions.TemplateInputException;
 import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.util.StringUtils;
 import org.unbescape.html.HtmlEscape;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractHtmlAttributeProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractRemovalAttributeTagProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
-public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProcessor {
+public class MessagesPanelTagProcessor extends AbstractRemovalAttributeTagProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(MessagesPanelAttributeProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessagesPanelTagProcessor.class);
 
+    private static final TemplateMode TEMPLATE_MODE = TemplateMode.HTML;
     private static final String ATTRIBUTE_NAME = "messages-panel";
-    private static final int PRECEDENCE = 12000;
+    private static final int PRECEDENCE = 1200;
+
+    private static final String CLASS_ATTR_NAME = "class";
 
     private final MessageSource messageSource;
 
-    public MessagesPanelAttributeProcessor(String dialectPrefix, MessageSource messageSource) {
-        super(dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
+    public MessagesPanelTagProcessor(String dialectPrefix, MessageSource messageSource) {
+        super(TEMPLATE_MODE, dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
         if (messageSource == null) {
-            throw new TemplateInputException("messageSource must not be null.");
+            throw new IllegalArgumentException("messageSource must not be null.");
         }
         this.messageSource = messageSource;
     }
@@ -45,14 +46,12 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
             String attributeValue, IElementTagStructureHandler structureHandler) {
 
-        // find messages.
-        final Object messages = getResultMessages(context, attributeValue);
-
         // find relative attributes.
-        MessagesPanelAttributeAccessor attrs = new MessagesPanelAttributeAccessor(tag, dialectPrefix);
+        MessagesPanelTagAccessor attrs = new MessagesPanelTagAccessor(tag, getDialectPrefix());
         attrs.removeAttributes(structureHandler);
 
-        // exist messages?
+        // find messages.
+        final Object messages = getResultMessages(context, attributeValue);
         if (messages == null) {
             logger.debug("cannot found ResultMessages.");
             return;
@@ -64,26 +63,22 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
     }
 
     private Object getResultMessages(ITemplateContext context, String attributeValue) {
-
-        if (StringUtils.hasText(attributeValue)) {
-            return ExpressionUtils.execute(context, attributeValue);
-        } else {
-            HttpServletRequest request = ((WebEngineContext)context).getRequest();
-            return request.getAttribute(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME);
-        }
+        return StringUtils.isEmptyOrWhitespace(attributeValue)
+                ? ContextUtils.getAttribute(context, ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME)
+                : ExpressionUtils.execute(context, attributeValue);
     }
 
     private void buildElement(IElementTagStructureHandler structureHandler, Object messages,
-            MessagesPanelAttributeAccessor attrs) {
+            MessagesPanelTagAccessor attrs) {
 
         final String panelClassName = attrs.getPanelClassName();
         final String panelTypeClass = attrs.getPanelTypeClass(messages);
 
-        structureHandler.setAttribute("class",
-                StringUtils.hasText(panelClassName) ? panelClassName + " " + panelTypeClass : panelTypeClass);
+        structureHandler.setAttribute(CLASS_ATTR_NAME, StringUtils.isEmptyOrWhitespace(panelClassName) ? panelTypeClass
+                : panelClassName + " " + panelTypeClass);
     }
 
-    private IModel buildBody(ITemplateContext context, Object messages, MessagesPanelAttributeAccessor attrs) {
+    private IModel buildBody(ITemplateContext context, Object messages, MessagesPanelTagAccessor attrs) {
 
         final String outerElement = attrs.getOuterElement();
         final String innerElement = attrs.getInnerElement();
@@ -92,13 +87,13 @@ public class MessagesPanelAttributeProcessor extends AbstractHtmlAttributeProces
         final IModelFactory modelFactory = context.getModelFactory();
         final IModel model = modelFactory.createModel();
 
-        if (StringUtils.hasText(outerElement)) {
+        if (!StringUtils.isEmptyOrWhitespace(outerElement)) {
             model.add(modelFactory.createOpenElementTag(outerElement));
         }
 
         model.addModel(buildInnerElements(context, messages, innerElement, disableHtmlEscape));
 
-        if (StringUtils.hasText(outerElement)) {
+        if (!StringUtils.isEmptyOrWhitespace(outerElement)) {
             model.add(modelFactory.createCloseElementTag(outerElement));
         }
 

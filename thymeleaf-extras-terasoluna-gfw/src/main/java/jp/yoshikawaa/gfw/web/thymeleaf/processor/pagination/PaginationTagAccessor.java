@@ -4,10 +4,10 @@ import org.terasoluna.gfw.web.pagination.PaginationInfo;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.IAttributeAccessor;
-import jp.yoshikawaa.gfw.web.thymeleaf.util.ProcessorUtils;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.IAttributeTagAccessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ElementTagUtils;
 
-public class PaginationAttributeAccessor implements IAttributeAccessor {
+public class PaginationTagAccessor implements IAttributeTagAccessor {
 
     private static final String ATTRIBUTE_INNER_ELEMENT = "inner-element";
     private static final String ATTRIBUTE_DISABLED_CLASS = "disabled-class";
@@ -48,34 +48,34 @@ public class PaginationAttributeAccessor implements IAttributeAccessor {
     private final boolean disableHtmlEscapeOfCriteriaQuery;
     private final boolean enableLinkOfCurrentPage;
 
-    public PaginationAttributeAccessor(IProcessableElementTag tag, String dialectPrefix) {
+    public PaginationTagAccessor(IProcessableElementTag tag, String dialectPrefix) {
 
         this.dialectPrefix = dialectPrefix;
 
-        this.innerElement = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
+        this.innerElement = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
                 PaginationInfo.DEFAULT_INNER_ELM);
-        this.disabledClass = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_DISABLED_CLASS,
+        this.disabledClass = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_DISABLED_CLASS,
                 PaginationInfo.DEFAULT_DISABLED_CLASS);
-        this.activeClass = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_ACTIVE_CLASS,
+        this.activeClass = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_ACTIVE_CLASS,
                 PaginationInfo.DEFAULT_ACTIVE_CLASS);
-        this.firstLinkText = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_FIRST_LINK_TEXT,
+        this.firstLinkText = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_FIRST_LINK_TEXT,
                 DEFAULT_FIRST_LINK_TEXT);
-        this.previousLinkText = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_PREVIOUS_LINK_TEXT,
+        this.previousLinkText = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_PREVIOUS_LINK_TEXT,
                 DEFAULT_PREVIOUS_LINK_TEXT);
-        this.nextLinkText = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_NEXT_LINK_TEXT,
+        this.nextLinkText = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_NEXT_LINK_TEXT,
                 DEFAULT_NEXT_LINK_TEXT);
-        this.lastLinkText = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_LAST_LINK_TEXT,
+        this.lastLinkText = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_LAST_LINK_TEXT,
                 DEFAULT_LAST_LINK_TEXT);
-        this.maxDisplayCount = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_MAX_DISPLAY_COUNT,
+        this.maxDisplayCount = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_MAX_DISPLAY_COUNT,
                 PaginationInfo.DEFAULT_MAX_DISPLAY_COUNT);
-        this.disabledHref = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_DISABLED_HREF,
+        this.disabledHref = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_DISABLED_HREF,
                 PaginationInfo.DEFAULT_DISABLED_HREF);
-        this.hrefTmpl = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_HREF_TMPL, DEFAULT_HREF_TMPL);
-        this.criteriaQuery = ProcessorUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY,
+        this.hrefTmpl = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_HREF_TMPL, DEFAULT_HREF_TMPL);
+        this.criteriaQuery = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY,
                 DEFAULT_CRITERIA_QUERY);
-        this.disableHtmlEscapeOfCriteriaQuery = ProcessorUtils.getAttributeValue(tag, dialectPrefix,
+        this.disableHtmlEscapeOfCriteriaQuery = ElementTagUtils.getAttributeValue(tag, dialectPrefix,
                 ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY, DEFAULT_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY);
-        this.enableLinkOfCurrentPage = ProcessorUtils.getAttributeValue(tag, dialectPrefix,
+        this.enableLinkOfCurrentPage = ElementTagUtils.getAttributeValue(tag, dialectPrefix,
                 ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE, DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE);
     }
 

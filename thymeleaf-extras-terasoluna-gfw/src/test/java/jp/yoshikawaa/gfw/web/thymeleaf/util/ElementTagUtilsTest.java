@@ -3,23 +3,23 @@ package jp.yoshikawaa.gfw.web.thymeleaf.util;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-import org.thymeleaf.engine.TestStandaloneElementTagBuilder;
+import org.thymeleaf.engine.TestElementTagBuilder;
 import org.thymeleaf.model.IProcessableElementTag;
 
-public class ProcessorUtilsTest {
+public class ElementTagUtilsTest {
 
-    public ProcessorUtilsTest() {
-        new ProcessorUtils();
+    public ElementTagUtilsTest() {
+        new ElementTagUtils();
     }
     
     @Test
     public void testStringAttribute() {
         // setup.
         final String template = "<input t:test=\"success\" />";
-        final IProcessableElementTag tag = TestStandaloneElementTagBuilder.from(template);
+        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template);
 
         // execute.
-        String result = ProcessorUtils.getAttributeValue(tag, "t", "test", "default");
+        String result = ElementTagUtils.getAttributeValue(tag, "t", "test", "default");
         
         // assert.
         assertThat(result).isEqualTo("success");
@@ -29,10 +29,10 @@ public class ProcessorUtilsTest {
     public void testStringAttributeDefault() {
         // setup.
         final String template = "<input />";
-        final IProcessableElementTag tag = TestStandaloneElementTagBuilder.from(template);
+        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template);
 
         // execute.
-        String result = ProcessorUtils.getAttributeValue(tag, "t", "test", "default");
+        String result = ElementTagUtils.getAttributeValue(tag, "t", "test", "default");
         
         // assert.
         assertThat(result).isEqualTo("default");
@@ -42,10 +42,10 @@ public class ProcessorUtilsTest {
     public void testIntegerAttribute() {
         // setup.
         final String template = "<input t:test=\"100\" />";
-        final IProcessableElementTag tag = TestStandaloneElementTagBuilder.from(template);
+        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template);
 
         // execute.
-        Integer result = ProcessorUtils.getAttributeValue(tag, "t", "test", -1);
+        Integer result = ElementTagUtils.getAttributeValue(tag, "t", "test", -1);
         
         // assert.
         assertThat(result).isEqualTo(100);
@@ -55,10 +55,10 @@ public class ProcessorUtilsTest {
     public void testIntegerAttributeDefault() {
         // setup.
         final String template = "<input />";
-        final IProcessableElementTag tag = TestStandaloneElementTagBuilder.from(template);
+        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template);
 
         // execute.
-        Integer result = ProcessorUtils.getAttributeValue(tag, "t", "test", -1);
+        Integer result = ElementTagUtils.getAttributeValue(tag, "t", "test", -1);
         
         // assert.
         assertThat(result).isEqualTo(-1);
@@ -68,10 +68,10 @@ public class ProcessorUtilsTest {
     public void testBooleanAttribute() {
         // setup.
         final String template = "<input t:test=\"true\" />";
-        final IProcessableElementTag tag = TestStandaloneElementTagBuilder.from(template);
+        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template);
 
         // execute.
-        Boolean result = ProcessorUtils.getAttributeValue(tag, "t", "test", false);
+        Boolean result = ElementTagUtils.getAttributeValue(tag, "t", "test", false);
         
         // assert.
         assertThat(result).isEqualTo(true);
@@ -81,10 +81,10 @@ public class ProcessorUtilsTest {
     public void testBooleanAttributeDefault() {
         // setup.
         final String template = "<input />";
-        final IProcessableElementTag tag = TestStandaloneElementTagBuilder.from(template);
+        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template);
 
         // execute.
-        Boolean result = ProcessorUtils.getAttributeValue(tag, "t", "test", false);
+        Boolean result = ElementTagUtils.getAttributeValue(tag, "t", "test", false);
         
         // assert.
         assertThat(result).isEqualTo(false);

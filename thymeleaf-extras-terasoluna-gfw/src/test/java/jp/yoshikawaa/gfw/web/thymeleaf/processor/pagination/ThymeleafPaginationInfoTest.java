@@ -2,11 +2,14 @@ package jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.junit.Test;
+import org.springframework.context.support.StaticMessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +17,13 @@ import org.springframework.data.domain.Pageable;
 import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.engine.TestWebEngineContextBuilder;
 
+import jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect;
+
 public class ThymeleafPaginationInfoTest {
+
+    static {
+        TestWebEngineContextBuilder.addDialect(new TerasolunaGfwDialect(new StaticMessageSource()));
+    }
 
     @Test
     public void testPaginationInfo() {
@@ -66,6 +75,21 @@ public class ThymeleafPaginationInfoTest {
 
         // execute.
         assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?item=sample");
+    }
+
+    @Test
+    public void testCriteriaQueryExpression() {
+        // setup.
+        final String template = "<input />";
+        final Map<String, String> query = Collections.singletonMap("item", "sample");
+
+        final WebEngineContext context = TestWebEngineContextBuilder.from(template).variable("query", query).build();
+
+        ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
+                "@{/sample/pagination/{page}(page=${page},size=${size})}", "${#f.query(query)}", true, 5);
+
+        // execute.
+        assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?size=10&item=sample");
     }
 
     private Page<Integer> buildPage(int page, int size) {

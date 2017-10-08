@@ -13,9 +13,9 @@ import org.thymeleaf.expression.IExpressionObjectFactory;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelAttributeProcessor;
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationAttributeProcessor;
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenAttributeProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelTagProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationTagProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenProcessor;
 
 public class TerasolunaGfwDialectTest {
 
@@ -33,8 +33,8 @@ public class TerasolunaGfwDialectTest {
         Set<IProcessor> processors = dialect.getProcessors(dialectPrefix);
         assertThat(processors).hasSize(4);
         List<Class<?>> types = processors.stream().map(p -> p.getClass()).collect(Collectors.toList());
-        assertThat(types).containsOnly(MessagesPanelAttributeProcessor.class, TransactionTokenAttributeProcessor.class,
-                PaginationAttributeProcessor.class, StandardXmlNsTagProcessor.class);
+        assertThat(types).containsOnly(MessagesPanelTagProcessor.class, TransactionTokenProcessor.class,
+                PaginationTagProcessor.class, StandardXmlNsTagProcessor.class);
 
         IExpressionObjectFactory factory = dialect.getExpressionObjectFactory();
         factory.getAllExpressionObjectNames().stream().forEach(n -> {

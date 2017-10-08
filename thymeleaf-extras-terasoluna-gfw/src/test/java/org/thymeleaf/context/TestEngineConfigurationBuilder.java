@@ -10,8 +10,7 @@ import org.thymeleaf.dialect.IDialect;
 public final class TestEngineConfigurationBuilder {
 
     public static IEngineConfiguration build() {
-        final TemplateEngine templateEngine = new TemplateEngine();
-        return templateEngine.getConfiguration();
+        return build((Set<IDialect>) null);
     }
 
     public static IEngineConfiguration build(final IDialect dialect) {
@@ -20,7 +19,9 @@ public final class TestEngineConfigurationBuilder {
 
     public static IEngineConfiguration build(final Set<IDialect> dialects) {
         final TemplateEngine templateEngine = new TemplateEngine();
-        templateEngine.setDialects(dialects);
+        if (dialects != null) {
+            templateEngine.setDialects(dialects);
+        }
         return templateEngine.getConfiguration();
     }
 

@@ -15,7 +15,7 @@ public class ExpressionUtilsTest {
     }
     
     @Test
-    public void assertExpression() {
+    public void testExpression() {
         // setup.
         final String template = "<input />";
         final WebEngineContext context = TestWebEngineContextBuilder.from(template).variable("test", "success").build();
@@ -28,7 +28,7 @@ public class ExpressionUtilsTest {
     }
 
     @Test
-    public void assertExpressionTyped() {
+    public void testExpressionTyped() {
         // setup.
         final String template = "<input />";
         final WebEngineContext context = TestWebEngineContextBuilder.from(template).variable("test", "success").build();
@@ -41,7 +41,7 @@ public class ExpressionUtilsTest {
     }
 
     @Test
-    public void assertExpressionTypedNotFound() {
+    public void testExpressionTypedNotFound() {
         // setup.
         final String template = "<input />";
         final WebEngineContext context = TestWebEngineContextBuilder.from(template).build();
@@ -54,7 +54,7 @@ public class ExpressionUtilsTest {
     }
 
     @Test
-    public void assertExpressionTypedUnmatch() {
+    public void testExpressionTypedUnmatch() {
         // setup.
         final String template = "<input />";
         final WebEngineContext context = TestWebEngineContextBuilder.from(template).variable("test", "success").build();
@@ -63,7 +63,7 @@ public class ExpressionUtilsTest {
         assertThatThrownBy(() -> {
             ExpressionUtils.execute(context, "${test}", Integer.class);
         }).isInstanceOf(TemplateInputException.class)
-                .hasMessage("expression result is not expected. expected:java.lang.Integer actual:java.lang.String");
+                .hasMessage("expression result type is not expected. expected:java.lang.Integer actual:java.lang.String");
     }
 
 }

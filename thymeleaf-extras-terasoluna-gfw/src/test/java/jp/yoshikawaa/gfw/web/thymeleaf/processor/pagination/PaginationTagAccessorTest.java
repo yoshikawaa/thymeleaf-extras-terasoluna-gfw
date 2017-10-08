@@ -3,11 +3,11 @@ package jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-import org.thymeleaf.engine.TestStandaloneElementTagBuilder;
+import org.thymeleaf.engine.TestElementTagBuilder;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
-public class PaginationAttributeAccessorTest {
+public class PaginationTagAccessorTest {
 
     @Test
     public void testAccessor() {
@@ -28,10 +28,10 @@ public class PaginationAttributeAccessorTest {
         template.append("t:enable-link-of-current-page='true' ");
         template.append("/>");
 
-        final IProcessableElementTag tag = TestStandaloneElementTagBuilder.from(template.toString());
+        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template.toString());
 
         // execute.
-        PaginationAttributeAccessor accessor = new PaginationAttributeAccessor(tag, "t");
+        PaginationTagAccessor accessor = new PaginationTagAccessor(tag, "t");
         TestElementTagStructureHandler structureHandler = new TestElementTagStructureHandler(tag);
         accessor.removeAttributes(structureHandler);
 
