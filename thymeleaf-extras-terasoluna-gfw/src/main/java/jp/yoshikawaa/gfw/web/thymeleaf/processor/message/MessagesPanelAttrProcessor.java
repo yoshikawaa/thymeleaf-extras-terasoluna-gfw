@@ -7,23 +7,20 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.util.StringUtils;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessageUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.Arguments;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Macro;
 import org.thymeleaf.dom.Text;
-import org.thymeleaf.exceptions.TemplateInputException;
 import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
+import org.thymeleaf.util.StringUtils;
 
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
 public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcessor {
@@ -31,6 +28,9 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
     private static final Logger logger = LoggerFactory.getLogger(MessagesPanelAttrProcessor.class);
 
     private static final String ATTRIBUTE_NAME = "messages-panel";
+    private static final int PRECEDENCE = 1200;
+
+    private static final String CLASS_ATTR_NAME = "class";
 
     private final String dialectPrefix;
     private final MessageSource messageSource;
@@ -38,7 +38,7 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
     public MessagesPanelAttrProcessor(String dialectPrefix, MessageSource messageSource) {
         super(ATTRIBUTE_NAME);
         if (messageSource == null) {
-            throw new TemplateInputException("messageSource must not be null.");
+            throw new IllegalArgumentException("messageSource must not be null.");
         }
         this.dialectPrefix = dialectPrefix;
         this.messageSource = messageSource;
@@ -46,21 +46,19 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
 
     @Override
     public int getPrecedence() {
-        return 1300;
+        return PRECEDENCE;
     }
 
     @Override
     protected RemovalType getRemovalType(final Arguments arguments, final Element element, final String attributeName) {
 
-        // find messages.
-        final String attributeValue = element.getAttributeValue(attributeName);
-        final Object messages = getResultMessages(arguments, attributeValue);
-
         // find relative attributes.
         MessagesPanelAttrAccessor attrs = new MessagesPanelAttrAccessor(element, dialectPrefix);
         attrs.removeAttributes(element);
 
-        // exist messages?
+        // find messages.
+        final String attributeValue = element.getAttributeValue(attributeName);
+        final Object messages = getResultMessages(arguments, attributeValue);
         if (messages == null) {
             logger.debug("cannot found ResultMessages.");
             return RemovalType.ELEMENT;
@@ -74,13 +72,9 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
     }
 
     private Object getResultMessages(Arguments arguments, String attributeValue) {
-
-        if (StringUtils.hasText(attributeValue)) {
-            return ExpressionUtils.execute(arguments, attributeValue);
-        } else {
-            HttpServletRequest request = ((WebContext) arguments.getContext()).getHttpServletRequest();
-            return (ResultMessages) request.getAttribute(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME);
-        }
+        return StringUtils.isEmptyOrWhitespace(attributeValue)
+                ? ContextUtils.getAttribute(arguments, ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME)
+                : ExpressionUtils.execute(arguments, attributeValue);
     }
 
     private void buildElement(Element element, Object messages, MessagesPanelAttrAccessor attrs) {
@@ -88,8 +82,8 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
         final String panelClassName = attrs.getPanelClassName();
         final String panelTypeClass = attrs.getPanelTypeClass(messages);
 
-        element.setAttribute("class",
-                StringUtils.hasText(panelClassName) ? panelClassName + " " + panelTypeClass : panelTypeClass);
+        element.setAttribute(CLASS_ATTR_NAME, StringUtils.isEmptyOrWhitespace(panelClassName) ? panelTypeClass
+                : panelClassName + " " + panelTypeClass);
     }
 
     private void buildBody(Arguments arguments, Element element, Object messages, MessagesPanelAttrAccessor attrs) {
@@ -100,12 +94,12 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
 
         List<Element> inner = buildInnerElements(arguments, messages, innerElement, disableHtmlEscape);
 
-        if (StringUtils.hasText(outerElement)) {
+        if (StringUtils.isEmptyOrWhitespace(outerElement)) {
+            inner.forEach(n -> element.addChild(n));
+        } else {
             Element outer = new Element(outerElement);
             inner.forEach(n -> outer.addChild(n));
             element.addChild(outer);
-        } else {
-            inner.forEach(n -> element.addChild(n));
         }
     }
 

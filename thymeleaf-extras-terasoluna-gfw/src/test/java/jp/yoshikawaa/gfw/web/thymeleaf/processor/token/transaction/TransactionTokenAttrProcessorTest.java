@@ -10,7 +10,7 @@ import org.terasoluna.gfw.web.token.transaction.TransactionToken;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 import org.thymeleaf.dom.element.TestElementWrapper;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.TerasolunaGfwAttrProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttrProcessorTestSupport;
 
 public class TransactionTokenAttrProcessorTest extends TerasolunaGfwAttrProcessorTestSupport {
 
@@ -51,7 +51,7 @@ public class TransactionTokenAttrProcessorTest extends TerasolunaGfwAttrProcesso
     @Test
     public void testPrecedence() {
         TransactionTokenAttrProcessor processor = getProcessor(TransactionTokenAttrProcessor.class);
-        assertThat(processor.getPrecedence()).isEqualTo(1300);
+        assertThat(processor.getPrecedence()).isEqualTo(1200);
     }
 
 }

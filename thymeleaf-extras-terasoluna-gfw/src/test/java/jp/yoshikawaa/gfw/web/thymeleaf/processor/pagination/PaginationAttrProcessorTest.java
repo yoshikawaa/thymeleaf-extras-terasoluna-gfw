@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.dom.element.TestElementWrapper;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.TerasolunaGfwAttrProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttrProcessorTestSupport;
 
 public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestSupport {
 
@@ -214,7 +214,7 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
     @Test
     public void testPrecedence() {
         PaginationAttrProcessor processor = getProcessor(PaginationAttrProcessor.class);
-        assertThat(processor.getPrecedence()).isEqualTo(1300);
+        assertThat(processor.getPrecedence()).isEqualTo(1200);
     }
 
 }

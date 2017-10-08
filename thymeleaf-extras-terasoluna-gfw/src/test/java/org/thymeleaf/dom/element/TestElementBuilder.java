@@ -5,9 +5,9 @@ import java.util.StringTokenizer;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.dom.Element;
 
-public final class TestStandaloneElementBuilder {
+public final class TestElementBuilder {
 
-    public static Element from(final String template) {
+    public static Element standalone(final String template) {
         StringTokenizer token = new StringTokenizer(template.replace("<", "").replace("/>", ""), " ");
         Element element = new Element(token.nextToken());
         while (token.hasMoreTokens()) {

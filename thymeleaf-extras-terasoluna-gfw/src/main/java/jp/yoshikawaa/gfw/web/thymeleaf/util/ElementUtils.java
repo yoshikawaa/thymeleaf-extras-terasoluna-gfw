@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
 
-public class ProcessorUtils {
+public class ElementUtils {
 
     public static String getAttributeValue(Element element, String dialectPrefix, String attributeName,
             String defaultValue) {

@@ -1,4 +1,4 @@
-package test.logback;
+package jp.yoshikawaa.gfw.test.support;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;

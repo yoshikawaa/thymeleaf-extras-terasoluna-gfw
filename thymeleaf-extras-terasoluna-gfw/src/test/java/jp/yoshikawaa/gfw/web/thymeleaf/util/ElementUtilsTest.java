@@ -4,22 +4,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.element.TestStandaloneElementBuilder;
+import org.thymeleaf.dom.element.TestElementBuilder;
 
-public class ProcessorUtilsTest {
+public class ElementUtilsTest {
 
-    public ProcessorUtilsTest() {
-        new ProcessorUtils();
+    public ElementUtilsTest() {
+        new ElementUtils();
     }
     
     @Test
     public void testStringAttribute() {
         // setup.
         final String template = "<input t:test='success' />";
-        final Element element = TestStandaloneElementBuilder.from(template);
+        final Element element = TestElementBuilder.standalone(template);
 
         // execute.
-        String result = ProcessorUtils.getAttributeValue(element, "t", "test", "default");
+        String result = ElementUtils.getAttributeValue(element, "t", "test", "default");
         
         // assert.
         assertThat(result).isEqualTo("success");
@@ -29,10 +29,10 @@ public class ProcessorUtilsTest {
     public void testStringAttributeDefault() {
         // setup.
         final String template = "<input />";
-        final Element element = TestStandaloneElementBuilder.from(template);
+        final Element element = TestElementBuilder.standalone(template);
 
         // execute.
-        String result = ProcessorUtils.getAttributeValue(element, "t", "test", "default");
+        String result = ElementUtils.getAttributeValue(element, "t", "test", "default");
         
         // assert.
         assertThat(result).isEqualTo("default");
@@ -42,10 +42,10 @@ public class ProcessorUtilsTest {
     public void testIntegerAttribute() {
         // setup.
         final String template = "<input t:test='100' />";
-        final Element element = TestStandaloneElementBuilder.from(template);
+        final Element element = TestElementBuilder.standalone(template);
 
         // execute.
-        Integer result = ProcessorUtils.getAttributeValue(element, "t", "test", -1);
+        Integer result = ElementUtils.getAttributeValue(element, "t", "test", -1);
         
         // assert.
         assertThat(result).isEqualTo(100);
@@ -55,10 +55,10 @@ public class ProcessorUtilsTest {
     public void testIntegerAttributeDefault() {
         // setup.
         final String template = "<input />";
-        final Element element = TestStandaloneElementBuilder.from(template);
+        final Element element = TestElementBuilder.standalone(template);
 
         // execute.
-        Integer result = ProcessorUtils.getAttributeValue(element, "t", "test", -1);
+        Integer result = ElementUtils.getAttributeValue(element, "t", "test", -1);
         
         // assert.
         assertThat(result).isEqualTo(-1);
@@ -68,10 +68,10 @@ public class ProcessorUtilsTest {
     public void testBooleanAttribute() {
         // setup.
         final String template = "<input t:test='true' />";
-        final Element element = TestStandaloneElementBuilder.from(template);
+        final Element element = TestElementBuilder.standalone(template);
 
         // execute.
-        Boolean result = ProcessorUtils.getAttributeValue(element, "t", "test", false);
+        Boolean result = ElementUtils.getAttributeValue(element, "t", "test", false);
         
         // assert.
         assertThat(result).isEqualTo(true);
@@ -81,10 +81,10 @@ public class ProcessorUtilsTest {
     public void testBooleanAttributeDefault() {
         // setup.
         final String template = "<input />";
-        final Element element = TestStandaloneElementBuilder.from(template);
+        final Element element = TestElementBuilder.standalone(template);
 
         // execute.
-        Boolean result = ProcessorUtils.getAttributeValue(element, "t", "test", false);
+        Boolean result = ElementUtils.getAttributeValue(element, "t", "test", false);
         
         // assert.
         assertThat(result).isEqualTo(false);

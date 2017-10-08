@@ -17,9 +17,9 @@ public class ExpressionUtilsTest {
     }
     
     @Test
-    public void assertExpression() {
+    public void testExpression() {
         // setup.
-        final WebContext context = TestWebContextBuilder.from().variable("test", "success").build();
+        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
 
         // execute.
@@ -30,9 +30,9 @@ public class ExpressionUtilsTest {
     }
 
     @Test
-    public void assertExpressionTyped() {
+    public void testExpressionTyped() {
         // setup.
-        final WebContext context = TestWebContextBuilder.from().variable("test", "success").build();
+        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
 
         // execute.
@@ -43,9 +43,9 @@ public class ExpressionUtilsTest {
     }
 
     @Test
-    public void assertExpressionTypedNotFound() {
+    public void testExpressionTypedNotFound() {
         // setup.
-        final WebContext context = TestWebContextBuilder.from().build();
+        final WebContext context = TestWebContextBuilder.init().build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
 
         // execute.
@@ -56,9 +56,9 @@ public class ExpressionUtilsTest {
     }
 
     @Test
-    public void assertExpressionTypedUnmatch() {
+    public void testExpressionTypedUnmatch() {
         // setup.
-        final WebContext context = TestWebContextBuilder.from().variable("test", "success").build();
+        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
 
         // execute and assert.

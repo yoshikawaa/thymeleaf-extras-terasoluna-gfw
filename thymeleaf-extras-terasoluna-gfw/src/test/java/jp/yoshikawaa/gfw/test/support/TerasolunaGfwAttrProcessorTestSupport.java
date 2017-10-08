@@ -1,4 +1,4 @@
-package jp.yoshikawaa.gfw.web.thymeleaf.processor;
+package jp.yoshikawaa.gfw.test.support;
 
 import static org.junit.Assert.fail;
 
@@ -14,27 +14,25 @@ import org.thymeleaf.TestArgumentsBuilder;
 import org.thymeleaf.context.TestWebContextBuilder;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.dom.Element;
+import org.thymeleaf.dom.element.TestElementBuilder;
 import org.thymeleaf.dom.element.TestElementWrapper;
-import org.thymeleaf.dom.element.TestStandaloneElementBuilder;
 import org.thymeleaf.processor.AttributeNameProcessorMatcher;
 import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect;
-import test.logback.LogbackMockSupport;
 
 public abstract class TerasolunaGfwAttrProcessorTestSupport extends LogbackMockSupport {
 
     private static final Logger logger = LoggerFactory.getLogger(TerasolunaGfwAttrProcessorTestSupport.class);
-    private static final StaticMessageSource messageSource = new StaticMessageSource();
-    private static final TerasolunaGfwDialect dialect = new TerasolunaGfwDialect(messageSource);
+    private static final StaticMessageSource MESSAGE_SOURCE = new StaticMessageSource();
+    private static final TerasolunaGfwDialect DIALECTS = new TerasolunaGfwDialect(MESSAGE_SOURCE);
 
     private final AbstractMarkupRemovalAttrProcessor processor;
 
     static {
-        messageSource.addMessage("test1", Locale.ENGLISH, "test message 1.");
-        messageSource.addMessage("test2", Locale.ENGLISH, "test message 2.");
-        messageSource.addMessage("test3", Locale.ENGLISH, "test message 3.");
-        TestWebContextBuilder.addDialect(dialect);
+        MESSAGE_SOURCE.addMessage("test1", Locale.ENGLISH, "test message 1.");
+        MESSAGE_SOURCE.addMessage("test2", Locale.ENGLISH, "test message 2.");
+        MESSAGE_SOURCE.addMessage("test3", Locale.ENGLISH, "test message 3.");
     }
 
     public TerasolunaGfwAttrProcessorTestSupport() {
@@ -42,8 +40,7 @@ public abstract class TerasolunaGfwAttrProcessorTestSupport extends LogbackMockS
         this.processor = null;
     }
 
-    public TerasolunaGfwAttrProcessorTestSupport(
-            Class<? extends AbstractMarkupRemovalAttrProcessor> processorClass) {
+    public TerasolunaGfwAttrProcessorTestSupport(Class<? extends AbstractMarkupRemovalAttrProcessor> processorClass) {
         super(processorClass);
         this.processor = getProcessor(processorClass);
     }
@@ -52,7 +49,8 @@ public abstract class TerasolunaGfwAttrProcessorTestSupport extends LogbackMockS
         return process(this.processor, template, null, null);
     }
 
-    protected TestElementWrapper process(String template, Map<String, Object> attributes, Map<String, Object> variables) {
+    protected TestElementWrapper process(String template, Map<String, Object> attributes,
+            Map<String, Object> variables) {
         return process(this.processor, template, attributes, variables);
     }
 
@@ -63,21 +61,22 @@ public abstract class TerasolunaGfwAttrProcessorTestSupport extends LogbackMockS
             fail("processor must not be null.");
         }
 
-        final WebContext context = TestWebContextBuilder.from().attributes(attributes).variables(variables).build();
+        final WebContext context = TestWebContextBuilder.init().requestAttributes(attributes).variables(variables)
+                .build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
-        final Element element = TestStandaloneElementBuilder.from(template);
-        
+        final Element element = TestElementBuilder.standalone(template);
+
         processor.processAttribute(arguments, element, getAttributeName(processor));
         return new TestElementWrapper(arguments, element);
     }
 
-    @SuppressWarnings("unchecked")
     protected <T> T getProcessor(Class<T> clazz) {
-        return (T) dialect.getProcessors().stream().filter(p -> clazz.isAssignableFrom(p.getClass())).findFirst().get();
+        return clazz.cast(
+                DIALECTS.getProcessors().stream().filter(p -> clazz.isAssignableFrom(p.getClass())).findFirst().get());
     }
-    
+
     private String getAttributeName(AbstractMarkupRemovalAttrProcessor processor) {
-        StringBuilder attributeName = new StringBuilder(dialect.getPrefix() + ":");
+        StringBuilder attributeName = new StringBuilder(DIALECTS.getPrefix() + ":");
         AttributeNameProcessorMatcher matcher = (AttributeNameProcessorMatcher) processor.getMatcher();
         try {
             Field f = AttributeNameProcessorMatcher.class.getDeclaredField("attributeName");

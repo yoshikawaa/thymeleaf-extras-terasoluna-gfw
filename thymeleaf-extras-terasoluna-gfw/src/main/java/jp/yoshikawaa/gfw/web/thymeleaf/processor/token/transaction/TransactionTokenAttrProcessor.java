@@ -1,21 +1,25 @@
 package jp.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasoluna.gfw.web.token.transaction.TransactionToken;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 import org.thymeleaf.Arguments;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
+
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 
 public class TransactionTokenAttrProcessor extends AbstractMarkupRemovalAttrProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionTokenAttrProcessor.class);
 
     private static final String ATTRIBUTE_NAME = "transaction-token";
+    private static final int PRECEDENCE = 1200;
+
+    private static final String TYPE_ATTR_NAME = "type";
+    private static final String NAME_ATTR_NAME = "name";
+    private static final String VALUE_ATTR_NAME = "value";
 
     public TransactionTokenAttrProcessor() {
         super(ATTRIBUTE_NAME);
@@ -23,7 +27,7 @@ public class TransactionTokenAttrProcessor extends AbstractMarkupRemovalAttrProc
 
     @Override
     public int getPrecedence() {
-        return 1300;
+        return PRECEDENCE;
     }
 
     @Override
@@ -31,8 +35,6 @@ public class TransactionTokenAttrProcessor extends AbstractMarkupRemovalAttrProc
 
         // find token.
         TransactionToken nextToken = getTransactionToken(arguments);
-
-        // exist token?
         if (nextToken == null) {
             logger.debug("cannot found TransactionToken.");
             return RemovalType.ELEMENT;
@@ -45,16 +47,15 @@ public class TransactionTokenAttrProcessor extends AbstractMarkupRemovalAttrProc
     }
 
     private TransactionToken getTransactionToken(Arguments arguments) {
-
-        HttpServletRequest request = ((WebContext) arguments.getContext()).getHttpServletRequest();
-        return (TransactionToken) request.getAttribute(TransactionTokenInterceptor.NEXT_TOKEN_REQUEST_ATTRIBUTE_NAME);
+        return ContextUtils.getAttribute(arguments, TransactionTokenInterceptor.NEXT_TOKEN_REQUEST_ATTRIBUTE_NAME,
+                TransactionToken.class);
     }
 
     private void buildElement(Element element, TransactionToken nextToken) {
 
-        element.setAttribute("type", "hidden");
-        element.setAttribute("name", TransactionTokenInterceptor.TOKEN_REQUEST_PARAMETER);
-        element.setAttribute("value", nextToken.getTokenString());
+        element.setAttribute(TYPE_ATTR_NAME, "hidden");
+        element.setAttribute(NAME_ATTR_NAME, TransactionTokenInterceptor.TOKEN_REQUEST_PARAMETER);
+        element.setAttribute(VALUE_ATTR_NAME, nextToken.getTokenString());
     }
 
 }

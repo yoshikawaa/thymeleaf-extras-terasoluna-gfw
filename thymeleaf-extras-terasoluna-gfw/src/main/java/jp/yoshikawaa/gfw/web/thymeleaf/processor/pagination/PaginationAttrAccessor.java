@@ -4,7 +4,7 @@ import org.terasoluna.gfw.web.pagination.PaginationInfo;
 import org.thymeleaf.dom.Element;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.IAttrAccessor;
-import jp.yoshikawaa.gfw.web.thymeleaf.util.ProcessorUtils;
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ElementUtils;
 
 public class PaginationAttrAccessor implements IAttrAccessor {
 
@@ -51,49 +51,49 @@ public class PaginationAttrAccessor implements IAttrAccessor {
 
         this.dialectPrefix = dialectPrefix;
 
-        this.innerElement = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
+        this.innerElement = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
                 PaginationInfo.DEFAULT_INNER_ELM);
-        this.disabledClass = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_DISABLED_CLASS,
+        this.disabledClass = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_DISABLED_CLASS,
                 PaginationInfo.DEFAULT_DISABLED_CLASS);
-        this.activeClass = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_ACTIVE_CLASS,
+        this.activeClass = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_ACTIVE_CLASS,
                 PaginationInfo.DEFAULT_ACTIVE_CLASS);
-        this.firstLinkText = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_FIRST_LINK_TEXT,
+        this.firstLinkText = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_FIRST_LINK_TEXT,
                 DEFAULT_FIRST_LINK_TEXT);
-        this.previousLinkText = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_PREVIOUS_LINK_TEXT,
+        this.previousLinkText = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_PREVIOUS_LINK_TEXT,
                 DEFAULT_PREVIOUS_LINK_TEXT);
-        this.nextLinkText = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_NEXT_LINK_TEXT,
+        this.nextLinkText = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_NEXT_LINK_TEXT,
                 DEFAULT_NEXT_LINK_TEXT);
-        this.lastLinkText = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_LAST_LINK_TEXT,
+        this.lastLinkText = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_LAST_LINK_TEXT,
                 DEFAULT_LAST_LINK_TEXT);
-        this.maxDisplayCount = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_MAX_DISPLAY_COUNT,
+        this.maxDisplayCount = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_MAX_DISPLAY_COUNT,
                 PaginationInfo.DEFAULT_MAX_DISPLAY_COUNT);
-        this.disabledHref = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_DISABLED_HREF,
+        this.disabledHref = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_DISABLED_HREF,
                 PaginationInfo.DEFAULT_DISABLED_HREF);
-        this.hrefTmpl = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_HREF_TMPL,
+        this.hrefTmpl = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_HREF_TMPL,
                 DEFAULT_HREF_TMPL);
-        this.criteriaQuery = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY,
+        this.criteriaQuery = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY,
                 DEFAULT_CRITERIA_QUERY);
-        this.disableHtmlEscapeOfCriteriaQuery = ProcessorUtils.getAttributeValue(element, dialectPrefix,
+        this.disableHtmlEscapeOfCriteriaQuery = ElementUtils.getAttributeValue(element, dialectPrefix,
                 ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY, DEFAULT_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY);
-        this.enableLinkOfCurrentPage = ProcessorUtils.getAttributeValue(element, dialectPrefix,
+        this.enableLinkOfCurrentPage = ElementUtils.getAttributeValue(element, dialectPrefix,
                 ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE, DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE);
     }
 
     public void removeAttributes(Element element) {
 
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLED_CLASS);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_ACTIVE_CLASS);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_FIRST_LINK_TEXT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PREVIOUS_LINK_TEXT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_NEXT_LINK_TEXT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_LAST_LINK_TEXT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_MAX_DISPLAY_COUNT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLED_HREF);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_HREF_TMPL);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLED_CLASS);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_ACTIVE_CLASS);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_FIRST_LINK_TEXT);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PREVIOUS_LINK_TEXT);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_NEXT_LINK_TEXT);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_LAST_LINK_TEXT);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_MAX_DISPLAY_COUNT);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLED_HREF);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_HREF_TMPL);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE);
     }
 
     public String getInnerElement() {

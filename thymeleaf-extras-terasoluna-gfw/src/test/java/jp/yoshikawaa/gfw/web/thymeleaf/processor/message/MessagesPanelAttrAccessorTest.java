@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.element.TestStandaloneElementBuilder;
+import org.thymeleaf.dom.element.TestElementBuilder;
 
 public class MessagesPanelAttrAccessorTest {
 
@@ -20,7 +20,7 @@ public class MessagesPanelAttrAccessorTest {
         template.append("t:disable-html-escape='true' ");
         template.append("/>");
 
-        final Element element = TestStandaloneElementBuilder.from(template.toString());
+        final Element element = TestElementBuilder.standalone(template.toString());
 
         // execute.
         MessagesPanelAttrAccessor accessor = new MessagesPanelAttrAccessor(element, "t");
@@ -47,7 +47,7 @@ public class MessagesPanelAttrAccessorTest {
         final StringBuilder template = new StringBuilder("<div t:messages-panel='' ");
         template.append("/>");
 
-        final Element element = TestStandaloneElementBuilder.from(template.toString());
+        final Element element = TestElementBuilder.standalone(template.toString());
 
         // execute.
         MessagesPanelAttrAccessor accessor = new MessagesPanelAttrAccessor(element, "t");

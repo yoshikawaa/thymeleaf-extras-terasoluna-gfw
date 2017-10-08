@@ -2,11 +2,16 @@ package jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.junit.Test;
+import org.springframework.context.support.StaticMessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -15,13 +20,20 @@ import org.thymeleaf.Arguments;
 import org.thymeleaf.TestArgumentsBuilder;
 import org.thymeleaf.context.TestWebContextBuilder;
 import org.thymeleaf.context.WebContext;
+import org.thymeleaf.dialect.IDialect;
+
+import com.google.common.collect.ImmutableMap;
+
+import jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect;
 
 public class ThymeleafPaginationInfoTest {
 
+    private static final Set<IDialect> DIALECTS = new HashSet<>(Arrays.asList(new TerasolunaGfwDialect(new StaticMessageSource())));
+    
     @Test
     public void testPaginationInfo() {
         // setup.
-        final WebContext context = TestWebContextBuilder.from().build();
+        final WebContext context = TestWebContextBuilder.init().build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
@@ -34,7 +46,7 @@ public class ThymeleafPaginationInfoTest {
     @Test
     public void testCriteriaQuery() {
         // setup.
-        final WebContext context = TestWebContextBuilder.from().build();
+        final WebContext context = TestWebContextBuilder.init().build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
@@ -47,7 +59,7 @@ public class ThymeleafPaginationInfoTest {
     @Test
     public void testCriteriaQuery2() {
         // setup.
-        final WebContext context = TestWebContextBuilder.from().build();
+        final WebContext context = TestWebContextBuilder.init().build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
@@ -60,7 +72,7 @@ public class ThymeleafPaginationInfoTest {
     @Test
     public void testCriteriaQuery3() {
         // setup.
-        final WebContext context = TestWebContextBuilder.from().build();
+        final WebContext context = TestWebContextBuilder.init().build();
         final Arguments arguments = TestArgumentsBuilder.build(context);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
@@ -68,6 +80,21 @@ public class ThymeleafPaginationInfoTest {
 
         // execute.
         assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?item=sample");
+    }
+
+    @Test
+    public void testCriteriaQueryExpression() {
+        // setup.
+        final Map<String, String> query = ImmutableMap.of("item", "sample");
+
+        final WebContext context = TestWebContextBuilder.init().variable("query", query).build();
+        final Arguments arguments = TestArgumentsBuilder.build(context, DIALECTS);
+
+        ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
+                "@{/sample/pagination/{page}(page=${page},size=${size})}", "${#f.query(query)}", true, 5);
+
+        // execute.
+        assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?size=10&item=sample");
     }
 
     private Page<Integer> buildPage(int page, int size) {

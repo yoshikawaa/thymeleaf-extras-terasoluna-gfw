@@ -1,11 +1,11 @@
 package jp.yoshikawaa.gfw.web.thymeleaf.processor.message;
 
-import org.springframework.util.StringUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.dom.Element;
+import org.thymeleaf.util.StringUtils;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.IAttrAccessor;
-import jp.yoshikawaa.gfw.web.thymeleaf.util.ProcessorUtils;
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ElementUtils;
 
 public class MessagesPanelAttrAccessor implements IAttrAccessor {
 
@@ -36,32 +36,32 @@ public class MessagesPanelAttrAccessor implements IAttrAccessor {
 
         this.dialectPrefix = dialectPrefix;
 
-        this.panelClassName = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME,
+        this.panelClassName = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME,
                 DEFAULT_PANEL_CLASS_NAME);
-        this.panelTypeClassPrefix = ProcessorUtils.getAttributeValue(element, dialectPrefix,
+        this.panelTypeClassPrefix = ElementUtils.getAttributeValue(element, dialectPrefix,
                 ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX, DEFAULT_PANEL_TYPE_CLASS_PREFIX);
-        this.messagesType = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE,
+        this.messagesType = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE,
                 DEFAULT_MESSAGES_TYPE);
-        this.outerElement = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_OUTER_ELEMENT,
+        this.outerElement = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_OUTER_ELEMENT,
                 DEFAULT_OUTER_ELEMENT);
-        this.innerElement = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
+        this.innerElement = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
                 DEFAULT_INNER_ELEMENT);
-        this.disableHtmlEscape = ProcessorUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE,
+        this.disableHtmlEscape = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE,
                 DEFAULT_DISABLE_HTML_ESCAPE);
     }
 
     public void removeAttributes(Element element) {
 
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_OUTER_ELEMENT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
-        ProcessorUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_OUTER_ELEMENT);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
+        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE);
     }
 
     public String getPanelTypeClass(Object messages) {
-        final String panelTypeClassSuffix = StringUtils.hasText(messagesType) ? messagesType
+        final String panelTypeClassSuffix = !StringUtils.isEmptyOrWhitespace(messagesType) ? messagesType
                 : messages instanceof ResultMessages ? ((ResultMessages) messages).getType().getType() : "";
         return panelTypeClassPrefix + panelTypeClassSuffix;
     }

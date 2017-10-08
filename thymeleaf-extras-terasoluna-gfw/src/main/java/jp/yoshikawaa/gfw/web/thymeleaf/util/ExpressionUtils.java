@@ -17,7 +17,6 @@ public class ExpressionUtils {
         return expression.execute(configuration, arguments);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends Object> T execute(Arguments arguments, String expressionString, Class<T> clazz) {
 
         Object result = execute(arguments, expressionString);
@@ -25,6 +24,6 @@ public class ExpressionUtils {
             throw new TemplateInputException("expression result is not expected. expected:" + clazz.getName()
                     + " actual:" + result.getClass().getName());
         }
-        return (T) result;
+        return clazz.cast(result);
     }
 }

@@ -10,9 +10,8 @@ import org.junit.Test;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.dom.element.TestElementWrapper;
-import org.thymeleaf.exceptions.TemplateInputException;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.TerasolunaGfwAttrProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttrProcessorTestSupport;
 
 public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTestSupport {
 
@@ -120,13 +119,13 @@ public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTe
         // execute and assert.
         assertThatThrownBy(() -> {
             new MessagesPanelAttrProcessor("t", null);
-        }).isInstanceOf(TemplateInputException.class).hasMessage("messageSource must not be null.");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage("messageSource must not be null.");
     }
     
     @Test
     public void testPrecedence() {
         MessagesPanelAttrProcessor processor = getProcessor(MessagesPanelAttrProcessor.class);
-        assertThat(processor.getPrecedence()).isEqualTo(1300);
+        assertThat(processor.getPrecedence()).isEqualTo(1200);
     }
 
 }

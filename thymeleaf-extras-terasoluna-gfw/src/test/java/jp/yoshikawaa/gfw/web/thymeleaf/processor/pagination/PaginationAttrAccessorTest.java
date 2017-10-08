@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.element.TestStandaloneElementBuilder;
+import org.thymeleaf.dom.element.TestElementBuilder;
 
 public class PaginationAttrAccessorTest {
 
@@ -27,7 +27,7 @@ public class PaginationAttrAccessorTest {
         template.append("t:enable-link-of-current-page='true' ");
         template.append("/>");
 
-        final Element element = TestStandaloneElementBuilder.from(template.toString());
+        final Element element = TestElementBuilder.standalone(template.toString());
 
         // execute.
         PaginationAttrAccessor accessor = new PaginationAttrAccessor(element, "t");

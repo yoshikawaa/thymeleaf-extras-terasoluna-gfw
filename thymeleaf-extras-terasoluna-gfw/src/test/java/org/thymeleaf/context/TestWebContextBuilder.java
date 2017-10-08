@@ -1,46 +1,61 @@
 package org.thymeleaf.context;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletContext;
-import org.springframework.util.CollectionUtils;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.dialect.IDialect;
-import org.thymeleaf.standard.StandardDialect;
+import org.thymeleaf.util.MapUtils;
 
 public class TestWebContextBuilder {
 
-    private static final Set<IDialect> dialects = new HashSet<>(Arrays.asList(new StandardDialect()));
-
-    private final Map<String, Object> attributes = new HashMap<>();
+    private final Map<String, Object> requestAttributes = new HashMap<>();
+    private final Map<String, Object> sessionAttributes = new HashMap<>();
+    private final Map<String, Object> servletContextAttributes = new HashMap<>();
     private final Map<String, Object> variables = new HashMap<>();
 
     private TestWebContextBuilder() {
     }
 
-    public static void addDialect(IDialect dialect) {
-        dialects.add(dialect);
-    }
-
-    public static TestWebContextBuilder from() {
+    public static TestWebContextBuilder init() {
         return new TestWebContextBuilder();
     }
 
-    public TestWebContextBuilder attribute(String name, Object value) {
-        attributes.put(name, value);
+    public TestWebContextBuilder requestAttribute(String name, Object value) {
+        requestAttributes.put(name, value);
         return this;
     }
 
-    public TestWebContextBuilder attributes(Map<String, Object> map) {
-        if (!CollectionUtils.isEmpty(map)) {
-            attributes.putAll(map);
+    public TestWebContextBuilder requestAttributes(Map<String, Object> map) {
+        if (!MapUtils.isEmpty(map)) {
+            requestAttributes.putAll(map);
+        }
+        return this;
+    }
+
+    public TestWebContextBuilder sessionAttribute(String name, Object value) {
+        sessionAttributes.put(name, value);
+        return this;
+    }
+
+    public TestWebContextBuilder sessionAttributes(Map<String, Object> map) {
+        if (!MapUtils.isEmpty(map)) {
+            sessionAttributes.putAll(map);
+        }
+        return this;
+    }
+
+    public TestWebContextBuilder servletContextAttribute(String name, Object value) {
+        servletContextAttributes.put(name, value);
+        return this;
+    }
+
+    public TestWebContextBuilder servletContextAttributes(Map<String, Object> map) {
+        if (!MapUtils.isEmpty(map)) {
+            servletContextAttributes.putAll(map);
         }
         return this;
     }
@@ -51,7 +66,7 @@ public class TestWebContextBuilder {
     }
 
     public TestWebContextBuilder variables(Map<String, Object> map) {
-        if (!CollectionUtils.isEmpty(map)) {
+        if (!MapUtils.isEmpty(map)) {
             variables.putAll(map);
         }
         return this;
@@ -63,7 +78,13 @@ public class TestWebContextBuilder {
         final MockServletContext servletContext = new MockServletContext();
         final Locale locale = request.getLocale();
 
-        attributes.entrySet().forEach(a -> request.setAttribute(a.getKey(), a.getValue()));
+        requestAttributes.entrySet().forEach(a -> request.setAttribute(a.getKey(), a.getValue()));
+        if (!MapUtils.isEmpty(sessionAttributes)) {
+            final MockHttpSession session = new MockHttpSession(servletContext);
+            sessionAttributes.entrySet().forEach(a -> session.setAttribute(a.getKey(), a.getValue()));
+            request.setSession(session);
+        }
+        servletContextAttributes.entrySet().forEach(a -> servletContext.setAttribute(a.getKey(), a.getValue()));
 
         return new WebContext(request, response, servletContext, locale, variables);
     }

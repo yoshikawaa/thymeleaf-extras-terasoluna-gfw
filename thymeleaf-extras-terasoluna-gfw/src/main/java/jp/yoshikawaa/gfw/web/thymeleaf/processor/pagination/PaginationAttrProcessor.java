@@ -7,13 +7,13 @@ import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.util.StringUtils;
 import org.terasoluna.gfw.web.pagination.PaginationInfo;
 import org.terasoluna.gfw.web.pagination.PaginationInfo.BeginAndEnd;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Text;
 import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
+import org.thymeleaf.util.StringUtils;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
@@ -22,6 +22,7 @@ public class PaginationAttrProcessor extends AbstractMarkupRemovalAttrProcessor 
     private static final Logger logger = LoggerFactory.getLogger(PaginationAttrProcessor.class);
 
     private static final String ATTRIBUTE_NAME = "pagination";
+    private static final int PRECEDENCE = 1200;
 
     private static final String DEFAULT_PAGE_EXPRESSION = "${page}";
 
@@ -34,20 +35,19 @@ public class PaginationAttrProcessor extends AbstractMarkupRemovalAttrProcessor 
 
     @Override
     public int getPrecedence() {
-        return 1300;
+        return PRECEDENCE;
     }
 
     @Override
     protected RemovalType getRemovalType(final Arguments arguments, final Element element, final String attributeName) {
 
-        // find page.
-        Page<?> page = getPage(arguments, element, attributeName);
-
         // find relative attributes.
         PaginationAttrAccessor attrs = new PaginationAttrAccessor(element, dialectPrefix);
         attrs.removeAttributes(element);
 
-        // exist page?
+        // find page.
+        final String attributeValue = element.getAttributeValue(attributeName);
+        Page<?> page = getPage(arguments, attributeValue);
         if (page == null) {
             logger.debug("cannot found page.");
             return RemovalType.ELEMENT;
@@ -59,11 +59,10 @@ public class PaginationAttrProcessor extends AbstractMarkupRemovalAttrProcessor 
         return RemovalType.NONE;
     }
 
-    private Page<?> getPage(Arguments arguments, Element element, String attributeName) {
-
-        final String attributeValue = element.getAttributeValue(attributeName);
+    private Page<?> getPage(Arguments arguments, String attributeValue) {
         return ExpressionUtils.execute(arguments,
-                (StringUtils.hasText(attributeValue)) ? attributeValue : DEFAULT_PAGE_EXPRESSION, Page.class);
+                (StringUtils.isEmptyOrWhitespace(attributeValue)) ? DEFAULT_PAGE_EXPRESSION : attributeValue,
+                Page.class);
     }
 
     private void buildBody(Arguments arguments, Element element, Page<?> page, PaginationAttrAccessor attrs) {
@@ -131,13 +130,13 @@ public class PaginationAttrProcessor extends AbstractMarkupRemovalAttrProcessor 
         Element inner = new Element(innerElement);
         inner.setAttribute(PaginationInfo.CLASS_ATTR, activeOrDisabled);
 
-        if (StringUtils.hasText(href) && StringUtils.hasText(text)) {
+        if (StringUtils.isEmptyOrWhitespace(href) || StringUtils.isEmptyOrWhitespace(text)) {
+            inner.addChild(new Text(text));
+        } else {
             Element anchor = new Element(PaginationInfo.A_ELM);
             anchor.setAttribute(PaginationInfo.HREF_ATTR, href);
             anchor.addChild(new Text(text));
             inner.addChild(anchor);
-        } else {
-            inner.addChild(new Text(text));
         }
 
         return inner;
