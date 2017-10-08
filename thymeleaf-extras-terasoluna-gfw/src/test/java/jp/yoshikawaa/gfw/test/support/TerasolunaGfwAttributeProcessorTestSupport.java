@@ -7,26 +7,26 @@ import java.util.Map;
 
 import org.springframework.context.support.StaticMessageSource;
 import org.thymeleaf.context.WebEngineContext;
-import org.thymeleaf.engine.TestStandaloneElementTagBuilder;
+import org.thymeleaf.engine.TestElementTagBuilder;
 import org.thymeleaf.engine.TestWebEngineContextBuilder;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect;
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractHtmlAttributeProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractRemovalAttributeTagProcessor;
 
 public abstract class TerasolunaGfwAttributeProcessorTestSupport extends LogbackMockSupport {
 
-    private static final StaticMessageSource messageSource = new StaticMessageSource();
-    private static final TerasolunaGfwDialect dialect = new TerasolunaGfwDialect(messageSource);
+    private static final StaticMessageSource MESSAGE_SOURCE = new StaticMessageSource();
+    private static final TerasolunaGfwDialect DIALECT = new TerasolunaGfwDialect(MESSAGE_SOURCE);
 
-    private final AbstractHtmlAttributeProcessor processor;
+    private final AbstractRemovalAttributeTagProcessor processor;
 
     static {
-        messageSource.addMessage("test1", Locale.ENGLISH, "test message 1.");
-        messageSource.addMessage("test2", Locale.ENGLISH, "test message 2.");
-        messageSource.addMessage("test3", Locale.ENGLISH, "test message 3.");
-        TestWebEngineContextBuilder.addDialect(dialect);
+        MESSAGE_SOURCE.addMessage("test1", Locale.ENGLISH, "test message 1.");
+        MESSAGE_SOURCE.addMessage("test2", Locale.ENGLISH, "test message 2.");
+        MESSAGE_SOURCE.addMessage("test3", Locale.ENGLISH, "test message 3.");
+        TestWebEngineContextBuilder.addDialect(DIALECT);
     }
 
     public TerasolunaGfwAttributeProcessorTestSupport() {
@@ -34,7 +34,8 @@ public abstract class TerasolunaGfwAttributeProcessorTestSupport extends Logback
         this.processor = null;
     }
 
-    public TerasolunaGfwAttributeProcessorTestSupport(Class<? extends AbstractHtmlAttributeProcessor> processorClass) {
+    public TerasolunaGfwAttributeProcessorTestSupport(
+            Class<? extends AbstractRemovalAttributeTagProcessor> processorClass) {
         super(processorClass);
         this.processor = getProcessor(processorClass);
     }
@@ -48,26 +49,25 @@ public abstract class TerasolunaGfwAttributeProcessorTestSupport extends Logback
         return process(this.processor, template, attributes, variables);
     }
 
-    protected TestElementTagStructureHandler process(AbstractHtmlAttributeProcessor processor, String template,
+    protected TestElementTagStructureHandler process(AbstractRemovalAttributeTagProcessor processor, String template,
             Map<String, Object> attributes, Map<String, Object> variables) {
 
         if (processor == null) {
             fail("processor must not be null.");
         }
 
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).attributes(attributes)
+        final WebEngineContext context = TestWebEngineContextBuilder.from(template).requestAttributes(attributes)
                 .variables(variables).build();
-        final IProcessableElementTag tag = TestStandaloneElementTagBuilder.from(template);
+        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template);
         final TestElementTagStructureHandler structureHandler = new TestElementTagStructureHandler(tag, processor);
 
         processor.process(context, tag, structureHandler);
         return structureHandler;
     }
 
-    @SuppressWarnings("unchecked")
     private <T> T getProcessor(Class<T> clazz) {
-        return (T) dialect.getProcessors(dialect.getPrefix()).stream().filter(p -> clazz.isAssignableFrom(p.getClass()))
-                .findFirst().get();
+        return clazz.cast(DIALECT.getProcessors(DIALECT.getPrefix()).stream()
+                .filter(p -> clazz.isAssignableFrom(p.getClass())).findFirst().get());
 
     }
 

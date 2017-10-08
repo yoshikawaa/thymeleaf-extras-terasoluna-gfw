@@ -12,10 +12,10 @@ import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
 import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttributeProcessorTestSupport;
 
-public class TransactionTokenAttributeProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
+public class TransactionTokenProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
 
-    public TransactionTokenAttributeProcessorTest() {
-        super(TransactionTokenAttributeProcessor.class);
+    public TransactionTokenProcessorTest() {
+        super(TransactionTokenProcessor.class);
     }
 
     @Test

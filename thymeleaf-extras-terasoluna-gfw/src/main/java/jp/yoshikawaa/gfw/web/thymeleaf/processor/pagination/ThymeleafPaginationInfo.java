@@ -4,9 +4,9 @@ import java.util.Map.Entry;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.util.StringUtils;
 import org.terasoluna.gfw.web.pagination.PaginationInfo;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.util.StringUtils;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
@@ -34,11 +34,10 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
     }
 
     public String getPageUrl(int pageIndex) {
-        if (StringUtils.hasText(expression)) {
-            return getPageUrlUsingExpression(pageIndex);
+        if (StringUtils.isEmptyOrWhitespace(expression)) {
+            return super.getPageUrl(pageIndex);
         }
-
-        return super.getPageUrl(pageIndex);
+        return getPageUrlUsingExpression(pageIndex);
     }
 
     private String getPageUrlUsingExpression(int pageIndex) {
@@ -59,7 +58,7 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
 
         // append criteria query
         String criteriaQuery = getCriteriaQuery();
-        if (StringUtils.hasLength(criteriaQuery)) {
+        if (!StringUtils.isEmptyOrWhitespace(criteriaQuery)) {
             return (pageUrl.contains("?")) ? pageUrl + "&" + criteriaQuery : pageUrl + "?" + criteriaQuery;
         }
         return pageUrl;

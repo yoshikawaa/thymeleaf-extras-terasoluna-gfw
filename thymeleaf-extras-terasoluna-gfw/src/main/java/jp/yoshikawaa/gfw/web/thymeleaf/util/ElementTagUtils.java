@@ -2,7 +2,7 @@ package jp.yoshikawaa.gfw.web.thymeleaf.util;
 
 import org.thymeleaf.model.IProcessableElementTag;
 
-public class ProcessorUtils {
+public class ElementTagUtils {
 
     public static String getAttributeValue(IProcessableElementTag tag, String dialectPrefix, String attributeName,
             String defaultValue) {

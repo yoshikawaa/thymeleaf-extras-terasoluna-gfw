@@ -18,9 +18,9 @@ import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelAttributeProcessor;
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationAttributeProcessor;
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenAttributeProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelTagProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationTagProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenProcessor;
 
 public class TerasolunaGfwDialect extends AbstractProcessorDialect implements IExpressionObjectDialect {
 
@@ -44,9 +44,9 @@ public class TerasolunaGfwDialect extends AbstractProcessorDialect implements IE
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
         final Set<IProcessor> processors = new HashSet<IProcessor>();
-        processors.add(new MessagesPanelAttributeProcessor(dialectPrefix, messageSource));
-        processors.add(new TransactionTokenAttributeProcessor(dialectPrefix));
-        processors.add(new PaginationAttributeProcessor(dialectPrefix));
+        processors.add(new MessagesPanelTagProcessor(dialectPrefix, messageSource));
+        processors.add(new TransactionTokenProcessor(dialectPrefix));
+        processors.add(new PaginationTagProcessor(dialectPrefix));
         processors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix));
         return processors;
     }

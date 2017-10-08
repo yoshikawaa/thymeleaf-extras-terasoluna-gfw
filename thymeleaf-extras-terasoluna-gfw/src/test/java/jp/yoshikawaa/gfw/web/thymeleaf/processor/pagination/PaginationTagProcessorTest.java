@@ -17,10 +17,10 @@ import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
 import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttributeProcessorTestSupport;
 
-public class PaginationAttributeProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
+public class PaginationTagProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
 
-    public PaginationAttributeProcessorTest() {
-        super(PaginationAttributeProcessor.class);
+    public PaginationTagProcessorTest() {
+        super(PaginationTagProcessor.class);
     }
 
     @Test

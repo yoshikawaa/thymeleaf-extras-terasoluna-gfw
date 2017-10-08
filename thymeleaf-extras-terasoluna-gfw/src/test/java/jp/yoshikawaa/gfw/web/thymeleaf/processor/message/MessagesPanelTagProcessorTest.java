@@ -9,15 +9,14 @@ import java.util.Map;
 import org.junit.Test;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessages;
-import org.thymeleaf.exceptions.TemplateInputException;
 import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
 import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttributeProcessorTestSupport;
 
-public class MessagesPanelAttributeProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
+public class MessagesPanelTagProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
 
-    public MessagesPanelAttributeProcessorTest() {
-        super(MessagesPanelAttributeProcessor.class);
+    public MessagesPanelTagProcessorTest() {
+        super(MessagesPanelTagProcessor.class);
     }
 
     @Test
@@ -119,8 +118,8 @@ public class MessagesPanelAttributeProcessorTest extends TerasolunaGfwAttributeP
     public void testMessageWithoutMessageSource() {
         // execute and assert.
         assertThatThrownBy(() -> {
-            new MessagesPanelAttributeProcessor("t", null);
-        }).isInstanceOf(TemplateInputException.class).hasMessage("messageSource must not be null.");
+            new MessagesPanelTagProcessor("t", null);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage("messageSource must not be null.");
     }
 
 }

@@ -17,14 +17,13 @@ public class ExpressionUtils {
         return expression.execute(context);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T execute(final ITemplateContext context, String expressionString, Class<T> clazz) {
 
         Object result = execute(context, expressionString);
         if (result != null && !clazz.isAssignableFrom(result.getClass())) {
-            throw new TemplateInputException("expression result is not expected. expected:" + clazz.getName()
+            throw new TemplateInputException("expression result type is not expected. expected:" + clazz.getName()
                     + " actual:" + result.getClass().getName());
         }
-        return (T) result;
+        return clazz.cast(result);
     }
 }
