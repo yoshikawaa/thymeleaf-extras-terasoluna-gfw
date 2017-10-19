@@ -107,7 +107,7 @@
 
     <properties>
         <java-version>1.8</java-version>
-        <thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
+        <thymeleaf.version>3.0.8.RELEASE</thymeleaf.version>
         <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
     </properties>
