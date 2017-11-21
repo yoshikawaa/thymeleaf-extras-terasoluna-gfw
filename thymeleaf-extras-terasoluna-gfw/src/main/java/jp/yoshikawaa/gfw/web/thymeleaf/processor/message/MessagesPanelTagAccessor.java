@@ -2,7 +2,6 @@ package jp.yoshikawaa.gfw.web.thymeleaf.processor.message;
 
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.util.StringUtils;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.IAttributeTagAccessor;
@@ -17,14 +16,15 @@ public class MessagesPanelTagAccessor implements IAttributeTagAccessor {
     private static final String ATTRIBUTE_INNER_ELEMENT = "inner-element";
     private static final String ATTRIBUTE_DISABLE_HTML_ESCAPE = "disable-html-escape";
 
+    private static final String[] ATTRIBUTE_NAMES = { ATTRIBUTE_PANEL_CLASS_NAME, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX,
+            ATTRIBUTE_MESSAGES_TYPE, ATTRIBUTE_OUTER_ELEMENT, ATTRIBUTE_INNER_ELEMENT, ATTRIBUTE_DISABLE_HTML_ESCAPE };
+
     private static final String DEFAULT_PANEL_CLASS_NAME = "alert";
     private static final String DEFAULT_PANEL_TYPE_CLASS_PREFIX = "alert-";
     private static final String DEFAULT_MESSAGES_TYPE = null;
     private static final String DEFAULT_OUTER_ELEMENT = "ul";
     private static final String DEFAULT_INNER_ELEMENT = "li";
     private static final boolean DEFAULT_DISABLE_HTML_ESCAPE = false;
-
-    private final String dialectPrefix;
 
     private final String messagesType;
     private final String panelClassName;
@@ -34,8 +34,6 @@ public class MessagesPanelTagAccessor implements IAttributeTagAccessor {
     private final boolean disableHtmlEscape;
 
     public MessagesPanelTagAccessor(IProcessableElementTag tag, String dialectPrefix) {
-
-        this.dialectPrefix = dialectPrefix;
 
         this.messagesType = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE,
                 DEFAULT_MESSAGES_TYPE);
@@ -51,14 +49,9 @@ public class MessagesPanelTagAccessor implements IAttributeTagAccessor {
                 DEFAULT_DISABLE_HTML_ESCAPE);
     }
 
-    public void removeAttributes(IElementTagStructureHandler structureHandler) {
-
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_MESSAGES_TYPE);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_OUTER_ELEMENT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE);
+    @Override
+    public String[] getAttributeNames() {
+        return ATTRIBUTE_NAMES;
     }
 
     public String getPanelTypeClass(Object messages) {
@@ -90,4 +83,5 @@ public class MessagesPanelTagAccessor implements IAttributeTagAccessor {
     public boolean isDisableHtmlEscape() {
         return disableHtmlEscape;
     }
+
 }

@@ -4,21 +4,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
-import org.thymeleaf.context.WebEngineContext;
-import org.thymeleaf.engine.TestWebEngineContextBuilder;
+import org.thymeleaf.context.IEngineContext;
 import org.thymeleaf.exceptions.TemplateInputException;
+
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 
 public class ExpressionUtilsTest {
 
     public ExpressionUtilsTest() {
-        new ExpressionUtils();
+        ReflectionUtils.newInstance(ExpressionUtils.class, true);
     }
-    
+
     @Test
     public void testExpression() {
         // setup.
         final String template = "<input />";
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).variable("test", "success").build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().variable("test", "success").context(template);
 
         // execute.
         Object result = ExpressionUtils.execute(context, "${test}");
@@ -31,7 +32,7 @@ public class ExpressionUtilsTest {
     public void testExpressionTyped() {
         // setup.
         final String template = "<input />";
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).variable("test", "success").build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().variable("test", "success").context(template);
 
         // execute.
         String result = ExpressionUtils.execute(context, "${test}", String.class);
@@ -44,11 +45,11 @@ public class ExpressionUtilsTest {
     public void testExpressionTypedNotFound() {
         // setup.
         final String template = "<input />";
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().context(template);
 
         // execute.
         String result = ExpressionUtils.execute(context, "${test}", String.class);
-        
+
         // assert.
         assertThat(result).isNull();
     }
@@ -57,13 +58,13 @@ public class ExpressionUtilsTest {
     public void testExpressionTypedUnmatch() {
         // setup.
         final String template = "<input />";
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).variable("test", "success").build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().variable("test", "success").context(template);
 
         // execute and assert.
         assertThatThrownBy(() -> {
             ExpressionUtils.execute(context, "${test}", Integer.class);
-        }).isInstanceOf(TemplateInputException.class)
-                .hasMessage("expression result type is not expected. expected:java.lang.Integer actual:java.lang.String");
+        }).isInstanceOf(TemplateInputException.class).hasMessage(
+                "expression result type is not expected. expected:java.lang.Integer actual:java.lang.String");
     }
 
 }

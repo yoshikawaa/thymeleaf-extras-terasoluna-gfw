@@ -25,6 +25,8 @@ public class MockMvcConfig {
         return MockMvcBuilders.webAppContextSetup(context)
                 .addFilters(new MDCClearFilter(), new DelegatingFilterProxy("exceptionLoggingFilter", context),
                         new XTrackMDCPutFilter(), new CharacterEncodingFilter("UTF-8", true))
-                .apply(springSecurity()).alwaysDo(log()).build();
+                .apply(springSecurity())
+                .alwaysDo(log())
+                .build();
     }
 }

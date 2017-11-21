@@ -6,14 +6,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.Collections;
 import java.util.Map;
 
+import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessages;
-import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
-import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttributeProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
+import jp.yoshikawaa.gfw.test.support.LogbackMockSupport;
 
-public class MessagesPanelTagProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
+public class MessagesPanelTagProcessorTest extends LogbackMockSupport {
 
     public MessagesPanelTagProcessorTest() {
         super(MessagesPanelTagProcessor.class);
@@ -23,17 +24,19 @@ public class MessagesPanelTagProcessorTest extends TerasolunaGfwAttributeProcess
     public void testMessage() {
         // setup.
         final String template = "<div t:messages-panel />";
-        final ResultMessages resultMessages = ResultMessages.success().add(ResultMessage.fromCode("test1"))
-                .add(ResultMessage.fromCode("test2")).add(ResultMessage.fromCode("test3"));
+        final ResultMessages resultMessages = ResultMessages.success()
+                .add(ResultMessage.fromCode("test1"))
+                .add(ResultMessage.fromCode("test2"))
+                .add(ResultMessage.fromCode("test3"));
         final Map<String, Object> attributes = Collections.singletonMap(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME,
                 resultMessages);
 
         // execute.
-        TestElementTagStructureHandler structureHandler = process(template, attributes, null);
+        Element element = new TerasolunaGfwTestEngine().requestAttributes(attributes).parse(template);
 
         // assert.
-        assertThat(structureHandler.getAttributes()).containsEntry("class", "alert alert-success");
-        assertThat(structureHandler.getBody()).containsSequence("<ul>", "<li>test message 1.</li>",
+        assertThat(element.attr("class")).isEqualTo("alert alert-success");
+        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message 1.</li>",
                 "<li>test message 2.</li>", "<li>test message 3.</li>", "</ul>");
     }
 
@@ -41,17 +44,19 @@ public class MessagesPanelTagProcessorTest extends TerasolunaGfwAttributeProcess
     public void testMessage2() {
         // setup.
         final String template = "<div t:messages-panel t:panel-class-name='' t:outer-element='' t:disable-html-escape='true' />";
-        final ResultMessages resultMessages = ResultMessages.success().add(ResultMessage.fromText("<span>test1</span>"))
-                .add(ResultMessage.fromText("<span>test2</span>")).add(ResultMessage.fromText("<span>test3</span>"));
+        final ResultMessages resultMessages = ResultMessages.success()
+                .add(ResultMessage.fromText("<span>test1</span>"))
+                .add(ResultMessage.fromText("<span>test2</span>"))
+                .add(ResultMessage.fromText("<span>test3</span>"));
         final Map<String, Object> attributes = Collections.singletonMap(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME,
                 resultMessages);
 
         // execute.
-        TestElementTagStructureHandler structureHandler = process(template, attributes, null);
+        Element element = new TerasolunaGfwTestEngine().requestAttributes(attributes).parse(template);
 
         // assert.
-        assertThat(structureHandler.getAttributes()).containsEntry("class", "alert-success");
-        assertThat(structureHandler.getBody()).containsSequence("<li><span>test1</span></li>",
+        assertThat(element.attr("class")).isEqualTo("alert-success");
+        assertThat(element.children().outerHtml()).containsSequence("<li><span>test1</span></li>",
                 "<li><span>test2</span></li>", "<li><span>test3</span></li>");
     }
 
@@ -61,11 +66,11 @@ public class MessagesPanelTagProcessorTest extends TerasolunaGfwAttributeProcess
         final String template = "<div t:messages-panel />";
 
         // execute.
-        TestElementTagStructureHandler structureHandler = process(template);
+        Element element = new TerasolunaGfwTestEngine().parse(template);
 
         // assert.
-        assertThat(structureHandler.getAttributes()).doesNotContainKey("class");
-        assertThat(structureHandler.getBody()).isEmpty();
+        assertThat(element.attr("class")).isNullOrEmpty();
+        assertThat(element.children()).isNullOrEmpty();
         assertLogMessage("cannot found ResultMessages.");
     }
 
@@ -77,11 +82,11 @@ public class MessagesPanelTagProcessorTest extends TerasolunaGfwAttributeProcess
         final Map<String, Object> variables = Collections.singletonMap("messages", resultMessages);
 
         // execute.
-        TestElementTagStructureHandler structureHandler = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(structureHandler.getAttributes()).containsEntry("class", "alert alert-warn");
-        assertThat(structureHandler.getBody()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
+        assertThat(element.attr("class")).isEqualTo("alert alert-warn");
+        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
     }
 
     @Test
@@ -92,11 +97,11 @@ public class MessagesPanelTagProcessorTest extends TerasolunaGfwAttributeProcess
         final Map<String, Object> variables = Collections.singletonMap("messages", resultMessages);
 
         // execute.
-        TestElementTagStructureHandler structureHandler = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(structureHandler.getAttributes()).containsEntry("class", "alert alert-warn");
-        assertThat(structureHandler.getBody()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
+        assertThat(element.attr("class")).isEqualTo("alert alert-warn");
+        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
     }
 
     @Test
@@ -107,11 +112,11 @@ public class MessagesPanelTagProcessorTest extends TerasolunaGfwAttributeProcess
         final Map<String, Object> variables = Collections.singletonMap("messages", resultMessages);
 
         // execute.
-        TestElementTagStructureHandler structureHandler = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(structureHandler.getAttributes()).containsEntry("class", "alert alert-warn");
-        assertThat(structureHandler.getBody()).containsSequence("<ul>", "<li>100</li>", "</ul>");
+        assertThat(element.attr("class")).isEqualTo("alert alert-warn");
+        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>100</li>", "</ul>");
     }
 
     @Test

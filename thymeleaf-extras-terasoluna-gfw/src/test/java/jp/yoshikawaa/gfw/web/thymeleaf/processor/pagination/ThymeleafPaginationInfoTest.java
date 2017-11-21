@@ -9,27 +9,21 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.junit.Test;
-import org.springframework.context.support.StaticMessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.thymeleaf.context.WebEngineContext;
-import org.thymeleaf.engine.TestWebEngineContextBuilder;
+import org.thymeleaf.context.IEngineContext;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect;
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 
 public class ThymeleafPaginationInfoTest {
-
-    static {
-        TestWebEngineContextBuilder.addDialect(new TerasolunaGfwDialect(new StaticMessageSource()));
-    }
 
     @Test
     public void testPaginationInfo() {
         // setup.
         final String template = "<input />";
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().context(template);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
                 "@{/sample/pagination/{page}(page=${page},size=${size})}", 5);
@@ -42,7 +36,7 @@ public class ThymeleafPaginationInfoTest {
     public void testCriteriaQuery() {
         // setup.
         final String template = "<input />";
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().context(template);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
                 "@{/sample/pagination/{page}(page=${page},size=${size})}", "item=sample", true, 5);
@@ -55,7 +49,7 @@ public class ThymeleafPaginationInfoTest {
     public void testCriteriaQuery2() {
         // setup.
         final String template = "<input />";
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().context(template);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
                 "@{/sample/pagination/{page}/{size}(page=${page},size=${size})}", "item=sample", true, 5);
@@ -68,7 +62,7 @@ public class ThymeleafPaginationInfoTest {
     public void testCriteriaQuery3() {
         // setup.
         final String template = "<input />";
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().context(template);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
                 "@{/sample/pagination/{page}(page=${page})}", "item=sample", true, 5);
@@ -82,8 +76,7 @@ public class ThymeleafPaginationInfoTest {
         // setup.
         final String template = "<input />";
         final Map<String, String> query = Collections.singletonMap("item", "sample");
-
-        final WebEngineContext context = TestWebEngineContextBuilder.from(template).variable("query", query).build();
+        final IEngineContext context = new TerasolunaGfwTestEngine().variable("query", query).context(template);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
                 "@{/sample/pagination/{page}(page=${page},size=${size})}", "${#f.query(query)}", true, 5);
@@ -96,7 +89,8 @@ public class ThymeleafPaginationInfoTest {
 
         final Pageable pageable = new PageRequest(page, size);
         List<Integer> content = IntStream
-                .rangeClosed(pageable.getOffset(), pageable.getOffset() + pageable.getPageSize() + 1).boxed()
+                .rangeClosed(pageable.getOffset(), pageable.getOffset() + pageable.getPageSize() + 1)
+                .boxed()
                 .collect(Collectors.toList());
         return new PageImpl<Integer>(content, pageable, 1000);
     }

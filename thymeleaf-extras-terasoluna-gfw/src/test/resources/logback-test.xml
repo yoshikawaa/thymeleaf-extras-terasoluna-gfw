@@ -12,6 +12,10 @@
         <level value="debug" />
     </logger>
 
+    <logger name="jp.yoshikawaa.gfw.test.engine">
+        <level value="${logback.level.test.result:-debug}" />
+    </logger>
+
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>

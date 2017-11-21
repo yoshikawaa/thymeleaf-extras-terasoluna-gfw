@@ -2,7 +2,6 @@ package jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination;
 
 import org.terasoluna.gfw.web.pagination.PaginationInfo;
 import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.processor.element.IElementTagStructureHandler;
 
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.IAttributeTagAccessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ElementTagUtils;
@@ -23,6 +22,12 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
     private static final String ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY = "disable-html-escape-of-criteria-query";
     private static final String ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE = "enable-link-of-current-page";
 
+    private static final String[] ATTRIBUTE_NAMES = { ATTRIBUTE_INNER_ELEMENT, ATTRIBUTE_DISABLED_CLASS,
+            ATTRIBUTE_ACTIVE_CLASS, ATTRIBUTE_FIRST_LINK_TEXT, ATTRIBUTE_PREVIOUS_LINK_TEXT, ATTRIBUTE_NEXT_LINK_TEXT,
+            ATTRIBUTE_LAST_LINK_TEXT, ATTRIBUTE_MAX_DISPLAY_COUNT, ATTRIBUTE_DISABLED_HREF, ATTRIBUTE_HREF_TMPL,
+            ATTRIBUTE_CRITERIA_QUERY, ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY,
+            ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE };
+
     private static final String DEFAULT_FIRST_LINK_TEXT = "<<";
     private static final String DEFAULT_PREVIOUS_LINK_TEXT = "<";
     private static final String DEFAULT_NEXT_LINK_TEXT = ">";
@@ -31,8 +36,6 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
     private static final String DEFAULT_CRITERIA_QUERY = null;
     private static final boolean DEFAULT_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY = false;
     private static final boolean DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE = false;
-
-    private final String dialectPrefix;
 
     private final String innerElement;
     private final String disabledClass;
@@ -49,8 +52,6 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
     private final boolean enableLinkOfCurrentPage;
 
     public PaginationTagAccessor(IProcessableElementTag tag, String dialectPrefix) {
-
-        this.dialectPrefix = dialectPrefix;
 
         this.innerElement = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
                 PaginationInfo.DEFAULT_INNER_ELM);
@@ -79,21 +80,9 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
                 ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE, DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE);
     }
 
-    public void removeAttributes(IElementTagStructureHandler structureHandler) {
-
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_DISABLED_CLASS);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_ACTIVE_CLASS);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_FIRST_LINK_TEXT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_PREVIOUS_LINK_TEXT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_NEXT_LINK_TEXT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_LAST_LINK_TEXT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_MAX_DISPLAY_COUNT);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_DISABLED_HREF);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_HREF_TMPL);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_CRITERIA_QUERY);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY);
-        structureHandler.removeAttribute(dialectPrefix, ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE);
+    @Override
+    public String[] getAttributeNames() {
+        return ATTRIBUTE_NAMES;
     }
 
     public String getInnerElement() {
@@ -147,4 +136,5 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
     public boolean isEnableLinkOfCurrentPage() {
         return enableLinkOfCurrentPage;
     }
+
 }

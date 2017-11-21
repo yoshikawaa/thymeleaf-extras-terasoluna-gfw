@@ -5,14 +5,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Collections;
 import java.util.Map;
 
+import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.terasoluna.gfw.web.token.transaction.TransactionToken;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
-import org.thymeleaf.processor.element.TestElementTagStructureHandler;
 
-import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttributeProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
+import jp.yoshikawaa.gfw.test.support.LogbackMockSupport;
 
-public class TransactionTokenProcessorTest extends TerasolunaGfwAttributeProcessorTestSupport {
+public class TransactionTokenProcessorTest extends LogbackMockSupport {
 
     public TransactionTokenProcessorTest() {
         super(TransactionTokenProcessor.class);
@@ -21,30 +22,32 @@ public class TransactionTokenProcessorTest extends TerasolunaGfwAttributeProcess
     @Test
     public void testToken() {
         // setup.
-        final String template = "<input t:transaction-token />";
+        final String template = "<input t:transaction />";
         final TransactionToken token = new TransactionToken("test");
         final Map<String, Object> attributes = Collections
                 .singletonMap(TransactionTokenInterceptor.NEXT_TOKEN_REQUEST_ATTRIBUTE_NAME, token);
 
         // execute.
-        TestElementTagStructureHandler structureHandler = process(template, attributes, null);
+        Element element = new TerasolunaGfwTestEngine().requestAttributes(attributes).parse(template);
 
         // assert.
-        assertThat(structureHandler.getAttributes()).containsEntry("type", "hidden")
-                .containsEntry("name", TransactionTokenInterceptor.TOKEN_REQUEST_PARAMETER)
-                .containsEntry("value", token.getTokenString());
+        assertThat(element.attr("type")).isEqualTo("hidden");
+        assertThat(element.attr("name")).isEqualTo(TransactionTokenInterceptor.TOKEN_REQUEST_PARAMETER);
+        assertThat(element.attr("value")).isEqualTo(token.getTokenString());
     }
 
     @Test
     public void testNonToken() {
         // setup.
-        final String template = "<input t:transaction-token />";
+        final String template = "<input t:transaction />";
 
         // execute.
-        TestElementTagStructureHandler structureHandler = process(template);
+        Element element = new TerasolunaGfwTestEngine().parse(template);
 
         // assert.
-        assertThat(structureHandler.getAttributes()).doesNotContainKeys("type", "name", "value");
+        assertThat(element.attr("type")).isNullOrEmpty();
+        assertThat(element.attr("name")).isNullOrEmpty();
+        assertThat(element.attr("value")).isNullOrEmpty();
         assertLogMessage("cannot found TransactionToken.");
     }
 

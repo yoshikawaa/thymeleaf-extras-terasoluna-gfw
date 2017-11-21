@@ -71,7 +71,7 @@
     </logger>
     
     <logger name="org.springframework.test.web.servlet.result">
-        <level value="${logback.level.spring-test:-debug}" />
+        <level value="${logback.level.test.result:-debug}" />
     </logger>
 
     <root level="warn">

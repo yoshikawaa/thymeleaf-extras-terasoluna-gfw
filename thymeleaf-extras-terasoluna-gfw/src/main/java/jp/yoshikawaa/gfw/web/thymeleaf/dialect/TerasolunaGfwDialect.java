@@ -1,12 +1,9 @@
 package jp.yoshikawaa.gfw.web.thymeleaf.dialect;
 
-import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.terasoluna.gfw.web.el.Functions;
 import org.thymeleaf.context.IExpressionContext;
@@ -21,10 +18,9 @@ import org.thymeleaf.templatemode.TemplateMode;
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelTagProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationTagProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ReflectionUtils;
 
 public class TerasolunaGfwDialect extends AbstractProcessorDialect implements IExpressionObjectDialect {
-
-    private static final Logger logger = LoggerFactory.getLogger(TerasolunaGfwDialect.class);
 
     private static final String DIALECT_NAME = "TERASOLUNA GFW Dialect";
     private static final String DIALECT_PREFIX = "t";
@@ -61,15 +57,7 @@ public class TerasolunaGfwDialect extends AbstractProcessorDialect implements IE
 
             @Override
             public Object buildObject(IExpressionContext context, String expressionObjectName) {
-                Object expressionObject = null;
-                try {
-                    Constructor<Functions> constructor = Functions.class.getDeclaredConstructor();
-                    constructor.setAccessible(true);
-                    expressionObject = constructor.newInstance();
-                } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
-                }
-                return expressionObject;
+                return ReflectionUtils.newInstance(Functions.class, true);
             }
 
             @Override

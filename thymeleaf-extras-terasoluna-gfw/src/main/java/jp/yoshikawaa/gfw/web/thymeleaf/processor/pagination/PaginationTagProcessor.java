@@ -1,5 +1,6 @@
 package jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
@@ -17,10 +18,10 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.util.StringUtils;
 import org.unbescape.html.HtmlEscape;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractRemovalAttributeTagProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttributeTagProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
-public class PaginationTagProcessor extends AbstractRemovalAttributeTagProcessor {
+public class PaginationTagProcessor extends AbstractAttributeRemovalAttributeTagProcessor {
     private static final Logger logger = LoggerFactory.getLogger(PaginationTagProcessor.class);
 
     private static final TemplateMode TEMPLATE_MODE = TemplateMode.HTML;
@@ -38,11 +39,11 @@ public class PaginationTagProcessor extends AbstractRemovalAttributeTagProcessor
             String attributeValue, IElementTagStructureHandler structureHandler) {
 
         // find relative attributes.
-        PaginationTagAccessor attrs = new PaginationTagAccessor(tag, getDialectPrefix());
-        attrs.removeAttributes(structureHandler);
+        final PaginationTagAccessor attrs = new PaginationTagAccessor(tag, getDialectPrefix());
+        Arrays.stream(attrs.getAttributeNames()).forEach(a -> structureHandler.removeAttribute(getDialectPrefix(), a));
 
         // find page.
-        Page<?> page = getPage(context, attributeValue);
+        final Page<?> page = getPage(context, attributeValue);
         if (page == null) {
             logger.debug("cannot found page.");
             return;

@@ -3,9 +3,9 @@ package jp.yoshikawaa.gfw.web.thymeleaf.processor.message;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-import org.thymeleaf.engine.TestElementTagBuilder;
 import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.processor.element.TestElementTagStructureHandler;
+
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 
 public class MessagesPanelTagAccessorTest {
 
@@ -21,12 +21,10 @@ public class MessagesPanelTagAccessorTest {
         template.append("t:disable-html-escape='true' ");
         template.append("/>");
 
-        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template.toString());
+        final IProcessableElementTag tag = new TerasolunaGfwTestEngine().tag(template.toString());
 
         // execute.
         MessagesPanelTagAccessor accessor = new MessagesPanelTagAccessor(tag, "t");
-        TestElementTagStructureHandler structureHandler = new TestElementTagStructureHandler(tag);
-        accessor.removeAttributes(structureHandler);
 
         // assert.
         assertThat(accessor.getPanelClassName()).isEqualTo("message");
@@ -36,9 +34,8 @@ public class MessagesPanelTagAccessorTest {
         assertThat(accessor.getOuterElement()).isEqualTo("tr");
         assertThat(accessor.getInnerElement()).isEqualTo("td");
         assertThat(accessor.isDisableHtmlEscape()).isTrue();
-        assertThat(structureHandler.getAttributes()).doesNotContainKeys("t:panel-class-name",
-                "t:panel-type-class-prefix", "t:messages-type", "t:outer-element", "t:inner-element",
-                "t:disable-html-escape");
+        assertThat(accessor.getAttributeNames()).containsSequence("panel-class-name", "panel-type-class-prefix",
+                "messages-type", "outer-element", "inner-element", "disable-html-escape");
     }
 
     @Test
@@ -47,12 +44,10 @@ public class MessagesPanelTagAccessorTest {
         final StringBuilder template = new StringBuilder("<div t:messages-panel ");
         template.append("/>");
 
-        final IProcessableElementTag tag = TestElementTagBuilder.standalone(template.toString());
+        final IProcessableElementTag tag = new TerasolunaGfwTestEngine().tag(template.toString());
 
         // execute.
         MessagesPanelTagAccessor accessor = new MessagesPanelTagAccessor(tag, "t");
-        TestElementTagStructureHandler structureHandler = new TestElementTagStructureHandler(tag);
-        accessor.removeAttributes(structureHandler);
 
         // assert.
         assertThat(accessor.getPanelTypeClass("message")).isEqualTo("alert-");

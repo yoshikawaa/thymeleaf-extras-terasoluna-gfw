@@ -1,5 +1,6 @@
 package jp.yoshikawaa.gfw.web.thymeleaf.processor.message;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -18,11 +19,13 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.util.StringUtils;
 import org.unbescape.html.HtmlEscape;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractRemovalAttributeTagProcessor;
+import com.google.common.base.Joiner;
+
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttributeTagProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
-public class MessagesPanelTagProcessor extends AbstractRemovalAttributeTagProcessor {
+public class MessagesPanelTagProcessor extends AbstractAttributeRemovalAttributeTagProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(MessagesPanelTagProcessor.class);
 
@@ -47,8 +50,8 @@ public class MessagesPanelTagProcessor extends AbstractRemovalAttributeTagProces
             String attributeValue, IElementTagStructureHandler structureHandler) {
 
         // find relative attributes.
-        MessagesPanelTagAccessor attrs = new MessagesPanelTagAccessor(tag, getDialectPrefix());
-        attrs.removeAttributes(structureHandler);
+        final MessagesPanelTagAccessor attrs = new MessagesPanelTagAccessor(tag, getDialectPrefix());
+        Arrays.stream(attrs.getAttributeNames()).forEach(a -> structureHandler.removeAttribute(getDialectPrefix(), a));
 
         // find messages.
         final Object messages = getResultMessages(context, attributeValue);
@@ -58,7 +61,7 @@ public class MessagesPanelTagProcessor extends AbstractRemovalAttributeTagProces
         }
 
         // build element.
-        buildElement(structureHandler, messages, attrs);
+        buildElement(tag, structureHandler, messages, attrs);
         structureHandler.setBody(buildBody(context, messages, attrs), false);
     }
 
@@ -68,14 +71,16 @@ public class MessagesPanelTagProcessor extends AbstractRemovalAttributeTagProces
                 : ExpressionUtils.execute(context, attributeValue);
     }
 
-    private void buildElement(IElementTagStructureHandler structureHandler, Object messages,
+    private void buildElement(IProcessableElementTag tag, IElementTagStructureHandler structureHandler, Object messages,
             MessagesPanelTagAccessor attrs) {
 
-        final String panelClassName = attrs.getPanelClassName();
-        final String panelTypeClass = attrs.getPanelTypeClass(messages);
+        final String panelClasses = Joiner.on(" ")
+                .skipNulls()
+                .join(tag.getAttributeValue(CLASS_ATTR_NAME), attrs.getPanelClassName(),
+                        attrs.getPanelTypeClass(messages))
+                .trim();
 
-        structureHandler.setAttribute(CLASS_ATTR_NAME, StringUtils.isEmptyOrWhitespace(panelClassName) ? panelTypeClass
-                : panelClassName + " " + panelTypeClass);
+        structureHandler.setAttribute(CLASS_ATTR_NAME, panelClasses);
     }
 
     private IModel buildBody(ITemplateContext context, Object messages, MessagesPanelTagAccessor attrs) {

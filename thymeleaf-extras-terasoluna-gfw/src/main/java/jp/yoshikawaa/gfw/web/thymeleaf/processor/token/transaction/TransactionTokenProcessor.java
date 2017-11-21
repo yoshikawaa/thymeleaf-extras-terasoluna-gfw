@@ -10,15 +10,15 @@ import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractRemovalAttributeTagProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttributeTagProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 
-public class TransactionTokenProcessor extends AbstractRemovalAttributeTagProcessor {
+public class TransactionTokenProcessor extends AbstractAttributeRemovalAttributeTagProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionTokenProcessor.class);
 
     private static final TemplateMode TEMPLATE_MODE = TemplateMode.HTML;
-    private static final String ATTRIBUTE_NAME = "transaction-token";
+    private static final String ATTRIBUTE_NAME = "transaction";
     private static final int PRECEDENCE = 1200;
 
     private static final String TYPE_ATTR_NAME = "type";
@@ -34,7 +34,7 @@ public class TransactionTokenProcessor extends AbstractRemovalAttributeTagProces
             String attributeValue, IElementTagStructureHandler structureHandler) {
 
         // find token.
-        TransactionToken nextToken = getTransactionToken(context);
+        final TransactionToken nextToken = getTransactionToken(context);
         if (nextToken == null) {
             logger.debug("cannot found TransactionToken.");
             return;
