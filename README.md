@@ -54,14 +54,14 @@ Add dialect `TerasolunaGfwDialect` to `SpringTemplateEngine`. (Required `Message
 
     ```xml
     <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
-    <property name="templateResolver" ref="templateResolver" />
-    <property name="additionalDialects">
-        <set>
-            <bean class="jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect">
-                <constructor-arg ref="messageSource" />
-            </bean>
-        </set>
-    </property>
+        <property name="templateResolver" ref="templateResolver" />
+        <property name="additionalDialects">
+            <set>
+                <bean class="jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect">
+                    <constructor-arg ref="messageSource" />
+                </bean>
+            </set>
+        </property>
     </bean>
     ```
 
@@ -72,7 +72,7 @@ Add xml name space to template HTMLs.
 ```html
 <!DOCTYPE html>
 <html xmlns:t="https://github.com/yoshikawaa">
-<!-- omitted. -->
+    <!-- omitted. -->
 </html>
 ```
 
@@ -119,7 +119,7 @@ Can be customized with the following attribute values.
 ### Pagination Attribute Processor
 
 ```html
-<div t:pagination="">page links</div>
+<ul t:pagination="">page links</ul>
 ```
 
 Output `Page` object as pagination links.
@@ -148,7 +148,7 @@ Can be customized with the following attribute values.
 ### Transaction Token Attribute Processor
 
 ```html
-<input t:transaction-token="" />
+<input t:transaction="" />
 ```
 
 Output transaction token to hidden input field named `_TRANSACTION_TOKEN`.
@@ -161,13 +161,13 @@ Give it to the input field when you don't give `th:action` to the form.
 Can be customized with the following attribute values.
 
 | name | description | default |
-|:-----------------:|:-------------------------------------------------:|:-------:|
-| transaction-token | source of the token as expression ex. `${token}`. | `` |
+|:-----------:|:-------------------------------------------------:|:-------:|
+| transaction | source of the token as expression ex. `${token}`. | `` |
 
 ### Functions Expression Object
 
 ```html
-<div t:pagination="" t:criteria-query="${#f.query(form)}">page links</div>
+<ul t:pagination="" t:criteria-query="${#f.query(form)}">page links</ul>
 ```
 
 Can use `Functions` class in `terasoluna-gfw-web` with the name `#f`.

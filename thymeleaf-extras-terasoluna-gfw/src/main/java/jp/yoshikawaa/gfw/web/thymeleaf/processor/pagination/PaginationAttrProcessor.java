@@ -1,6 +1,7 @@
 package jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -12,12 +13,13 @@ import org.terasoluna.gfw.web.pagination.PaginationInfo.BeginAndEnd;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Text;
-import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
 import org.thymeleaf.util.StringUtils;
 
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttrProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ElementUtils;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
-public class PaginationAttrProcessor extends AbstractMarkupRemovalAttrProcessor {
+public class PaginationAttrProcessor extends AbstractAttributeRemovalAttrProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(PaginationAttrProcessor.class);
 
@@ -26,11 +28,8 @@ public class PaginationAttrProcessor extends AbstractMarkupRemovalAttrProcessor 
 
     private static final String DEFAULT_PAGE_EXPRESSION = "${page}";
 
-    private final String dialectPrefix;
-
     public PaginationAttrProcessor(String dialectPrefix) {
-        super(ATTRIBUTE_NAME);
-        this.dialectPrefix = dialectPrefix;
+        super(dialectPrefix, ATTRIBUTE_NAME);
     }
 
     @Override
@@ -39,24 +38,23 @@ public class PaginationAttrProcessor extends AbstractMarkupRemovalAttrProcessor 
     }
 
     @Override
-    protected RemovalType getRemovalType(final Arguments arguments, final Element element, final String attributeName) {
+    protected void process(final Arguments arguments, final Element element, final String attributeName) {
 
         // find relative attributes.
-        PaginationAttrAccessor attrs = new PaginationAttrAccessor(element, dialectPrefix);
-        attrs.removeAttributes(element);
+        PaginationAttrAccessor attrs = new PaginationAttrAccessor(element, getDialectPrefix());
+        Arrays.stream(attrs.getAttributeNames())
+                .forEach(a -> ElementUtils.removeAttribute(element, getDialectPrefix(), a));
 
         // find page.
         final String attributeValue = element.getAttributeValue(attributeName);
         Page<?> page = getPage(arguments, attributeValue);
         if (page == null) {
             logger.debug("cannot found page.");
-            return RemovalType.ELEMENT;
+            return;
         }
 
         // build element.
         buildBody(arguments, element, page, attrs);
-
-        return RemovalType.NONE;
     }
 
     private Page<?> getPage(Arguments arguments, String attributeValue) {
@@ -105,6 +103,7 @@ public class PaginationAttrProcessor extends AbstractMarkupRemovalAttrProcessor 
             elements.add(buildInnerElement(innerElement, activeClass, info.getLastUrl(), lastLinkText));
         }
 
+        element.clearChildren();
         elements.forEach(e -> element.addChild(e));
     }
 

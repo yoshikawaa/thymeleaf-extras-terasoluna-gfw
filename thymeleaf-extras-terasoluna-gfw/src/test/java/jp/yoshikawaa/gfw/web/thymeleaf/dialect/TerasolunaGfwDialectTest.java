@@ -27,7 +27,6 @@ public class TerasolunaGfwDialectTest {
 
         // assert.
         assertThat(dialect.getPrefix()).isEqualTo(dialectPrefix);
-        assertThat(dialect.isLenient()).isFalse();
 
         Set<IProcessor> processors = dialect.getProcessors();
         assertThat(processors).hasSize(3);

@@ -26,4 +26,8 @@ public class ExpressionUtils {
         }
         return clazz.cast(result);
     }
+    
+    private ExpressionUtils() {
+    }
+
 }

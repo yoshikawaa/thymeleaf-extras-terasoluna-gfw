@@ -15,7 +15,8 @@ public class MessagesPanelController {
     @GetMapping
     public String message(Model model) {
         model.addAttribute(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME, ResultMessages.success()
-                .add(ResultMessage.fromCode("e.xx.fw.8001")).add(ResultMessage.fromText("</li><li>message</li>")));
+                .add(ResultMessage.fromCode("e.xx.fw.8001"))
+                .add(ResultMessage.fromText("</li><li>message</li>")));
         model.addAttribute("customMessage", ResultMessages.success().add(ResultMessage.fromText("custom message")));
         return "sample/messagesPanel";
     }

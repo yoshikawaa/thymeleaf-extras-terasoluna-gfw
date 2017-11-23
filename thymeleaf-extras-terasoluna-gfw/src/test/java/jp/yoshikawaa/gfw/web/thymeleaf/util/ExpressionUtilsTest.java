@@ -5,22 +5,22 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 import org.thymeleaf.Arguments;
-import org.thymeleaf.TestArgumentsBuilder;
-import org.thymeleaf.context.TestWebContextBuilder;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.exceptions.TemplateInputException;
+
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
+import jp.yoshikawaa.gfw.test.engine.TestEngine;
 
 public class ExpressionUtilsTest {
 
     public ExpressionUtilsTest() {
-        new ExpressionUtils();
+        ReflectionUtils.newInstance(ExpressionUtils.class, true);
     }
-    
+
     @Test
     public void testExpression() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().variable("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         Object result = ExpressionUtils.execute(arguments, "${test}", Object.class);
@@ -32,8 +32,8 @@ public class ExpressionUtilsTest {
     @Test
     public void testExpressionTyped() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().variable("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         String result = ExpressionUtils.execute(arguments, "${test}", String.class);
@@ -45,12 +45,12 @@ public class ExpressionUtilsTest {
     @Test
     public void testExpressionTypedNotFound() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine();
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         String result = ExpressionUtils.execute(arguments, "${test}", String.class);
-        
+
         // assert.
         assertThat(result).isNull();
     }
@@ -58,8 +58,8 @@ public class ExpressionUtilsTest {
     @Test
     public void testExpressionTypedUnmatch() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().variable("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute and assert.
         assertThatThrownBy(() -> {

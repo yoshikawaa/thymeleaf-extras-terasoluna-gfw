@@ -18,7 +18,7 @@ public class FunctionsControllerTest extends WebClientTestSupport {
     @Test
     public void testFunctionH() throws Exception {
         HtmlPage page = client.getPage(url());
-        
+
         hasText(page, "//div[@id='naked']/span", "hoge");
         hasText(page, "//div[@id='escaped']", "<span>hoge</span>");
     }

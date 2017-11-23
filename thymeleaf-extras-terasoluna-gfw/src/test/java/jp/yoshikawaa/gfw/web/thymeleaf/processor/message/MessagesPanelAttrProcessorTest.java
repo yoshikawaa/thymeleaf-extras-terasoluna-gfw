@@ -6,14 +6,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.Collections;
 import java.util.Map;
 
+import org.jsoup.nodes.Element;
 import org.junit.Test;
+import org.springframework.context.support.StaticMessageSource;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessages;
-import org.thymeleaf.dom.element.TestElementWrapper;
 
-import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttrProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
+import jp.yoshikawaa.gfw.test.support.LogbackMockSupport;
 
-public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTestSupport {
+public class MessagesPanelAttrProcessorTest extends LogbackMockSupport {
 
     public MessagesPanelAttrProcessorTest() {
         super(MessagesPanelAttrProcessor.class);
@@ -23,17 +25,19 @@ public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTe
     public void testMessage() {
         // setup.
         final String template = "<div t:messages-panel='' />";
-        final ResultMessages resultMessages = ResultMessages.success().add(ResultMessage.fromCode("test1"))
-                .add(ResultMessage.fromCode("test2")).add(ResultMessage.fromCode("test3"));
+        final ResultMessages resultMessages = ResultMessages.success()
+                .add(ResultMessage.fromCode("test1"))
+                .add(ResultMessage.fromCode("test2"))
+                .add(ResultMessage.fromCode("test3"));
         final Map<String, Object> attributes = Collections.singletonMap(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME,
                 resultMessages);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, attributes, null);
+        Element element = new TerasolunaGfwTestEngine().requestAttributes(attributes).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getAttributes()).containsEntry("class", "alert alert-success");
-        assertThat(elementWrapper.getBody()).containsSequence("<ul>", "<li>test message 1.</li>",
+        assertThat(element.attr("class")).isEqualTo("alert alert-success");
+        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message 1.</li>",
                 "<li>test message 2.</li>", "<li>test message 3.</li>", "</ul>");
     }
 
@@ -41,17 +45,19 @@ public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTe
     public void testMessage2() {
         // setup.
         final String template = "<div t:messages-panel='' t:panel-class-name='' t:outer-element='' t:disable-html-escape='true' />";
-        final ResultMessages resultMessages = ResultMessages.success().add(ResultMessage.fromText("<span>test1</span>"))
-                .add(ResultMessage.fromText("<span>test2</span>")).add(ResultMessage.fromText("<span>test3</span>"));
+        final ResultMessages resultMessages = ResultMessages.success()
+                .add(ResultMessage.fromText("<span>test1</span>"))
+                .add(ResultMessage.fromText("<span>test2</span>"))
+                .add(ResultMessage.fromText("<span>test3</span>"));
         final Map<String, Object> attributes = Collections.singletonMap(ResultMessages.DEFAULT_MESSAGES_ATTRIBUTE_NAME,
                 resultMessages);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, attributes, null);
+        Element element = new TerasolunaGfwTestEngine().requestAttributes(attributes).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getAttributes()).containsEntry("class", "alert-success");
-        assertThat(elementWrapper.getBody()).containsSequence("<li><span>test1</span></li>",
+        assertThat(element.attr("class")).isEqualTo("alert-success");
+        assertThat(element.children().outerHtml()).containsSequence("<li><span>test1</span></li>",
                 "<li><span>test2</span></li>", "<li><span>test3</span></li>");
     }
 
@@ -61,11 +67,11 @@ public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTe
         final String template = "<div t:messages-panel='' />";
 
         // execute.
-        TestElementWrapper elementWrapper = process(template);
+        Element element = new TerasolunaGfwTestEngine().parse(template);
 
         // assert.
-        assertThat(elementWrapper.getAttributes()).doesNotContainKey("class");
-        assertThat(elementWrapper.getBody()).isEmpty();
+        assertThat(element.attr("class")).isNullOrEmpty();
+        assertThat(element.children()).isNullOrEmpty();
         assertLogMessage("cannot found ResultMessages.");
     }
 
@@ -77,11 +83,11 @@ public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTe
         final Map<String, Object> variables = Collections.singletonMap("messages", resultMessages);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getAttributes()).containsEntry("class", "alert alert-warn");
-        assertThat(elementWrapper.getBody()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
+        assertThat(element.attr("class")).isEqualTo("alert alert-warn");
+        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
     }
 
     @Test
@@ -92,11 +98,11 @@ public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTe
         final Map<String, Object> variables = Collections.singletonMap("messages", resultMessages);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getAttributes()).containsEntry("class", "alert alert-warn");
-        assertThat(elementWrapper.getBody()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
+        assertThat(element.attr("class")).isEqualTo("alert alert-warn");
+        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
     }
 
     @Test
@@ -107,11 +113,11 @@ public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTe
         final Map<String, Object> variables = Collections.singletonMap("messages", resultMessages);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getAttributes()).containsEntry("class", "alert alert-warn");
-        assertThat(elementWrapper.getBody()).containsSequence("<ul>", "<li>100</li>", "</ul>");
+        assertThat(element.attr("class")).isEqualTo("alert alert-warn");
+        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>100</li>", "</ul>");
     }
 
     @Test
@@ -121,10 +127,10 @@ public class MessagesPanelAttrProcessorTest extends TerasolunaGfwAttrProcessorTe
             new MessagesPanelAttrProcessor("t", null);
         }).isInstanceOf(IllegalArgumentException.class).hasMessage("messageSource must not be null.");
     }
-    
+
     @Test
     public void testPrecedence() {
-        MessagesPanelAttrProcessor processor = getProcessor(MessagesPanelAttrProcessor.class);
+        MessagesPanelAttrProcessor processor = new MessagesPanelAttrProcessor("t", new StaticMessageSource());
         assertThat(processor.getPrecedence()).isEqualTo(1200);
     }
 

@@ -33,4 +33,8 @@ public class ElementUtils {
             }
         });
     }
+    
+    private ElementUtils() {
+    }
+
 }

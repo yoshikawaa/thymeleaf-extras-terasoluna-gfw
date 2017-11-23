@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.element.TestElementBuilder;
+
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 
 public class MessagesPanelAttrAccessorTest {
 
@@ -20,11 +21,10 @@ public class MessagesPanelAttrAccessorTest {
         template.append("t:disable-html-escape='true' ");
         template.append("/>");
 
-        final Element element = TestElementBuilder.standalone(template.toString());
+        final Element element = new TerasolunaGfwTestEngine().tag(template.toString());
 
         // execute.
         MessagesPanelAttrAccessor accessor = new MessagesPanelAttrAccessor(element, "t");
-        accessor.removeAttributes(element);
 
         // assert.
         assertThat(accessor.getPanelClassName()).isEqualTo("message");
@@ -34,11 +34,8 @@ public class MessagesPanelAttrAccessorTest {
         assertThat(accessor.getOuterElement()).isEqualTo("tr");
         assertThat(accessor.getInnerElement()).isEqualTo("td");
         assertThat(accessor.isDisableHtmlEscape()).isTrue();
-        String[] expectedAttributes = { "t:panel-class-name", "t:panel-type-class-prefix", "t:messages-type",
-                "t:outer-element", "t:inner-element", "t:disable-html-escape" };
-        for (String expectedAttribute : expectedAttributes) {
-            assertThat(element.hasAttribute(expectedAttribute)).isFalse();
-        }
+        assertThat(accessor.getAttributeNames()).containsSequence("panel-class-name", "panel-type-class-prefix",
+                "messages-type", "outer-element", "inner-element", "disable-html-escape");
     }
 
     @Test
@@ -47,11 +44,10 @@ public class MessagesPanelAttrAccessorTest {
         final StringBuilder template = new StringBuilder("<div t:messages-panel='' ");
         template.append("/>");
 
-        final Element element = TestElementBuilder.standalone(template.toString());
+        final Element element = new TerasolunaGfwTestEngine().tag(template.toString());
 
         // execute.
         MessagesPanelAttrAccessor accessor = new MessagesPanelAttrAccessor(element, "t");
-        accessor.removeAttributes(element);
 
         // assert.
         assertThat(accessor.getPanelTypeClass("message")).isEqualTo("alert-");

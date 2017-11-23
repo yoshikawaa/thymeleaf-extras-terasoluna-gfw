@@ -8,16 +8,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.thymeleaf.dom.element.TestElementWrapper;
 
-import jp.yoshikawaa.gfw.test.support.TerasolunaGfwAttrProcessorTestSupport;
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
+import jp.yoshikawaa.gfw.test.support.LogbackMockSupport;
 
-public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestSupport {
+public class PaginationAttrProcessorTest extends LogbackMockSupport {
 
     public PaginationAttrProcessorTest() {
         super(PaginationAttrProcessor.class);
@@ -31,10 +32,10 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
         final Map<String, Object> variables = Collections.singletonMap("page", page);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getBody()).containsSequence(
+        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
                 "<li class='active'><a href='?page=0&amp;size=10'>&lt;&lt;</a></li>",
                 "<li class='active'><a href='?page=4&amp;size=10'>&lt;</a></li>",
                 "<li class='active'><a href='?page=0&amp;size=10'>1</a></li>",
@@ -59,10 +60,10 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
         final Map<String, Object> variables = Collections.singletonMap("page", page);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getBody()).containsSequence(
+        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
                 "<li class='active'><a href='?page=0&amp;size=10'>&lt;&lt;</a></li>",
                 "<li class='active'><a href='?page=4&amp;size=10'>&lt;</a></li>",
                 "<li class='active'><a href='?page=0&amp;size=10'>1</a></li>",
@@ -87,11 +88,11 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
         final Map<String, Object> variables = Collections.singletonMap("page", page);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getBody()).containsSequence("<li class='disabled'>&lt;&lt;</li>",
-                "<li class='disabled'>&lt;</li>", "<li class='disabled'>1</li>",
+        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
+                "<li class='disabled'>&lt;&lt;</li>", "<li class='disabled'>&lt;</li>", "<li class='disabled'>1</li>",
                 "<li class='active'><a href='?page=1&amp;size=10'>2</a></li>",
                 "<li class='active'><a href='?page=2&amp;size=10'>3</a></li>",
                 "<li class='active'><a href='?page=3&amp;size=10'>4</a></li>",
@@ -113,10 +114,10 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
         final Map<String, Object> variables = Collections.singletonMap("page", page);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getBody()).containsSequence(
+        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
                 "<li class='disabled'><a href='javascript:void(0)'>&lt;&lt;</a></li>",
                 "<li class='disabled'><a href='javascript:void(0)'>&lt;</a></li>",
                 "<li class='disabled'><a href='javascript:void(0)'>1</a></li>",
@@ -141,10 +142,10 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
         final Map<String, Object> variables = Collections.singletonMap("page", page);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getBody()).containsSequence(
+        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
                 "<li class='active'><a href='?page=0&amp;size=10'>&lt;&lt;</a></li>",
                 "<li class='active'><a href='?page=98&amp;size=10'>&lt;</a></li>",
                 "<li class='active'><a href='?page=90&amp;size=10'>91</a></li>",
@@ -169,10 +170,10 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
         final Map<String, Object> variables = Collections.singletonMap("contents", page);
 
         // execute.
-        TestElementWrapper elementWrapper = process(template, null, variables);
+        Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(elementWrapper.getBody()).containsSequence(
+        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
                 "<li class='active'><a href='?page=0&amp;size=10'>&lt;&lt;</a></li>",
                 "<li class='active'><a href='?page=4&amp;size=10'>&lt;</a></li>",
                 "<li class='active'><a href='?page=0&amp;size=10'>1</a></li>",
@@ -195,10 +196,10 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
         final String template = "<ul t:pagination='' />";
 
         // execute.
-        TestElementWrapper elementWrapper = process(template);
+        Element element = new TerasolunaGfwTestEngine().parse(template);
 
         // assert.
-        assertThat(elementWrapper.getBody()).isEmpty();
+        assertThat(element.children()).isNullOrEmpty();
         assertLogMessage("cannot found page.");
     }
 
@@ -206,14 +207,15 @@ public class PaginationAttrProcessorTest extends TerasolunaGfwAttrProcessorTestS
 
         final Pageable pageable = new PageRequest(page, size);
         List<Integer> content = IntStream
-                .rangeClosed(pageable.getOffset(), pageable.getOffset() + pageable.getPageSize() + 1).boxed()
+                .rangeClosed(pageable.getOffset(), pageable.getOffset() + pageable.getPageSize() + 1)
+                .boxed()
                 .collect(Collectors.toList());
         return new PageImpl<Integer>(content, pageable, 1000);
     }
 
     @Test
     public void testPrecedence() {
-        PaginationAttrProcessor processor = getProcessor(PaginationAttrProcessor.class);
+        PaginationAttrProcessor processor = new PaginationAttrProcessor("t");
         assertThat(processor.getPrecedence()).isEqualTo(1200);
     }
 

@@ -17,13 +17,16 @@ import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Macro;
 import org.thymeleaf.dom.Text;
-import org.thymeleaf.processor.attr.AbstractMarkupRemovalAttrProcessor;
 import org.thymeleaf.util.StringUtils;
 
+import com.google.common.base.Joiner;
+
+import jp.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttrProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ElementUtils;
 import jp.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
-public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcessor {
+public class MessagesPanelAttrProcessor extends AbstractAttributeRemovalAttrProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(MessagesPanelAttrProcessor.class);
 
@@ -32,15 +35,13 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
 
     private static final String CLASS_ATTR_NAME = "class";
 
-    private final String dialectPrefix;
     private final MessageSource messageSource;
 
     public MessagesPanelAttrProcessor(String dialectPrefix, MessageSource messageSource) {
-        super(ATTRIBUTE_NAME);
+        super(dialectPrefix, ATTRIBUTE_NAME);
         if (messageSource == null) {
             throw new IllegalArgumentException("messageSource must not be null.");
         }
-        this.dialectPrefix = dialectPrefix;
         this.messageSource = messageSource;
     }
 
@@ -50,25 +51,24 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
     }
 
     @Override
-    protected RemovalType getRemovalType(final Arguments arguments, final Element element, final String attributeName) {
+    protected void process(final Arguments arguments, final Element element, final String attributeName) {
 
         // find relative attributes.
-        MessagesPanelAttrAccessor attrs = new MessagesPanelAttrAccessor(element, dialectPrefix);
-        attrs.removeAttributes(element);
+        final MessagesPanelAttrAccessor attrs = new MessagesPanelAttrAccessor(element, getDialectPrefix());
+        Arrays.stream(attrs.getAttributeNames())
+                .forEach(a -> ElementUtils.removeAttribute(element, getDialectPrefix(), a));
 
         // find messages.
         final String attributeValue = element.getAttributeValue(attributeName);
         final Object messages = getResultMessages(arguments, attributeValue);
         if (messages == null) {
             logger.debug("cannot found ResultMessages.");
-            return RemovalType.ELEMENT;
+            return;
         }
 
         // build element.
         buildElement(element, messages, attrs);
         buildBody(arguments, element, messages, attrs);
-
-        return RemovalType.NONE;
     }
 
     private Object getResultMessages(Arguments arguments, String attributeValue) {
@@ -79,11 +79,13 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
 
     private void buildElement(Element element, Object messages, MessagesPanelAttrAccessor attrs) {
 
-        final String panelClassName = attrs.getPanelClassName();
-        final String panelTypeClass = attrs.getPanelTypeClass(messages);
+        final String panelClasses = Joiner.on(" ")
+                .skipNulls()
+                .join(element.getAttributeValue(CLASS_ATTR_NAME), attrs.getPanelClassName(),
+                        attrs.getPanelTypeClass(messages))
+                .trim();
 
-        element.setAttribute(CLASS_ATTR_NAME, StringUtils.isEmptyOrWhitespace(panelClassName) ? panelTypeClass
-                : panelClassName + " " + panelTypeClass);
+        element.setAttribute(CLASS_ATTR_NAME, panelClasses);
     }
 
     private void buildBody(Arguments arguments, Element element, Object messages, MessagesPanelAttrAccessor attrs) {
@@ -92,8 +94,9 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
         final String innerElement = attrs.getInnerElement();
         final boolean disableHtmlEscape = attrs.isDisableHtmlEscape();
 
-        List<Element> inner = buildInnerElements(arguments, messages, innerElement, disableHtmlEscape);
+        final List<Element> inner = buildInnerElements(arguments, messages, innerElement, disableHtmlEscape);
 
+        element.clearChildren();
         if (StringUtils.isEmptyOrWhitespace(outerElement)) {
             inner.forEach(n -> element.addChild(n));
         } else {
@@ -121,7 +124,7 @@ public class MessagesPanelAttrProcessor extends AbstractMarkupRemovalAttrProcess
 
         final Locale locale = arguments.getContext().getLocale();
 
-        Element element = new Element(innerElement);
+        final Element element = new Element(innerElement);
         element.addChild(disableHtmlEscape ? new Macro(resolveMessage(message, locale))
                 : new Text(resolveMessage(message, locale)));
         return element;

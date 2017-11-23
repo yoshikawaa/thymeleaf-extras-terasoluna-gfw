@@ -1,13 +1,9 @@
 package jp.yoshikawaa.gfw.web.thymeleaf.dialect;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.terasoluna.gfw.web.el.Functions;
 import org.thymeleaf.context.IProcessingContext;
@@ -15,13 +11,14 @@ import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.dialect.IExpressionEnhancingDialect;
 import org.thymeleaf.processor.IProcessor;
 
+import com.google.common.collect.ImmutableMap;
+
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelAttrProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationAttrProcessor;
 import jp.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenAttrProcessor;
+import jp.yoshikawaa.gfw.web.thymeleaf.util.ReflectionUtils;
 
 public class TerasolunaGfwDialect extends AbstractDialect implements IExpressionEnhancingDialect {
-
-    private static final Logger logger = LoggerFactory.getLogger(TerasolunaGfwDialect.class);
 
     private static final String DIALECT_PREFIX = "t";
     private static final String EXPRESSION_NAME = "f";
@@ -39,36 +36,22 @@ public class TerasolunaGfwDialect extends AbstractDialect implements IExpression
         this.messageSource = messageSource;
     }
 
-    
     @Override
     public String getPrefix() {
         return dialectPrefix;
-    }
-    
-    @Override
-    public boolean isLenient() {
-        return false;
     }
 
     @Override
     public Set<IProcessor> getProcessors() {
         Set<IProcessor> processors = new HashSet<IProcessor>();
         processors.add(new MessagesPanelAttrProcessor(dialectPrefix, messageSource));
-        processors.add(new TransactionTokenAttrProcessor());
+        processors.add(new TransactionTokenAttrProcessor(dialectPrefix));
         processors.add(new PaginationAttrProcessor(dialectPrefix));
         return processors;
     }
 
     @Override
     public Map<String, Object> getAdditionalExpressionObjects(IProcessingContext processingContext) {
-        Map<String, Object> expressionObjects = new HashMap<>();
-        try {
-            Constructor<Functions> constructor = Functions.class.getDeclaredConstructor();
-            constructor.setAccessible(true);
-            expressionObjects.put(EXPRESSION_NAME, constructor.newInstance());
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-        return expressionObjects;
+        return ImmutableMap.of(EXPRESSION_NAME, ReflectionUtils.newInstance(Functions.class, true));
     }
 }

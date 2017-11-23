@@ -22,6 +22,12 @@ public class PaginationAttrAccessor implements IAttrAccessor {
     private static final String ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY = "disable-html-escape-of-criteria-query";
     private static final String ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE = "enable-link-of-current-page";
 
+    private static final String[] ATTRIBUTE_NAMES = { ATTRIBUTE_INNER_ELEMENT, ATTRIBUTE_DISABLED_CLASS,
+            ATTRIBUTE_ACTIVE_CLASS, ATTRIBUTE_FIRST_LINK_TEXT, ATTRIBUTE_PREVIOUS_LINK_TEXT, ATTRIBUTE_NEXT_LINK_TEXT,
+            ATTRIBUTE_LAST_LINK_TEXT, ATTRIBUTE_MAX_DISPLAY_COUNT, ATTRIBUTE_DISABLED_HREF, ATTRIBUTE_HREF_TMPL,
+            ATTRIBUTE_CRITERIA_QUERY, ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY,
+            ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE };
+
     private static final String DEFAULT_FIRST_LINK_TEXT = "<<";
     private static final String DEFAULT_PREVIOUS_LINK_TEXT = "<";
     private static final String DEFAULT_NEXT_LINK_TEXT = ">";
@@ -30,8 +36,6 @@ public class PaginationAttrAccessor implements IAttrAccessor {
     private static final String DEFAULT_CRITERIA_QUERY = null;
     private static final boolean DEFAULT_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY = false;
     private static final boolean DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE = false;
-
-    private final String dialectPrefix;
 
     private final String innerElement;
     private final String disabledClass;
@@ -48,8 +52,6 @@ public class PaginationAttrAccessor implements IAttrAccessor {
     private final boolean enableLinkOfCurrentPage;
 
     public PaginationAttrAccessor(Element element, String dialectPrefix) {
-
-        this.dialectPrefix = dialectPrefix;
 
         this.innerElement = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
                 PaginationInfo.DEFAULT_INNER_ELM);
@@ -69,8 +71,7 @@ public class PaginationAttrAccessor implements IAttrAccessor {
                 PaginationInfo.DEFAULT_MAX_DISPLAY_COUNT);
         this.disabledHref = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_DISABLED_HREF,
                 PaginationInfo.DEFAULT_DISABLED_HREF);
-        this.hrefTmpl = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_HREF_TMPL,
-                DEFAULT_HREF_TMPL);
+        this.hrefTmpl = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_HREF_TMPL, DEFAULT_HREF_TMPL);
         this.criteriaQuery = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY,
                 DEFAULT_CRITERIA_QUERY);
         this.disableHtmlEscapeOfCriteriaQuery = ElementUtils.getAttributeValue(element, dialectPrefix,
@@ -79,21 +80,9 @@ public class PaginationAttrAccessor implements IAttrAccessor {
                 ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE, DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE);
     }
 
-    public void removeAttributes(Element element) {
-
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLED_CLASS);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_ACTIVE_CLASS);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_FIRST_LINK_TEXT);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PREVIOUS_LINK_TEXT);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_NEXT_LINK_TEXT);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_LAST_LINK_TEXT);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_MAX_DISPLAY_COUNT);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLED_HREF);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_HREF_TMPL);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE);
+    @Override
+    public String[] getAttributeNames() {
+        return ATTRIBUTE_NAMES;
     }
 
     public String getInnerElement() {
@@ -147,4 +136,5 @@ public class PaginationAttrAccessor implements IAttrAccessor {
     public boolean isEnableLinkOfCurrentPage() {
         return enableLinkOfCurrentPage;
     }
+
 }

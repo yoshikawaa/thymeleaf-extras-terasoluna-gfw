@@ -31,7 +31,7 @@ public class PaginationController {
         model.addAttribute("pagination", page);
         return "sample/pagination";
     }
-    
+
     @GetMapping("{page}")
     public String paginationByPath(Model model, Pageable pageable, @PathVariable("page") int page) {
         return pagination(model, new PageRequest(page, pageable.getPageSize()));

@@ -38,6 +38,7 @@ public class WebClientMatcher {
         List<?> elements = page.getByXPath(xpath);
         assertThat(elements).isNotNull();
         assertThat(elements).hasSize(expected.length);
-        assertThat(elements.stream().map(e -> ((HtmlElement) e).asText()).collect(Collectors.toList())).containsExactly(expected);
+        assertThat(elements.stream().map(e -> ((HtmlElement) e).asText()).collect(Collectors.toList()))
+                .containsExactly(expected);
     }
 }

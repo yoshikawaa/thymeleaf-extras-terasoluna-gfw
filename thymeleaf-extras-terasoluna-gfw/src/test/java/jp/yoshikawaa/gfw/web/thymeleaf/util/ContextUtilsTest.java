@@ -9,23 +9,23 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.thymeleaf.Arguments;
-import org.thymeleaf.TestArgumentsBuilder;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.context.TestWebContextBuilder;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.exceptions.TemplateInputException;
+
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
+import jp.yoshikawaa.gfw.test.engine.TestEngine;
 
 public class ContextUtilsTest {
 
     public ContextUtilsTest() {
-        new ContextUtils();
+        ReflectionUtils.newInstance(ContextUtils.class, true);
     }
 
     @Test
     public void testVariable() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().variable("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         Object result = ContextUtils.getAttribute(arguments, "test");
@@ -37,8 +37,8 @@ public class ContextUtilsTest {
     @Test
     public void testRequestAttribute() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().requestAttribute("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().requestAttribute("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         Object result = ContextUtils.getAttribute(arguments, "test");
@@ -50,8 +50,8 @@ public class ContextUtilsTest {
     @Test
     public void testSessionAttribute() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().sessionAttribute("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().sessionAttribute("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         Object result = ContextUtils.getAttribute(arguments, "test");
@@ -63,8 +63,8 @@ public class ContextUtilsTest {
     @Test
     public void testApplicationAttribute() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().servletContextAttribute("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().servletContextAttribute("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         Object result = ContextUtils.getAttribute(arguments, "test");
@@ -76,8 +76,8 @@ public class ContextUtilsTest {
     @Test
     public void testAttributeNotFound() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine();
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         Object result = ContextUtils.getAttribute(arguments, "test");
@@ -91,9 +91,9 @@ public class ContextUtilsTest {
         // setup.
         final Map<String, Object> variables = Collections.singletonMap("test", "success");
         final Locale locale = Locale.getDefault();
-        
+
         final Context context = new Context(locale, variables);
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final Arguments arguments = new TerasolunaGfwTestEngine().arguments(context);
 
         // execute.
         Object result = ContextUtils.getAttribute(arguments, "test");
@@ -105,8 +105,8 @@ public class ContextUtilsTest {
     @Test
     public void testVariableTyped() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().variable("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         String result = ContextUtils.getAttribute(arguments, "test", String.class);
@@ -118,8 +118,8 @@ public class ContextUtilsTest {
     @Test
     public void testVariableTypedNotFound() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine();
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute.
         String result = ContextUtils.getAttribute(arguments, "test", String.class);
@@ -131,14 +131,14 @@ public class ContextUtilsTest {
     @Test
     public void testVariableTypedTypedUnmatch() {
         // setup.
-        final WebContext context = TestWebContextBuilder.init().variable("test", "success").build();
-        final Arguments arguments = TestArgumentsBuilder.build(context);
+        final TestEngine engine = new TerasolunaGfwTestEngine().variable("test", "success");
+        final Arguments arguments = engine.arguments(engine.context(""));
 
         // execute and assert.
         assertThatThrownBy(() -> {
             ContextUtils.getAttribute(arguments, "test", Integer.class);
-        }).isInstanceOf(TemplateInputException.class).hasMessage(
-                "attribute type is not expected. expected:java.lang.Integer actual:java.lang.String");
+        }).isInstanceOf(TemplateInputException.class)
+                .hasMessage("attribute type is not expected. expected:java.lang.Integer actual:java.lang.String");
     }
 
 }

@@ -10,7 +10,7 @@
         <h1>Transaction Token Check</h1>
         <form method="post">
             <input type="submit" value="check" /> <input type="hidden" th:name="${_csrf.parameterName}"
-                th:value="${_csrf.token}" /> <input t:transaction-token="" />
+                th:value="${_csrf.token}" /> <input t:transaction="" />
             <!-- if use th:action, output CSRF and transaction token as hidden field by request processor. -->
         </form>
         <div th:if="${result != null}">

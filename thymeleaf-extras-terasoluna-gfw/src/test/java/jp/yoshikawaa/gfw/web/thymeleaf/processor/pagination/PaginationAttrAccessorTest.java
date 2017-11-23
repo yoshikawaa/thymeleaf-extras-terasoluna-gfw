@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.element.TestElementBuilder;
+
+import jp.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 
 public class PaginationAttrAccessorTest {
 
@@ -27,11 +28,10 @@ public class PaginationAttrAccessorTest {
         template.append("t:enable-link-of-current-page='true' ");
         template.append("/>");
 
-        final Element element = TestElementBuilder.standalone(template.toString());
+        final Element element = new TerasolunaGfwTestEngine().tag(template.toString());
 
         // execute.
         PaginationAttrAccessor accessor = new PaginationAttrAccessor(element, "t");
-        accessor.removeAttributes(element);
 
         // assert.
         assertThat(accessor.getInnerElement()).isEqualTo("span");
@@ -47,13 +47,10 @@ public class PaginationAttrAccessorTest {
         assertThat(accessor.getCriteriaQuery()).isEqualTo("item=sample");
         assertThat(accessor.isDisableHtmlEscapeOfCriteriaQuery()).isTrue();
         assertThat(accessor.isEnableLinkOfCurrentPage()).isTrue();
-        String[] expectedAttributes = { "t:inner-element", "t:disabled-class", "t:active-class", "t:first-link-text",
-                "t:previous-link-text", "t:next-link-text", "t:last-link-text", "t:max-display-count",
-                "t:disabled-href", "t:href-tmpl", "t:criteria-query", "t:disable-html-escape-of-criteria-query",
-                "t:enable-link-of-current-page" };
-        for (String expectedAttribute : expectedAttributes) {
-            assertThat(element.hasAttribute(expectedAttribute)).isFalse();
-        }
+        assertThat(accessor.getAttributeNames()).containsSequence("inner-element", "disabled-class", "active-class",
+                "first-link-text", "previous-link-text", "next-link-text", "last-link-text", "max-display-count",
+                "disabled-href", "href-tmpl", "criteria-query", "disable-html-escape-of-criteria-query",
+                "enable-link-of-current-page");
     }
 
 }

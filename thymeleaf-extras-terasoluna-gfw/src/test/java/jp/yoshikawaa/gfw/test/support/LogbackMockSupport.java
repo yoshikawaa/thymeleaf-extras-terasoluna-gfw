@@ -25,7 +25,7 @@ public abstract class LogbackMockSupport {
     public LogbackMockSupport() {
         this(null);
     }
-    
+
     public LogbackMockSupport(Class<?> mockLoggerClass) {
         this.mockLoggerClass = mockLoggerClass;
     }

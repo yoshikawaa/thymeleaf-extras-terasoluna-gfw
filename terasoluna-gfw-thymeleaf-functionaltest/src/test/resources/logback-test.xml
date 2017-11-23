@@ -70,8 +70,8 @@
         <level value="debug" />
     </logger>
     
-    <logger name="org.springframework.test.web.servlet.result">
-        <level value="${logback.level.spring-test:-debug}" />
+    <logger name="jp.yoshikawaa.gfw.test.engine">
+        <level value="${logback.level.test.result:-debug}" />
     </logger>
 
     <root level="warn">

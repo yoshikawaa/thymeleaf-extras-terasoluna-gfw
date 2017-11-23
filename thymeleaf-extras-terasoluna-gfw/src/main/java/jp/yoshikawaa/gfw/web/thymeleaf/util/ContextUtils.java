@@ -40,4 +40,8 @@ public class ContextUtils {
         }
         return clazz.cast(result);
     }
+    
+    private ContextUtils() {
+    }
+
 }

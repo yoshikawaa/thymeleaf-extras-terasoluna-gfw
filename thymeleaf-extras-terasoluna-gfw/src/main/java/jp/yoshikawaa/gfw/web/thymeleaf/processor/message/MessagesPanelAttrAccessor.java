@@ -16,14 +16,15 @@ public class MessagesPanelAttrAccessor implements IAttrAccessor {
     private static final String ATTRIBUTE_INNER_ELEMENT = "inner-element";
     private static final String ATTRIBUTE_DISABLE_HTML_ESCAPE = "disable-html-escape";
 
+    private static final String[] ATTRIBUTE_NAMES = { ATTRIBUTE_PANEL_CLASS_NAME, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX,
+            ATTRIBUTE_MESSAGES_TYPE, ATTRIBUTE_OUTER_ELEMENT, ATTRIBUTE_INNER_ELEMENT, ATTRIBUTE_DISABLE_HTML_ESCAPE };
+
     private static final String DEFAULT_PANEL_CLASS_NAME = "alert";
     private static final String DEFAULT_PANEL_TYPE_CLASS_PREFIX = "alert-";
     private static final String DEFAULT_MESSAGES_TYPE = null;
     private static final String DEFAULT_OUTER_ELEMENT = "ul";
     private static final String DEFAULT_INNER_ELEMENT = "li";
     private static final boolean DEFAULT_DISABLE_HTML_ESCAPE = false;
-
-    private final String dialectPrefix;
 
     private final String messagesType;
     private final String panelClassName;
@@ -33,8 +34,6 @@ public class MessagesPanelAttrAccessor implements IAttrAccessor {
     private final boolean disableHtmlEscape;
 
     public MessagesPanelAttrAccessor(Element element, String dialectPrefix) {
-
-        this.dialectPrefix = dialectPrefix;
 
         this.panelClassName = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME,
                 DEFAULT_PANEL_CLASS_NAME);
@@ -50,14 +49,9 @@ public class MessagesPanelAttrAccessor implements IAttrAccessor {
                 DEFAULT_DISABLE_HTML_ESCAPE);
     }
 
-    public void removeAttributes(Element element) {
-
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_PANEL_TYPE_CLASS_PREFIX);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_MESSAGES_TYPE);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_OUTER_ELEMENT);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_INNER_ELEMENT);
-        ElementUtils.removeAttribute(element, dialectPrefix, ATTRIBUTE_DISABLE_HTML_ESCAPE);
+    @Override
+    public String[] getAttributeNames() {
+        return ATTRIBUTE_NAMES;
     }
 
     public String getPanelTypeClass(Object messages) {
@@ -89,4 +83,5 @@ public class MessagesPanelAttrAccessor implements IAttrAccessor {
     public boolean isDisableHtmlEscape() {
         return disableHtmlEscape;
     }
+
 }
