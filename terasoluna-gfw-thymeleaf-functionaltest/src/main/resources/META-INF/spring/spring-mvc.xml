@@ -26,7 +26,7 @@
 
     <mvc:default-servlet-handler />
 
-    <context:component-scan base-package="jp.yoshikawaa.gfw.app" />
+    <context:component-scan base-package="io.github.yoshikawaa.gfw.app" />
 
     <mvc:resources mapping="/resources/**"
         location="/resources/,classpath:META-INF/resources/"
@@ -85,7 +85,7 @@
 
     <!-- Using Thymeleaf TERASOLUNA dialects. -->
     <bean id="terasolunaGfwDialect"
-        class="jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect">
+        class="io.github.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect">
         <constructor-arg ref="messageSource" />
     </bean>
 

@@ -10,7 +10,7 @@ install:
   - export CODACY_PROJECT_TOKEN=b0b3bdd204954c3da2d023f30fd72fc6
   - wget https://github.com/codacy/codacy-coverage-reporter/releases/download/${CODACY_COVERAGE_REPORTER_VERSION}/codacy-coverage-reporter-${CODACY_COVERAGE_REPORTER_VERSION}-assembly.jar
 script:
-  - mvn clean install -Dlogback.level.test.result=info
+  - mvn clean install -Dapp.log.level.test=info
 after_script:
   - mvn jacoco:report -pl thymeleaf-extras-terasoluna-gfw
   - java -cp codacy-coverage-reporter-${CODACY_COVERAGE_REPORTER_VERSION}-assembly.jar com.codacy.CodacyCoverageReporter -l Java -r thymeleaf-extras-terasoluna-gfw/target/site/jacoco/jacoco.xml

@@ -33,7 +33,7 @@
     </appender>
 
     <!-- Application Loggers -->
-    <logger name="jp.yoshikawaa.gfw">
+    <logger name="io.github.yoshikawaa.gfw">
         <level value="debug" />
     </logger>
 
