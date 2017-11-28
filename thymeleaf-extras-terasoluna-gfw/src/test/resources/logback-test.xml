@@ -8,12 +8,12 @@
         </encoder>
     </appender>
 
-    <logger name="jp.yoshikawaa.gfw">
+    <logger name="io.github.yoshikawaa.gfw">
         <level value="debug" />
     </logger>
 
-    <logger name="jp.yoshikawaa.gfw.test.engine">
-        <level value="${logback.level.test.result:-debug}" />
+    <logger name="io.github.yoshikawaa.gfw.test.engine">
+        <level value="${app.log.level.test:-debug}" />
     </logger>
 
     <root level="info">

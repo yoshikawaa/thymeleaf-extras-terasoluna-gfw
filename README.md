@@ -29,7 +29,7 @@ Add dependency `thymeleaf-extras-terasoluna-gfw`.
 
 ```xml
 <dependency>
-    <groupId>jp.yoshikawaa.gfw</groupId>
+    <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>thymeleaf-extras-terasoluna-gfw</artifactId>
     <version><!--$VERSION$--></version>
 </dependency>
@@ -57,7 +57,7 @@ Add dialect `TerasolunaGfwDialect` to `SpringTemplateEngine`. (Required `Message
         <property name="templateResolver" ref="templateResolver" />
         <property name="additionalDialects">
             <set>
-                <bean class="jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect">
+                <bean class="io.github.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect">
                     <constructor-arg ref="messageSource" />
                 </bean>
             </set>

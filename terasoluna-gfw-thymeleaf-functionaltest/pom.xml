@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>jp.yoshikawaa.gfw</groupId>
+    <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>terasoluna-gfw-thymeleaf-functionaltest</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -146,7 +146,7 @@
             <version>${thymeleaf-extras-java8time.version}</version><!--$NO-MVN-MAN-VER$-->
         </dependency>
         <dependency>
-            <groupId>jp.yoshikawaa.gfw</groupId>
+            <groupId>io.github.yoshikawaa.gfw</groupId>
             <artifactId>thymeleaf-extras-terasoluna-gfw</artifactId>
             <version>${thymeleaf-extras-terasoluna-gfw.version}</version>
         </dependency>
