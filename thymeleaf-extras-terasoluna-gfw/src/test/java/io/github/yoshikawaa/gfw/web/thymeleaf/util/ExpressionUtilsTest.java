@@ -8,13 +8,26 @@ import org.thymeleaf.context.IEngineContext;
 import org.thymeleaf.exceptions.TemplateInputException;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
-import io.github.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
-import io.github.yoshikawaa.gfw.web.thymeleaf.util.ReflectionUtils;
+import io.github.yoshikawaa.gfw.test.util.ReflectionUtils;
 
 public class ExpressionUtilsTest {
 
     public ExpressionUtilsTest() {
         ReflectionUtils.newInstance(ExpressionUtils.class, true);
+    }
+
+    @Test
+    public void testIsExpression() {
+        // execute and assert.
+        assertThat(ExpressionUtils.isExpression(null)).isFalse();
+        assertThat(ExpressionUtils.isExpression("")).isFalse();
+        assertThat(ExpressionUtils.isExpression("test")).isFalse();
+        assertThat(ExpressionUtils.isExpression("${test}")).isTrue();
+        assertThat(ExpressionUtils.isExpression("*{test}")).isTrue();
+        assertThat(ExpressionUtils.isExpression("#{test}")).isTrue();
+        assertThat(ExpressionUtils.isExpression("@{test}")).isTrue();
+        assertThat(ExpressionUtils.isExpression("~{test}")).isTrue();
+        assertThat(ExpressionUtils.isExpression("%{test}")).isFalse();
     }
 
     @Test

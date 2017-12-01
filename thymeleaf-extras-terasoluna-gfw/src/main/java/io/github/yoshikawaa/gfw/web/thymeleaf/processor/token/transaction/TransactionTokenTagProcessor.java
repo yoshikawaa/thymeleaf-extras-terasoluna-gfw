@@ -13,9 +13,9 @@ import org.thymeleaf.templatemode.TemplateMode;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttributeTagProcessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 
-public class TransactionTokenProcessor extends AbstractAttributeRemovalAttributeTagProcessor {
+public class TransactionTokenTagProcessor extends AbstractAttributeRemovalAttributeTagProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(TransactionTokenProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransactionTokenTagProcessor.class);
 
     private static final TemplateMode TEMPLATE_MODE = TemplateMode.HTML;
     private static final String ATTRIBUTE_NAME = "transaction";
@@ -25,7 +25,7 @@ public class TransactionTokenProcessor extends AbstractAttributeRemovalAttribute
     private static final String NAME_ATTR_NAME = "name";
     private static final String VALUE_ATTR_NAME = "value";
 
-    public TransactionTokenProcessor(String dialectPrefix) {
+    public TransactionTokenTagProcessor(String dialectPrefix) {
         super(TEMPLATE_MODE, dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
     }
 

@@ -1,13 +1,10 @@
 package io.github.yoshikawaa.gfw.web.thymeleaf.processor.message;
 
 import java.util.Arrays;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.MessageSource;
 import org.terasoluna.gfw.common.message.ResultMessage;
-import org.terasoluna.gfw.common.message.ResultMessageUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.AttributeName;
@@ -24,6 +21,7 @@ import com.google.common.base.Joiner;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttributeTagProcessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
+import io.github.yoshikawaa.gfw.web.thymeleaf.util.MessageUtils;
 
 public class MessagesPanelTagProcessor extends AbstractAttributeRemovalAttributeTagProcessor {
 
@@ -35,14 +33,8 @@ public class MessagesPanelTagProcessor extends AbstractAttributeRemovalAttribute
 
     private static final String CLASS_ATTR_NAME = "class";
 
-    private final MessageSource messageSource;
-
-    public MessagesPanelTagProcessor(String dialectPrefix, MessageSource messageSource) {
+    public MessagesPanelTagProcessor(String dialectPrefix) {
         super(TEMPLATE_MODE, dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
-        if (messageSource == null) {
-            throw new IllegalArgumentException("messageSource must not be null.");
-        }
-        this.messageSource = messageSource;
     }
 
     @Override
@@ -125,23 +117,23 @@ public class MessagesPanelTagProcessor extends AbstractAttributeRemovalAttribute
     private IModel buildInnerElement(ITemplateContext context, Object message, String innerElement,
             boolean disableHtmlEscape) {
 
-        final Locale locale = context.getLocale();
-
         final IModelFactory modelFactory = context.getModelFactory();
         final IModel model = modelFactory.createModel();
 
         model.add(modelFactory.createOpenElementTag(innerElement));
-        model.add(modelFactory.createText((disableHtmlEscape) ? resolveMessage(message, locale)
-                : HtmlEscape.escapeHtml5(resolveMessage(message, locale))));
+        model.add(modelFactory.createText((disableHtmlEscape) ? resolveMessage(context, message)
+                : HtmlEscape.escapeHtml5(resolveMessage(context, message))));
         model.add(modelFactory.createCloseElementTag(innerElement));
 
         return model;
     }
 
-    private String resolveMessage(Object message, Locale locale) {
+    private String resolveMessage(ITemplateContext context, Object message) {
 
         if (message instanceof ResultMessage) {
-            return ResultMessageUtils.resolveMessage((ResultMessage) message, messageSource, locale);
+            ResultMessage resultMessage = (ResultMessage) message;
+            return MessageUtils.resolveMessage(this.getClass(), context, resultMessage.getCode(),
+                    resultMessage.getArgs(), resultMessage.getText());
         } else if (message instanceof String) {
             return (String) message;
         } else if (message instanceof Throwable) {

@@ -12,12 +12,12 @@ import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 import io.github.yoshikawaa.gfw.test.support.LogbackMockSupport;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenProcessor;
+import io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenTagProcessor;
 
-public class TransactionTokenProcessorTest extends LogbackMockSupport {
+public class TransactionTokenTagProcessorTest extends LogbackMockSupport {
 
-    public TransactionTokenProcessorTest() {
-        super(TransactionTokenProcessor.class);
+    public TransactionTokenTagProcessorTest() {
+        super(TransactionTokenTagProcessor.class);
     }
 
     @Test

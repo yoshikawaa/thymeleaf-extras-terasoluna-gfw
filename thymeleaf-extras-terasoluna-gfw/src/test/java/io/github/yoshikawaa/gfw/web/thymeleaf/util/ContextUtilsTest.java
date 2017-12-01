@@ -16,8 +16,8 @@ import org.thymeleaf.engine.TestTemplateDataBuilder;
 import org.thymeleaf.exceptions.TemplateInputException;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
+import io.github.yoshikawaa.gfw.test.util.ReflectionUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
-import io.github.yoshikawaa.gfw.web.thymeleaf.util.ReflectionUtils;
 
 public class ContextUtilsTest {
 

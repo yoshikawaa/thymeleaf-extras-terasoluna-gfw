@@ -87,6 +87,11 @@
             <version>${jsoup.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring4</artifactId>
+            <version>${thymeleaf.version}</version><!--$NO-MVN-MAN-VER$ -->
+        </dependency>
     </dependencies>
 
     <build>

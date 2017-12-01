@@ -24,7 +24,9 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
 
     public ThymeleafPaginationInfo(ITemplateContext context, Page<?> page, String expression, String criteriaQuery,
             boolean disableHtmlEscapeOfCriteriaQuery, int maxDisplayCount) {
-        super(page, PaginationInfo.DEFAULT_PATH_TEMPLATE, PaginationInfo.DEFAULT_QUERY_TEMPLATE, criteriaQuery,
+        super(page, PaginationInfo.DEFAULT_PATH_TEMPLATE, PaginationInfo.DEFAULT_QUERY_TEMPLATE,
+                (ExpressionUtils.isExpression(criteriaQuery))
+                        ? ExpressionUtils.execute(context, criteriaQuery, String.class) : criteriaQuery,
                 disableHtmlEscapeOfCriteriaQuery, maxDisplayCount);
 
         this.context = context;
@@ -59,9 +61,7 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
         // append criteria query
         String criteriaQuery = getCriteriaQuery();
         if (!StringUtils.isEmptyOrWhitespace(criteriaQuery)) {
-            String criteriaQueryString = (criteriaQuery.startsWith("$"))
-                    ? ExpressionUtils.execute(context, criteriaQuery, String.class) : criteriaQuery;
-            return (pageUrl.contains("?")) ? pageUrl + "&" + criteriaQueryString : pageUrl + "?" + criteriaQueryString;
+            return (pageUrl.contains("?")) ? pageUrl + "&" + criteriaQuery : pageUrl + "?" + criteriaQuery;
         }
         return pageUrl;
     }

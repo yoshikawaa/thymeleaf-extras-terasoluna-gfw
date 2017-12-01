@@ -7,16 +7,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
-import org.springframework.context.support.StaticMessageSource;
-import org.terasoluna.gfw.web.el.Functions;
 import org.thymeleaf.expression.IExpressionObjectFactory;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor;
 
-import io.github.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect;
+import io.github.yoshikawaa.gfw.web.thymeleaf.expression.Query;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelTagProcessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationTagProcessor;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenProcessor;
+import io.github.yoshikawaa.gfw.web.thymeleaf.processor.standard.MultiLineTextTagProcessor;
+import io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenTagProcessor;
 
 public class TerasolunaGfwDialectTest {
 
@@ -26,22 +25,22 @@ public class TerasolunaGfwDialectTest {
         String dialectPrefix = "t";
 
         // execute.
-        TerasolunaGfwDialect dialect = new TerasolunaGfwDialect(new StaticMessageSource());
+        TerasolunaGfwDialect dialect = new TerasolunaGfwDialect();
 
         // assert.
         assertThat(dialect.getPrefix()).isEqualTo(dialectPrefix);
 
         Set<IProcessor> processors = dialect.getProcessors(dialectPrefix);
-        assertThat(processors).hasSize(4);
+        assertThat(processors).hasSize(5);
         List<Class<?>> types = processors.stream().map(p -> p.getClass()).collect(Collectors.toList());
-        assertThat(types).containsOnly(MessagesPanelTagProcessor.class, TransactionTokenProcessor.class,
-                PaginationTagProcessor.class, StandardXmlNsTagProcessor.class);
+        assertThat(types).containsOnly(MessagesPanelTagProcessor.class, PaginationTagProcessor.class,
+                TransactionTokenTagProcessor.class, MultiLineTextTagProcessor.class, StandardXmlNsTagProcessor.class);
 
         IExpressionObjectFactory factory = dialect.getExpressionObjectFactory();
         factory.getAllExpressionObjectNames().stream().forEach(n -> {
-            assertThat(n).isEqualTo("f");
-            assertThat(factory.buildObject(null, n)).isInstanceOf(Functions.class);
-            assertThat(factory.isCacheable(n)).isFalse();
+            assertThat(n).isEqualTo("query");
+            assertThat(factory.buildObject(null, n)).isInstanceOf(Query.class);
+            assertThat(factory.isCacheable(n)).isTrue();
         });
     }
 
@@ -51,7 +50,7 @@ public class TerasolunaGfwDialectTest {
         String dialectPrefix = "terasoluna";
 
         // execute.
-        TerasolunaGfwDialect dialect = new TerasolunaGfwDialect(dialectPrefix, new StaticMessageSource());
+        TerasolunaGfwDialect dialect = new TerasolunaGfwDialect("terasoluna");
 
         // assert.
         assertThat(dialect.getPrefix()).isEqualTo(dialectPrefix);
