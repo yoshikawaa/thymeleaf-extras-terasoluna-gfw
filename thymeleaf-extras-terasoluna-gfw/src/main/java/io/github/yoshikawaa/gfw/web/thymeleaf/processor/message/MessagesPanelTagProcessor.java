@@ -38,6 +38,12 @@ import io.github.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.MessageUtils;
 
+/**
+ * Attribute tag processor for generating tags from {@link ResultMessages}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see ResultMessages
+ */
 public class MessagesPanelTagProcessor extends AbstractAttributeRemovalAttributeTagProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(MessagesPanelTagProcessor.class);
@@ -48,10 +54,16 @@ public class MessagesPanelTagProcessor extends AbstractAttributeRemovalAttribute
 
     private static final String CLASS_ATTR_NAME = "class";
 
+    /**
+     * @param dialectPrefix prefix of attribute
+     */
     public MessagesPanelTagProcessor(String dialectPrefix) {
         super(TEMPLATE_MODE, dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
             String attributeValue, IElementTagStructureHandler structureHandler) {

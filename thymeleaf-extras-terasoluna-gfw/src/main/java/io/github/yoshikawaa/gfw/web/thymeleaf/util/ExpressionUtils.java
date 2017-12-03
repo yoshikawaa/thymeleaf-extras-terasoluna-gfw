@@ -21,18 +21,38 @@ import org.springframework.util.StringUtils;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.exceptions.TemplateInputException;
+import org.thymeleaf.standard.expression.Expression;
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
 
+/**
+ * Utility for handling {@link Expression}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see Expression
+ */
 public class ExpressionUtils {
 
     private static final Pattern PATTERN_EXPRESSION = Pattern.compile("(\\$|\\*|\\#|\\@|\\~)\\{(.+?)\\}");
 
+    /**
+     * Verify whether or not be expression.
+     * 
+     * @param expressionString string to be verified
+     * @return whether or not be expression
+     */
     public static boolean isExpression(String expressionString) {
         return StringUtils.isEmpty(expressionString) ? false : PATTERN_EXPRESSION.matcher(expressionString).matches();
     }
 
+    /**
+     * Resolve expression.
+     * 
+     * @param context template context used to resolve expression
+     * @param expressionString string to be resolved
+     * @return resolved object
+     */
     public static Object execute(final ITemplateContext context, String expressionString) {
 
         final IEngineConfiguration configuration = context.getConfiguration();
@@ -41,6 +61,16 @@ public class ExpressionUtils {
         return expression.execute(context);
     }
 
+    /**
+     * Resolve expression type safely.
+     * 
+     * @param <T> resolved type
+     * @param context template context used to resolve expression
+     * @param expressionString string to be resolved
+     * @param clazz resolved type
+     * @return resolved object
+     * @see #execute(ITemplateContext, String)
+     */
     public static <T> T execute(final ITemplateContext context, String expressionString, Class<T> clazz) {
 
         Object result = execute(context, expressionString);
@@ -50,4 +80,8 @@ public class ExpressionUtils {
         }
         return clazz.cast(result);
     }
+
+    private ExpressionUtils() {
+    }
+
 }

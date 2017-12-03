@@ -28,6 +28,12 @@ import org.thymeleaf.templatemode.TemplateMode;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttributeTagProcessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 
+/**
+ * Attribute tag processor for generating tags from {@link TransactionToken}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see TransactionToken
+ */
 public class TransactionTokenTagProcessor extends AbstractAttributeRemovalAttributeTagProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionTokenTagProcessor.class);
@@ -40,10 +46,16 @@ public class TransactionTokenTagProcessor extends AbstractAttributeRemovalAttrib
     private static final String NAME_ATTR_NAME = "name";
     private static final String VALUE_ATTR_NAME = "value";
 
+    /**
+     * @param dialectPrefix prefix of attribute
+     */
     public TransactionTokenTagProcessor(String dialectPrefix) {
         super(TEMPLATE_MODE, dialectPrefix, ATTRIBUTE_NAME, PRECEDENCE);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
             String attributeValue, IElementTagStructureHandler structureHandler) {

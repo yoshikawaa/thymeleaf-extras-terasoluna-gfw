@@ -21,6 +21,12 @@ import org.thymeleaf.model.IProcessableElementTag;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.IAttributeTagAccessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ElementTagUtils;
 
+/**
+ * Attribute accessor for {@link PaginationTagProcessor}
+ * 
+ * @author Atsushi Yoshikawa
+ * @see PaginationTagProcessor
+ */
 public class PaginationTagAccessor implements IAttributeTagAccessor {
 
     private static final String ATTRIBUTE_INNER_ELEMENT = "inner-element";
@@ -66,6 +72,12 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
     private final boolean disableHtmlEscapeOfCriteriaQuery;
     private final boolean enableLinkOfCurrentPage;
 
+    /**
+     * Collect attributes related to {@link PaginationTagProcessor}.
+     * 
+     * @param tag source tag
+     * @param dialectPrefix prefix of attribute
+     */
     public PaginationTagAccessor(IProcessableElementTag tag, String dialectPrefix) {
 
         this.innerElement = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_INNER_ELEMENT,
@@ -95,59 +107,101 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
                 ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE, DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String[] getAttributeNames() {
         return ATTRIBUTE_NAMES;
     }
 
+    /**
+     * @return value of {@code inner-element} attribute
+     */
     public String getInnerElement() {
         return innerElement;
     }
 
+    /**
+     * @return value of {@code disabled-class} attribute
+     */
     public String getDisabledClass() {
         return disabledClass;
     }
 
+    /**
+     * @return value of {@code active-class} attribute
+     */
     public String getActiveClass() {
         return activeClass;
     }
 
+    /**
+     * @return value of {@code first-link-text} attribute
+     */
     public String getFirstLinkText() {
         return firstLinkText;
     }
 
+    /**
+     * @return value of {@code previous-link-text} attribute
+     */
     public String getPreviousLinkText() {
         return previousLinkText;
     }
 
+    /**
+     * @return value of {@code next-link-text} attribute
+     */
     public String getNextLinkText() {
         return nextLinkText;
     }
 
+    /**
+     * @return value of {@code last-link-text} attribute
+     */
     public String getLastLinkText() {
         return lastLinkText;
     }
 
+    /**
+     * @return value of {@code max-display-count} attribute
+     */
     public int getMaxDisplayCount() {
         return maxDisplayCount;
     }
 
+    /**
+     * @return value of {@code disabled-href} attribute
+     */
     public String getDisabledHref() {
         return disabledHref;
     }
 
+    /**
+     * @return value of {@code href-tmpl} attribute
+     */
     public String getHrefTmpl() {
         return hrefTmpl;
     }
 
+    /**
+     * @return value of {@code criteria-query} attribute
+     */
     public String getCriteriaQuery() {
         return criteriaQuery;
     }
 
+    /**
+     * @return value of {@code disable-html-escape-of-criteria-query} attribute
+     */
     public boolean isDisableHtmlEscapeOfCriteriaQuery() {
         return disableHtmlEscapeOfCriteriaQuery;
     }
 
+    /**
+     * @return value of {@code enable-link-of-current-page} attribute
+     */
     public boolean isEnableLinkOfCurrentPage() {
         return enableLinkOfCurrentPage;
     }

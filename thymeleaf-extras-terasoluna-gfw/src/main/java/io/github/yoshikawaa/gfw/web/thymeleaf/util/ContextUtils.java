@@ -20,18 +20,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.context.WebEngineContext;
+import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.exceptions.TemplateInputException;
 
+/**
+ * Utility for handling {@link ITemplateContext}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see ITemplateContext
+ */
 public class ContextUtils {
 
+    /**
+     * Get attribute value.
+     * <ul>
+     * <li>If context is {@link IWebContext}, get attribute value from request, session, servlet context.</li>
+     * <li>If other context, get attribute value from local variable.</li>
+     * </ul>
+     * 
+     * @param context template context used to resolve attribute
+     * @param name attribute name
+     * @return resolved attribute value
+     * @see IWebContext
+     */
     public static Object getAttribute(final ITemplateContext context, final String name) {
 
-        if (context instanceof WebEngineContext) {
-            final WebEngineContext wec = (WebEngineContext) context;
-            final HttpServletRequest request = wec.getRequest();
-            final HttpSession session = wec.getSession();
-            final ServletContext servletContext = wec.getServletContext();
+        if (context instanceof IWebContext) {
+            final IWebContext wc = (IWebContext) context;
+            final HttpServletRequest request = wc.getRequest();
+            final HttpSession session = wc.getSession();
+            final ServletContext servletContext = wc.getServletContext();
 
             Object value = request.getAttribute(name);
             if (value == null)
@@ -44,6 +62,16 @@ public class ContextUtils {
         }
     }
 
+    /**
+     * Get attribute value type safely.
+     * 
+     * @param <T> attribute type
+     * @param context template context used to resolve attribute
+     * @param name attribute name
+     * @param clazz attribute type
+     * @return resolved attribute value
+     * @see #getAttribute(ITemplateContext, String)
+     */
     public static <T> T getAttribute(final ITemplateContext context, final String name, Class<T> clazz) {
 
         Object result = getAttribute(context, name);
@@ -52,6 +80,9 @@ public class ContextUtils {
                     + result.getClass().getName());
         }
         return clazz.cast(result);
+    }
+
+    private ContextUtils() {
     }
 
 }

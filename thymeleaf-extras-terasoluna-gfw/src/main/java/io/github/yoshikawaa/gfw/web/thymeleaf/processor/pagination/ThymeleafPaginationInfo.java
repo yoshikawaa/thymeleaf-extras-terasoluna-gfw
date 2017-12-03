@@ -25,6 +25,12 @@ import org.thymeleaf.util.StringUtils;
 
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
+/**
+ * Pagination info for Thymeleaf. Extend {@link PaginationInfo}
+ * 
+ * @author Atsushi Yoshikawa
+ * @see PaginationInfo
+ */
 public class ThymeleafPaginationInfo extends PaginationInfo {
 
     private final ITemplateContext context;
@@ -33,10 +39,28 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
     private final int pageSize;
     private final Sort pageSort;
 
+    /**
+     * Create {@link PaginationInfo} without criteria query.
+     * 
+     * @param context template context used to resolve expression
+     * @param page page content
+     * @param expression page links URL expression
+     * @param maxDisplayCount max count of display page links
+     */
     public ThymeleafPaginationInfo(ITemplateContext context, Page<?> page, String expression, int maxDisplayCount) {
         this(context, page, expression, null, false, maxDisplayCount);
     }
 
+    /**
+     * Create {@link PaginationInfo} with criteria query.
+     * 
+     * @param context template context used to resolve expression
+     * @param page page content
+     * @param expression page links URL expression
+     * @param criteriaQuery criteria query string or expression
+     * @param disableHtmlEscapeOfCriteriaQuery whether or not disable to escape criteria query
+     * @param maxDisplayCount max count of display page links
+     */
     public ThymeleafPaginationInfo(ITemplateContext context, Page<?> page, String expression, String criteriaQuery,
             boolean disableHtmlEscapeOfCriteriaQuery, int maxDisplayCount) {
         super(page, PaginationInfo.DEFAULT_PATH_TEMPLATE, PaginationInfo.DEFAULT_QUERY_TEMPLATE,
@@ -50,6 +74,10 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
         this.pageSort = page.getSort();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getPageUrl(int pageIndex) {
         if (StringUtils.isEmptyOrWhitespace(expression)) {
             return super.getPageUrl(pageIndex);

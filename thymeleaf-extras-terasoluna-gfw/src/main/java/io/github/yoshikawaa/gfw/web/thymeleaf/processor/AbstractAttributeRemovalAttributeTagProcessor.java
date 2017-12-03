@@ -18,6 +18,11 @@ package io.github.yoshikawaa.gfw.web.thymeleaf.processor;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
 
+/**
+ * Abstract attribute tag processor that remove processed attribute.
+ * 
+ * @author Atsushi Yoshikawa
+ */
 public abstract class AbstractAttributeRemovalAttributeTagProcessor extends AbstractAttributeTagProcessor {
 
     protected AbstractAttributeRemovalAttributeTagProcessor(TemplateMode templateMode, String dialectPrefix,

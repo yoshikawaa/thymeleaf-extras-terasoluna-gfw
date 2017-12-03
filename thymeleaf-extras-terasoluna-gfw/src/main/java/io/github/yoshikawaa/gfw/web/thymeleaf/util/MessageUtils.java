@@ -16,10 +16,27 @@
 package io.github.yoshikawaa.gfw.web.thymeleaf.util;
 
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.messageresolver.IMessageResolver;
 import org.thymeleaf.util.StringUtils;
 
+/**
+ * Utility for handling {@link IMessageResolver}
+ * 
+ * @author Atsushi Yoshikawa
+ * @see IMessageResolver
+ */
 public class MessageUtils {
 
+    /**
+     * Resolve message.
+     * 
+     * @param origin class of processor
+     * @param context template context used to resolve message
+     * @param code message key
+     * @param args message arguments
+     * @param defaultMessage return when message is not found
+     * @return resolved message value or default
+     */
     public static String resolveMessage(Class<?> origin, ITemplateContext context, String code, Object[] args,
             String defaultMessage) {
 
@@ -28,6 +45,9 @@ public class MessageUtils {
         }
         String resolvedMessage = context.getMessage(origin, code, args, false);
         return StringUtils.isEmpty(resolvedMessage) ? defaultMessage : resolvedMessage;
+    }
+
+    private MessageUtils() {
     }
 
 }

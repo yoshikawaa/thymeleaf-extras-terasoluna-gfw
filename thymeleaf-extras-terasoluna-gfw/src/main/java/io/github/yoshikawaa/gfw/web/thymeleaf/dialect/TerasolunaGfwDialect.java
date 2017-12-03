@@ -34,20 +34,40 @@ import io.github.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationTag
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.standard.MultiLineTextTagProcessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenTagProcessor;
 
+/**
+ * Dialect for TERASOLUNA common libraries.
+ * 
+ * @see MessagesPanelTagProcessor
+ * @see PaginationTagProcessor
+ * @see TransactionTokenTagProcessor
+ * @see MultiLineTextTagProcessor
+ * @see Query
+ */
 public class TerasolunaGfwDialect extends AbstractProcessorDialect implements IExpressionObjectDialect {
 
     private static final String DIALECT_NAME = "TERASOLUNA GFW Dialect";
     private static final String DIALECT_PREFIX = "t";
     private static final Set<String> EXPRESSION_NAMES = Collections.singleton("query");
 
+    /**
+     * Using default dialect prefix.
+     */
     public TerasolunaGfwDialect() {
         this(DIALECT_PREFIX);
     }
 
+    /**
+     * Using custom dialect prefix.
+     * 
+     * @param dialectPrefix prefix of attribute
+     */
     public TerasolunaGfwDialect(String dialectPrefix) {
         super(DIALECT_NAME, dialectPrefix, StandardDialect.PROCESSOR_PRECEDENCE);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
         final Set<IProcessor> processors = new HashSet<IProcessor>();
@@ -59,6 +79,9 @@ public class TerasolunaGfwDialect extends AbstractProcessorDialect implements IE
         return processors;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IExpressionObjectFactory getExpressionObjectFactory() {
         return new IExpressionObjectFactory() {
