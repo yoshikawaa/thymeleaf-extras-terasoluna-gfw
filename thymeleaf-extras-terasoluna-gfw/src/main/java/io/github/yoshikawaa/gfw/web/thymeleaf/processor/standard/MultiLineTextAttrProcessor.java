@@ -26,6 +26,15 @@ import org.unbescape.html.HtmlEscape;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemovalAttrProcessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
+/**
+ * Attribute tag processor for multi-line text.
+ * <p>
+ * Escape text and convert line-break characters to {@code <br>
+ * } element. Support {@code CR}, {@code LF}, and {@code CRLF} as line-break characters.
+ * </p>
+ * 
+ * @author Atsushi Yoshikawa
+ */
 public class MultiLineTextAttrProcessor extends AbstractAttributeRemovalAttrProcessor {
 
     private static final String ATTRIBUTE_NAME = "mtext";
@@ -34,15 +43,24 @@ public class MultiLineTextAttrProcessor extends AbstractAttributeRemovalAttrProc
     private static final Pattern PATTERN_LINE_BREAK = Pattern.compile("(\\r\\n|\\r|\\n)");
     private static final String TAG_LINE_BREAK = "<br>";
 
+    /**
+     * @param dialectPrefix prefix of attribute
+     */
     public MultiLineTextAttrProcessor(String dialectPrefix) {
         super(dialectPrefix, ATTRIBUTE_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPrecedence() {
         return PRECEDENCE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void process(final Arguments arguments, final Element element, final String attributeName) {
 

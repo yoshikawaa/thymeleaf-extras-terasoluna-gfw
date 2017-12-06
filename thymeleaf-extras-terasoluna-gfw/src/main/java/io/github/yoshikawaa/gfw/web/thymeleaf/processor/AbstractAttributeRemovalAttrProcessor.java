@@ -20,6 +20,11 @@ import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
 
+/**
+ * Abstract attribute tag processor that remove processed attribute.
+ * 
+ * @author Atsushi Yoshikawa
+ */
 public abstract class AbstractAttributeRemovalAttrProcessor extends AbstractAttrProcessor {
 
     private final String dialectPrefix;

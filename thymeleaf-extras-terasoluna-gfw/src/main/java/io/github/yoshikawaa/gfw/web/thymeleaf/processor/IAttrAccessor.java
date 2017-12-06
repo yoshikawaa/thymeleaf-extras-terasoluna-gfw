@@ -15,7 +15,15 @@
  */
 package io.github.yoshikawaa.gfw.web.thymeleaf.processor;
 
+/**
+ * Interface of attribute accessor.
+ * 
+ * @author Atsushi Yoshikawa
+ */
 public interface IAttrAccessor {
 
+    /**
+     * @return all attribute names
+     */
     String[] getAttributeNames();
 }

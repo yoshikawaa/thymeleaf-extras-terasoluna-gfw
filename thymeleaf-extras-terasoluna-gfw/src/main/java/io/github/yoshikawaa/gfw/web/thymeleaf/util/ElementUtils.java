@@ -20,20 +20,53 @@ import java.util.Arrays;
 import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
 
+/**
+ * Utility for handling {@link Element}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see Element
+ */
 public class ElementUtils {
 
+    /**
+     * Get attribute value or default.
+     * 
+     * @param element source element
+     * @param dialectPrefix prefix of attribute
+     * @param attributeName attribute name
+     * @param defaultValue return when attribute is not found
+     * @return resolved attribute value or default
+     */
     public static String getAttributeValue(Element element, String dialectPrefix, String attributeName,
             String defaultValue) {
         return element.hasNormalizedAttribute(dialectPrefix, attributeName)
                 ? element.getAttributeValueFromNormalizedName(dialectPrefix, attributeName) : defaultValue;
     }
 
+    /**
+     * Get attribute value or default.
+     * 
+     * @param element source element
+     * @param dialectPrefix prefix of attribute
+     * @param attributeName attribute name
+     * @param defaultValue return when attribute is not found
+     * @return resolved attribute value or default
+     */
     public static int getAttributeValue(Element element, String dialectPrefix, String attributeName, int defaultValue) {
         return element.hasNormalizedAttribute(dialectPrefix, attributeName)
                 ? Integer.valueOf(element.getAttributeValueFromNormalizedName(dialectPrefix, attributeName))
                 : defaultValue;
     }
 
+    /**
+     * Get attribute value or default.
+     * 
+     * @param element source element
+     * @param dialectPrefix prefix of attribute
+     * @param attributeName attribute name
+     * @param defaultValue return when attribute is not found
+     * @return resolved attribute value or default
+     */
     public static boolean getAttributeValue(Element element, String dialectPrefix, String attributeName,
             boolean defaultValue) {
         return element.hasNormalizedAttribute(dialectPrefix, attributeName)
@@ -41,6 +74,13 @@ public class ElementUtils {
                 : defaultValue;
     }
 
+    /**
+     * Remove attribute.
+     * 
+     * @param element source element
+     * @param dialectPrefix prefix of attribute
+     * @param attributeName attribute name
+     */
     public static void removeAttribute(Element element, String dialectPrefix, String attributeName) {
         Arrays.stream(Attribute.applyPrefixToAttributeName(attributeName, dialectPrefix)).forEach(a -> {
             if (element.hasAttribute(a)) {

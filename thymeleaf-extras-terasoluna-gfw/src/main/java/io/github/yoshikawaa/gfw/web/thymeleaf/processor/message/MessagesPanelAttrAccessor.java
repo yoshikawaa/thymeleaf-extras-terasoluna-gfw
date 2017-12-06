@@ -22,6 +22,12 @@ import org.thymeleaf.util.StringUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.IAttrAccessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ElementUtils;
 
+/**
+ * Attribute accessor for {@link MessagesPanelAttrProcessor}.
+ *
+ * @author Atsushi Yoshikawa
+ * @see MessagesPanelAttrProcessor
+ */
 public class MessagesPanelAttrAccessor implements IAttrAccessor {
 
     private static final String ATTRIBUTE_PANEL_CLASS_NAME = "panel-class-name";
@@ -48,6 +54,12 @@ public class MessagesPanelAttrAccessor implements IAttrAccessor {
     private final String innerElement;
     private final boolean disableHtmlEscape;
 
+    /**
+     * Collect attributes related to {@link MessagesPanelAttrProcessor}.
+     * 
+     * @param element source element
+     * @param dialectPrefix prefix of attribute
+     */
     public MessagesPanelAttrAccessor(Element element, String dialectPrefix) {
 
         this.panelClassName = ElementUtils.getAttributeValue(element, dialectPrefix, ATTRIBUTE_PANEL_CLASS_NAME,
@@ -64,37 +76,63 @@ public class MessagesPanelAttrAccessor implements IAttrAccessor {
                 DEFAULT_DISABLE_HTML_ESCAPE);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String[] getAttributeNames() {
         return ATTRIBUTE_NAMES;
     }
 
+    /**
+     * @param messages object holding messages
+     * @return combined value of {@code panel-type-class-prefix} attribute and type according to {@code messages-type}
+     *         attribute or {@link ResultMessages#getType()}
+     */
     public String getPanelTypeClass(Object messages) {
         final String panelTypeClassSuffix = !StringUtils.isEmptyOrWhitespace(messagesType) ? messagesType
                 : messages instanceof ResultMessages ? ((ResultMessages) messages).getType().getType() : "";
         return panelTypeClassPrefix + panelTypeClassSuffix;
     }
 
-    public String getMessagesType() {
-        return messagesType;
-    }
-
+    /**
+     * @return value of {@code panel-class-name} attribute
+     */
     public String getPanelClassName() {
         return panelClassName;
     }
 
+    /**
+     * @return value of {@code panel-type-class-prefix} attribute
+     */
     public String getPanelTypeClassPrefix() {
         return panelTypeClassPrefix;
     }
 
+    /**
+     * @return value of {@code messages-type} attribute
+     */
+    public String getMessagesType() {
+        return messagesType;
+    }
+
+    /**
+     * @return value of {@code outer-element} attribute
+     */
     public String getOuterElement() {
         return outerElement;
     }
 
+    /**
+     * @return value of {@code inner-element} attribute
+     */
     public String getInnerElement() {
         return innerElement;
     }
 
+    /**
+     * @return value of {@code disable-html-escape} attribute
+     */
     public boolean isDisableHtmlEscape() {
         return disableHtmlEscape;
     }

@@ -20,19 +20,39 @@ import java.util.regex.Pattern;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Configuration;
 import org.thymeleaf.exceptions.TemplateInputException;
+import org.thymeleaf.standard.expression.Expression;
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.util.StringUtils;
 
+/**
+ * Utility for handling {@link Expression}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see Expression
+ */
 public class ExpressionUtils {
 
     private static final Pattern PATTERN_EXPRESSION = Pattern.compile("(\\$|\\*|\\#|\\@)\\{(.+?)\\}");
     
+    /**
+     * Verify whether or not be expression.
+     * 
+     * @param expressionString string to be verified
+     * @return whether or not be expression
+     */
     public static boolean isExpression(String expressionString) {
         return StringUtils.isEmpty(expressionString) ? false : PATTERN_EXPRESSION.matcher(expressionString).matches();
     }
     
+    /**
+     * Resolve expression.
+     * 
+     * @param arguments arguments used to resolve expression
+     * @param expressionString string to be resolved
+     * @return resolved object
+     */
     public static Object execute(Arguments arguments, String expressionString) {
 
         Configuration configuration = arguments.getConfiguration();
@@ -41,6 +61,16 @@ public class ExpressionUtils {
         return expression.execute(configuration, arguments);
     }
 
+    /**
+     * Resolve expression type safely.
+     * 
+     * @param <T> resolved type
+     * @param arguments arguments used to resolve expression
+     * @param expressionString string to be resolved
+     * @param clazz resolved type
+     * @return resolved object
+     * @see #execute(Arguments, String)
+     */
     public static <T extends Object> T execute(Arguments arguments, String expressionString, Class<T> clazz) {
 
         Object result = execute(arguments, expressionString);

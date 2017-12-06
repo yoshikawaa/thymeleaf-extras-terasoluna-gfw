@@ -17,9 +17,25 @@ package io.github.yoshikawaa.gfw.web.thymeleaf.util;
 
 import org.springframework.util.StringUtils;
 import org.thymeleaf.Arguments;
+import org.thymeleaf.messageresolver.IMessageResolver;
 
+/**
+ * Utility for handling {@link IMessageResolver}
+ * 
+ * @author Atsushi Yoshikawa
+ * @see IMessageResolver
+ */
 public class MessageUtils {
 
+    /**
+     * Resolve message.
+     * 
+     * @param arguments arguments used to resolve message
+     * @param code message key
+     * @param args message arguments
+     * @param defaultMessage return when message is not found
+     * @return resolved message value or default
+     */
     public static String resolveMessage(Arguments arguments, String code, Object[] args, String defaultMessage) {
 
         if (StringUtils.isEmpty(code)) {

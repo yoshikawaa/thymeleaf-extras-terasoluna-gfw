@@ -34,6 +34,12 @@ import io.github.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemoval
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ElementUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
 
+/**
+ * Attribute tag processor for generating tags from {@link Page}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see Page
+ */
 public class PaginationAttrProcessor extends AbstractAttributeRemovalAttrProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(PaginationAttrProcessor.class);
@@ -43,15 +49,24 @@ public class PaginationAttrProcessor extends AbstractAttributeRemovalAttrProcess
 
     private static final String DEFAULT_PAGE_EXPRESSION = "${page}";
 
+    /**
+     * @param dialectPrefix prefix of attribute
+     */
     public PaginationAttrProcessor(String dialectPrefix) {
         super(dialectPrefix, ATTRIBUTE_NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPrecedence() {
         return PRECEDENCE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void process(final Arguments arguments, final Element element, final String attributeName) {
 

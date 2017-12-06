@@ -31,6 +31,15 @@ import io.github.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationAtt
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.standard.MultiLineTextAttrProcessor;
 import io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenAttrProcessor;
 
+/**
+ * Dialect for TERASOLUNA common libraries.
+ * 
+ * @see MessagesPanelAttrProcessor
+ * @see PaginationAttrProcessor
+ * @see TransactionTokenAttrProcessor
+ * @see MultiLineTextAttrProcessor
+ * @see Query
+ */
 public class TerasolunaGfwDialect extends AbstractDialect implements IExpressionEnhancingDialect {
 
     private static final String DIALECT_PREFIX = "t";
@@ -38,20 +47,34 @@ public class TerasolunaGfwDialect extends AbstractDialect implements IExpression
 
     private final String dialectPrefix;
 
+    /**
+     * Using default dialect prefix.
+     */
     public TerasolunaGfwDialect() {
         this(DIALECT_PREFIX);
     }
 
+    /**
+     * Using custom dialect prefix.
+     * 
+     * @param dialectPrefix prefix of attribute
+     */
     public TerasolunaGfwDialect(String dialectPrefix) {
         super();
         this.dialectPrefix = dialectPrefix;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getPrefix() {
         return dialectPrefix;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<IProcessor> getProcessors() {
         Set<IProcessor> processors = new HashSet<IProcessor>();
@@ -62,6 +85,9 @@ public class TerasolunaGfwDialect extends AbstractDialect implements IExpression
         return processors;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Object> getAdditionalExpressionObjects(IProcessingContext processingContext) {
         return Collections.singletonMap(EXPRESSION_NAME, new Query());

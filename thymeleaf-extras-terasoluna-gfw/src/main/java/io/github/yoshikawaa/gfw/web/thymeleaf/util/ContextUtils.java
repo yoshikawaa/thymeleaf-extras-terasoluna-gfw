@@ -24,8 +24,26 @@ import org.thymeleaf.context.IContext;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.exceptions.TemplateInputException;
 
+/**
+ * Utility for handling {@link IContext}.
+ * 
+ * @author Atsushi Yoshikawa
+ * @see IContext
+ */
 public class ContextUtils {
 
+    /**
+     * Get attribute value.
+     * <ul>
+     * <li>If context is {@link WebContext}, get attribute value from request, session, servlet context.</li>
+     * <li>If other context, get attribute value from local variable.</li>
+     * </ul>
+     * 
+     * @param arguments arguments used to resolve attribute
+     * @param name attribute name
+     * @return resolved attribute value
+     * @see WebContext
+     */
     public static Object getAttribute(final Arguments arguments, final String name) {
 
         IContext context = arguments.getContext();
@@ -46,6 +64,16 @@ public class ContextUtils {
         }
     }
 
+    /**
+     * Get attribute value type safely.
+     * 
+     * @param <T> attribute type
+     * @param arguments arguments used to resolve attribute
+     * @param name attribute name
+     * @param clazz attribute type
+     * @return resolved attribute value
+     * @see #getAttribute(Arguments, String)
+     */
     public static <T> T getAttribute(final Arguments arguments, final String name, Class<T> clazz) {
 
         Object result = getAttribute(arguments, name);

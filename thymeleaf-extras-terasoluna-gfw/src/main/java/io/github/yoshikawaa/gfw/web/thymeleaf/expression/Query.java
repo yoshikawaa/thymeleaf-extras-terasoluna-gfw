@@ -17,8 +17,20 @@ package io.github.yoshikawaa.gfw.web.thymeleaf.expression;
 
 import org.terasoluna.gfw.web.el.Functions;
 
+/**
+ * Expression utility object for generating query parameters.
+ * 
+ * @author Atsushi Yoshikawa
+ */
 public class Query {
 
+    /**
+     * Generate query parameters using {@link Functions#query(Object)}.
+     * 
+     * @param params generating source
+     * @return generated query parameters without {@code ?} separator.
+     * @see Functions#query(Object)
+     */
     public String params(Object params) {
         return Functions.query(params);
     }
