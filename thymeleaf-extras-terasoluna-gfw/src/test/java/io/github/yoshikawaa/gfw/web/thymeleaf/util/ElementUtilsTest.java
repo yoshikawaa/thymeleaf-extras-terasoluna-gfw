@@ -6,8 +6,8 @@ import org.junit.Test;
 import org.thymeleaf.dom.Element;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
+import io.github.yoshikawaa.gfw.test.util.ReflectionUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ElementUtils;
-import io.github.yoshikawaa.gfw.web.thymeleaf.util.ReflectionUtils;
 
 public class ElementUtilsTest {
 

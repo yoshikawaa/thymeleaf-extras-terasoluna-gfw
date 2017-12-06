@@ -3,15 +3,12 @@ package io.github.yoshikawaa.gfw.web.thymeleaf.processor.message;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.MessageSource;
 import org.terasoluna.gfw.common.message.ResultMessage;
-import org.terasoluna.gfw.common.message.ResultMessageUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
@@ -25,6 +22,7 @@ import io.github.yoshikawaa.gfw.web.thymeleaf.processor.AbstractAttributeRemoval
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ContextUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ElementUtils;
 import io.github.yoshikawaa.gfw.web.thymeleaf.util.ExpressionUtils;
+import io.github.yoshikawaa.gfw.web.thymeleaf.util.MessageUtils;
 
 public class MessagesPanelAttrProcessor extends AbstractAttributeRemovalAttrProcessor {
 
@@ -35,14 +33,8 @@ public class MessagesPanelAttrProcessor extends AbstractAttributeRemovalAttrProc
 
     private static final String CLASS_ATTR_NAME = "class";
 
-    private final MessageSource messageSource;
-
-    public MessagesPanelAttrProcessor(String dialectPrefix, MessageSource messageSource) {
+    public MessagesPanelAttrProcessor(String dialectPrefix) {
         super(dialectPrefix, ATTRIBUTE_NAME);
-        if (messageSource == null) {
-            throw new IllegalArgumentException("messageSource must not be null.");
-        }
-        this.messageSource = messageSource;
     }
 
     @Override
@@ -122,18 +114,18 @@ public class MessagesPanelAttrProcessor extends AbstractAttributeRemovalAttrProc
     private Element buildInnerElement(Arguments arguments, Object message, String innerElement,
             boolean disableHtmlEscape) {
 
-        final Locale locale = arguments.getContext().getLocale();
-
         final Element element = new Element(innerElement);
-        element.addChild(disableHtmlEscape ? new Macro(resolveMessage(message, locale))
-                : new Text(resolveMessage(message, locale)));
+        element.addChild(disableHtmlEscape ? new Macro(resolveMessage(arguments, message))
+                : new Text(resolveMessage(arguments, message)));
         return element;
     }
 
-    private String resolveMessage(Object message, Locale locale) {
+    private String resolveMessage(Arguments arguments, Object message) {
 
         if (message instanceof ResultMessage) {
-            return ResultMessageUtils.resolveMessage((ResultMessage) message, messageSource, locale);
+            ResultMessage resultMessage = (ResultMessage) message;
+            return MessageUtils.resolveMessage(arguments, resultMessage.getCode(), resultMessage.getArgs(),
+                    resultMessage.getText());
         } else if (message instanceof String) {
             return (String) message;
         } else if (message instanceof Throwable) {

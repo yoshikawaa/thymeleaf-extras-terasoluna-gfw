@@ -13,7 +13,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import io.github.yoshikawaa.gfw.test.support.WebClientTestSupport;
 
-public class MessagePanelControllerTest extends WebClientTestSupport {
+public class MessagesPanelControllerTest extends WebClientTestSupport {
 
     @Override
     protected String path() {

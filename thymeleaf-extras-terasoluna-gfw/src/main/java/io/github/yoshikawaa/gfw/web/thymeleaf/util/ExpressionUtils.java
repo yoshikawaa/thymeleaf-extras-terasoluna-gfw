@@ -1,14 +1,23 @@
 package io.github.yoshikawaa.gfw.web.thymeleaf.util;
 
+import java.util.regex.Pattern;
+
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Configuration;
 import org.thymeleaf.exceptions.TemplateInputException;
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
+import org.thymeleaf.util.StringUtils;
 
 public class ExpressionUtils {
 
+    private static final Pattern PATTERN_EXPRESSION = Pattern.compile("(\\$|\\*|\\#|\\@)\\{(.+?)\\}");
+    
+    public static boolean isExpression(String expressionString) {
+        return StringUtils.isEmpty(expressionString) ? false : PATTERN_EXPRESSION.matcher(expressionString).matches();
+    }
+    
     public static Object execute(Arguments arguments, String expressionString) {
 
         Configuration configuration = arguments.getConfiguration();

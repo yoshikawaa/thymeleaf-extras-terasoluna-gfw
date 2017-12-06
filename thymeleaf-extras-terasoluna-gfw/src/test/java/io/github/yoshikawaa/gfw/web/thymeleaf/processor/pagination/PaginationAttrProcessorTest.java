@@ -14,10 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.thymeleaf.processor.AbstractProcessor;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 import io.github.yoshikawaa.gfw.test.support.LogbackMockSupport;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationAttrProcessor;
 
 public class PaginationAttrProcessorTest extends LogbackMockSupport {
 
@@ -36,7 +36,7 @@ public class PaginationAttrProcessorTest extends LogbackMockSupport {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
+        assertThat(element.html().replaceAll("\"", "'")).containsSequence(
                 "<li class='active'><a href='?page=0&amp;size=10'>&lt;&lt;</a></li>",
                 "<li class='active'><a href='?page=4&amp;size=10'>&lt;</a></li>",
                 "<li class='active'><a href='?page=0&amp;size=10'>1</a></li>",
@@ -64,7 +64,7 @@ public class PaginationAttrProcessorTest extends LogbackMockSupport {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
+        assertThat(element.html().replaceAll("\"", "'")).containsSequence(
                 "<li class='active'><a href='?page=0&amp;size=10'>&lt;&lt;</a></li>",
                 "<li class='active'><a href='?page=4&amp;size=10'>&lt;</a></li>",
                 "<li class='active'><a href='?page=0&amp;size=10'>1</a></li>",
@@ -92,7 +92,7 @@ public class PaginationAttrProcessorTest extends LogbackMockSupport {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
+        assertThat(element.html().replaceAll("\"", "'")).containsSequence(
                 "<li class='disabled'>&lt;&lt;</li>", "<li class='disabled'>&lt;</li>", "<li class='disabled'>1</li>",
                 "<li class='active'><a href='?page=1&amp;size=10'>2</a></li>",
                 "<li class='active'><a href='?page=2&amp;size=10'>3</a></li>",
@@ -118,7 +118,7 @@ public class PaginationAttrProcessorTest extends LogbackMockSupport {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
+        assertThat(element.html().replaceAll("\"", "'")).containsSequence(
                 "<li class='disabled'><a href='javascript:void(0)'>&lt;&lt;</a></li>",
                 "<li class='disabled'><a href='javascript:void(0)'>&lt;</a></li>",
                 "<li class='disabled'><a href='javascript:void(0)'>1</a></li>",
@@ -146,7 +146,7 @@ public class PaginationAttrProcessorTest extends LogbackMockSupport {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
+        assertThat(element.html().replaceAll("\"", "'")).containsSequence(
                 "<li class='active'><a href='?page=0&amp;size=10'>&lt;&lt;</a></li>",
                 "<li class='active'><a href='?page=98&amp;size=10'>&lt;</a></li>",
                 "<li class='active'><a href='?page=90&amp;size=10'>91</a></li>",
@@ -174,7 +174,7 @@ public class PaginationAttrProcessorTest extends LogbackMockSupport {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.children().outerHtml().replaceAll("\"", "'")).containsSequence(
+        assertThat(element.html().replaceAll("\"", "'")).containsSequence(
                 "<li class='active'><a href='?page=0&amp;size=10'>&lt;&lt;</a></li>",
                 "<li class='active'><a href='?page=4&amp;size=10'>&lt;</a></li>",
                 "<li class='active'><a href='?page=0&amp;size=10'>1</a></li>",
@@ -216,7 +216,7 @@ public class PaginationAttrProcessorTest extends LogbackMockSupport {
 
     @Test
     public void testPrecedence() {
-        PaginationAttrProcessor processor = new PaginationAttrProcessor("t");
+        AbstractProcessor processor = new PaginationAttrProcessor("t");
         assertThat(processor.getPrecedence()).isEqualTo(1200);
     }
 

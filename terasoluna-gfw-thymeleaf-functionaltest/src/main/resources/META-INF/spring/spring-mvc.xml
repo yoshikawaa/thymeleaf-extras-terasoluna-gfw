@@ -85,9 +85,7 @@
 
     <!-- Using Thymeleaf TERASOLUNA dialects. -->
     <bean id="terasolunaGfwDialect"
-        class="io.github.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect">
-        <constructor-arg ref="messageSource" />
-    </bean>
+        class="io.github.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect" />
 
     <bean id="requestDataValueProcessor"
         class="org.terasoluna.gfw.web.mvc.support.CompositeRequestDataValueProcessor">

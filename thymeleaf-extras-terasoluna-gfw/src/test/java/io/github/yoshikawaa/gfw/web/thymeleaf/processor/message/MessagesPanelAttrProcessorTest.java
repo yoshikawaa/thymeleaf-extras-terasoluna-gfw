@@ -1,20 +1,18 @@
 package io.github.yoshikawaa.gfw.web.thymeleaf.processor.message;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collections;
 import java.util.Map;
 
 import org.jsoup.nodes.Element;
 import org.junit.Test;
-import org.springframework.context.support.StaticMessageSource;
 import org.terasoluna.gfw.common.message.ResultMessage;
 import org.terasoluna.gfw.common.message.ResultMessages;
+import org.thymeleaf.processor.AbstractProcessor;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 import io.github.yoshikawaa.gfw.test.support.LogbackMockSupport;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelAttrProcessor;
 
 public class MessagesPanelAttrProcessorTest extends LogbackMockSupport {
 
@@ -38,8 +36,8 @@ public class MessagesPanelAttrProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert alert-success");
-        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message 1.</li>",
-                "<li>test message 2.</li>", "<li>test message 3.</li>", "</ul>");
+        assertThat(element.html()).containsSequence("<ul>", "<li>test message 1.</li>", "<li>test message 2.</li>",
+                "<li>test message 3.</li>", "</ul>");
     }
 
     @Test
@@ -58,8 +56,8 @@ public class MessagesPanelAttrProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert-success");
-        assertThat(element.children().outerHtml()).containsSequence("<li><span>test1</span></li>",
-                "<li><span>test2</span></li>", "<li><span>test3</span></li>");
+        assertThat(element.html()).containsSequence("<li><span>test1</span></li>", "<li><span>test2</span></li>",
+                "<li><span>test3</span></li>");
     }
 
     @Test
@@ -88,7 +86,7 @@ public class MessagesPanelAttrProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert alert-warn");
-        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
+        assertThat(element.html()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
     }
 
     @Test
@@ -103,7 +101,7 @@ public class MessagesPanelAttrProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert alert-warn");
-        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
+        assertThat(element.html()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
     }
 
     @Test
@@ -118,20 +116,12 @@ public class MessagesPanelAttrProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert alert-warn");
-        assertThat(element.children().outerHtml()).containsSequence("<ul>", "<li>100</li>", "</ul>");
-    }
-
-    @Test
-    public void testMessageWithoutMessageSource() {
-        // execute and assert.
-        assertThatThrownBy(() -> {
-            new MessagesPanelAttrProcessor("t", null);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessage("messageSource must not be null.");
+        assertThat(element.html()).containsSequence("<ul>", "<li>100</li>", "</ul>");
     }
 
     @Test
     public void testPrecedence() {
-        MessagesPanelAttrProcessor processor = new MessagesPanelAttrProcessor("t", new StaticMessageSource());
+        AbstractProcessor processor = new MessagesPanelAttrProcessor("t");
         assertThat(processor.getPrecedence()).isEqualTo(1200);
     }
 

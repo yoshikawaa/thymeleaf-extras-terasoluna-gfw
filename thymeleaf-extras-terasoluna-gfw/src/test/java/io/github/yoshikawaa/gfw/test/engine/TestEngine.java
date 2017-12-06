@@ -3,7 +3,6 @@ package io.github.yoshikawaa.gfw.test.engine;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpSession;
@@ -23,7 +22,6 @@ import org.thymeleaf.TemplateProcessingParameters;
 import org.thymeleaf.TemplateRepository;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.resourceresolver.ClassLoaderResourceResolver;
 import org.thymeleaf.templateresolver.AlwaysValidTemplateResolutionValidity;
@@ -39,7 +37,7 @@ public class TestEngine {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final TemplateEngine engine = new TemplateEngine();
+    protected final TemplateEngine engine = new TemplateEngine();
 
     private final MockServletContext servletContext = new MockServletContext();
     private final MockHttpServletRequest request = new MockHttpServletRequest(servletContext);
@@ -48,11 +46,6 @@ public class TestEngine {
 
     public TestEngine() {
         engine.setTemplateResolver(new StringTemplateResolver());
-    }
-
-    public TestEngine(Set<IDialect> dialects) {
-        this();
-        engine.setAdditionalDialects(dialects);
     }
 
     public TestEngine requestAttribute(String name, Object value) {

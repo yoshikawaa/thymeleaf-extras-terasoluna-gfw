@@ -9,10 +9,10 @@ import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.terasoluna.gfw.web.token.transaction.TransactionToken;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
+import org.thymeleaf.processor.AbstractProcessor;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 import io.github.yoshikawaa.gfw.test.support.LogbackMockSupport;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenAttrProcessor;
 
 public class TransactionTokenAttrProcessorTest extends LogbackMockSupport {
 
@@ -54,7 +54,7 @@ public class TransactionTokenAttrProcessorTest extends LogbackMockSupport {
 
     @Test
     public void testPrecedence() {
-        TransactionTokenAttrProcessor processor = new TransactionTokenAttrProcessor("t");
+        AbstractProcessor processor = new TransactionTokenAttrProcessor("t");
         assertThat(processor.getPrecedence()).isEqualTo(1200);
     }
 

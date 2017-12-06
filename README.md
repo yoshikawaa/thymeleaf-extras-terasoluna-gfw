@@ -37,15 +37,15 @@ Add dependency `thymeleaf-extras-terasoluna-gfw`.
 
 ### Configure `SpringTemplateEngine`.
 
-Add dialect `TerasolunaGfwDialect` to `SpringTemplateEngine`. (Required `MessageSource`)
+Add dialect `TerasolunaGfwDialect` to `SpringTemplateEngine`.
 
 * In Java Config
     ```java
     @Bean
-    public SpringTemplateEngine templateEngine(MessageSource messageSource) {
+    public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
-        templateEngine.addDialect(new TerasolunaGfwDialect(messageSource));
+        templateEngine.addDialect(new TerasolunaGfwDialect());
         return templateEngine;
     }
     ```
@@ -57,9 +57,7 @@ Add dialect `TerasolunaGfwDialect` to `SpringTemplateEngine`. (Required `Message
         <property name="templateResolver" ref="templateResolver" />
         <property name="additionalDialects">
             <set>
-                <bean class="jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect">
-                    <constructor-arg ref="messageSource" />
-                </bean>
+                <bean class="jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect" />
             </set>
         </property>
     </bean>
@@ -71,7 +69,7 @@ Add xml name space to template HTMLs.
 
 ```html
 <!DOCTYPE html>
-<html xmlns:t="https://github.com/yoshikawaa">
+<html xmlns:t="https://io.github.yoshikawaa">
     <!-- omitted. -->
 </html>
 ```
@@ -129,7 +127,7 @@ By default, the expression `${page}` is interpreted and outputted.
 Can be customized with the following attribute values.
 
 | name | description | default |
-|:-------------------------------------:|:--------------------------------------------------:|:--------------------:|
+|:-------------------------------------:|:---------------------------------------------------------------------------------------------:|:--------------------:|
 | pagination | source of the page as expression ex. `${cotents}`. | `${page}` |
 | inner-element | tag name of page link element. | `li` |
 | disabled-class | class name of link inactive. | `disabled` |
@@ -141,7 +139,7 @@ Can be customized with the following attribute values.
 | max-display-count | count of display page number links. | `5` |
 | disabled-href | URL of link inactive. | `javascript:void(0)` |
 | href-tmpl | URL template as `@{/}`. | `` |
-| criteria-query | URL parameters as `param1=a&param2=b`. | `` |
+| criteria-query | URL parameters as `param1=a&param2=b`, or expression as `${#query.params(form)}`. | `` |
 | disable-html-escape-of-criteria-query | sanitize `criteria-query` or not. | `false` |
 | enable-link-of-current-page | enable to link to current page or not. | `false` |
 
@@ -164,10 +162,20 @@ Can be customized with the following attribute values.
 |:-----------:|:-------------------------------------------------:|:-------:|
 | transaction | source of the token as expression ex. `${token}`. | `` |
 
-### Functions Expression Object
+### Multi Line Text Attribute Processor
 
 ```html
-<ul t:pagination="" t:criteria-query="${#f.query(form)}">page links</ul>
+<span t:mtext="${text}">multi-line text</span>
 ```
 
-Can use `Functions` class in `terasoluna-gfw-web` with the name `#f`.
+Escape text and convert line-break characters to `<br>` element.
+
+Support `CR`, `LF`, and `CRLF` as line-break characters.
+
+### Query Expression Object
+
+```html
+<ul t:pagination="" t:criteria-query="${#query.params(form)}">page links</ul>
+```
+
+Can use `Functions#query()` method in `terasoluna-gfw-web` as `#query.params()`.

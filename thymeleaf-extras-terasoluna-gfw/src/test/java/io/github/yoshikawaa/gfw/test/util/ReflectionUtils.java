@@ -1,4 +1,4 @@
-package io.github.yoshikawaa.gfw.web.thymeleaf.util;
+package io.github.yoshikawaa.gfw.test.util;
 
 import java.lang.reflect.Constructor;
 

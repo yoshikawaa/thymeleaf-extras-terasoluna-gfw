@@ -18,7 +18,6 @@ import com.google.common.collect.ImmutableMap;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 import io.github.yoshikawaa.gfw.test.engine.TestEngine;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.pagination.ThymeleafPaginationInfo;
 
 public class ThymeleafPaginationInfoTest {
 
@@ -83,7 +82,7 @@ public class ThymeleafPaginationInfoTest {
         final Arguments arguments = engine.arguments(engine.context(""));
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
-                "@{/sample/pagination/{page}(page=${page},size=${size})}", "${#f.query(query)}", true, 5);
+                "@{/sample/pagination/{page}(page=${page},size=${size})}", "${#query.params(query)}", true, 5);
 
         // execute.
         assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?size=10&item=sample");

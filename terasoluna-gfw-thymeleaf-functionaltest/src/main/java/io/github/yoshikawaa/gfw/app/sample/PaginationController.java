@@ -1,5 +1,6 @@
 package io.github.yoshikawaa.gfw.app.sample;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -29,6 +30,7 @@ public class PaginationController {
         Page<Integer> page = new PageImpl<Integer>(content, pageable, total);
         model.addAttribute("page", page);
         model.addAttribute("pagination", page);
+        model.addAttribute("query", Collections.singletonMap("item", "sample"));
         return "sample/pagination";
     }
 
