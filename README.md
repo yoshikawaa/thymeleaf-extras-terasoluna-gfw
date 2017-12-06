@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/yoshikawaa/terasoluna-gfw-thymeleaf.svg?branch=thymeleaf2)](https://travis-ci.org/yoshikawaa/terasoluna-gfw-thymeleaf)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-thymeleaf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yoshikawaa/terasoluna-gfw-thymeleaf&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-thymeleaf?utm_source=github.com&utm_medium=referral&utm_content=yoshikawaa/terasoluna-gfw-thymeleaf&utm_campaign=Badge_Coverage)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat)](https://github.com/yoshikawaa/terasoluna-gfw-thymeleaf/blob/thymeleaf2/LICENSE.txt)
 
 A personal (experimental,hobby) project to create Thymeleaf custom dialect based on TERASOLUNA Framework 5.x JSP tag library.
 
