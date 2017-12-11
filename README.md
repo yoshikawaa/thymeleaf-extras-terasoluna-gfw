@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/yoshikawaa/terasoluna-gfw-thymeleaf.svg?branch=thymeleaf3)](https://travis-ci.org/yoshikawaa/terasoluna-gfw-thymeleaf)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-thymeleaf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yoshikawaa/terasoluna-gfw-thymeleaf&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-thymeleaf?utm_source=github.com&utm_medium=referral&utm_content=yoshikawaa/terasoluna-gfw-thymeleaf&utm_campaign=Badge_Coverage)
+[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/https/oss.sonatype.org/io.github.yoshikawaa.gfw/thymeleaf-extras-terasoluna-gfw.svg)](https://oss.sonatype.org/content/repositories/snapshots/io/github/yoshikawaa/gfw/thymeleaf-extras-terasoluna-gfw/)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat)](https://github.com/yoshikawaa/terasoluna-gfw-thymeleaf/blob/thymeleaf3/LICENSE.txt)
 
 A personal (experimental,hobby) project to create Thymeleaf custom dialect based on TERASOLUNA Framework 5.x JSP tag library.
@@ -16,12 +17,19 @@ A personal (experimental,hobby) project to create Thymeleaf custom dialect based
 
 ## Getting Start
 
-### Clone and install.
+### Configure Maven.
 
-```bash
-$ git clone -b thymeleaf3 https://github.com/yoshikawaa/terasoluna-gfw-thymeleaf.git
-$ cd terasoluna-gfw-thymeleaf/thymeleaf-extras-terasoluna-gfw
-$ mvn clean install
+(If you use SNAPSHOT version) Add SNAPSHOT repository. (settings.xml or pom.xml)
+
+```xml
+<repositories>
+    <repository>
+        <id>sonatype-snapshots</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        <releases><enabled>false</enabled></releases>
+        <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+</repositories>
 ```
 
 ### Configure dependency.
