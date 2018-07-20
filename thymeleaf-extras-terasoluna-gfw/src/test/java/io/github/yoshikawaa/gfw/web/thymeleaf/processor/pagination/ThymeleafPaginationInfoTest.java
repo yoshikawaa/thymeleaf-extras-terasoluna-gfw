@@ -35,46 +35,7 @@ public class ThymeleafPaginationInfoTest {
     }
 
     @Test
-    public void testCriteriaQuery() {
-        // setup.
-        final TestEngine engine = new TerasolunaGfwTestEngine();
-        final Arguments arguments = engine.arguments(engine.context(""));
-
-        ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
-                "@{/sample/pagination/{page}(page=${page},size=${size})}", "item=sample", true, 5);
-
-        // execute.
-        assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?size=10&item=sample");
-    }
-
-    @Test
-    public void testCriteriaQuery2() {
-        // setup.
-        final TestEngine engine = new TerasolunaGfwTestEngine();
-        final Arguments arguments = engine.arguments(engine.context(""));
-
-        ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
-                "@{/sample/pagination/{page}/{size}(page=${page},size=${size})}", "item=sample", true, 5);
-
-        // execute.
-        assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5/10?item=sample");
-    }
-
-    @Test
-    public void testCriteriaQuery3() {
-        // setup.
-        final TestEngine engine = new TerasolunaGfwTestEngine();
-        final Arguments arguments = engine.arguments(engine.context(""));
-
-        ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
-                "@{/sample/pagination/{page}(page=${page})}", "item=sample", true, 5);
-
-        // execute.
-        assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?item=sample");
-    }
-
-    @Test
-    public void testCriteriaQueryExpression() {
+    public void testQuery() {
         // setup.
         final Map<String, String> query = ImmutableMap.of("item", "sample");
 
@@ -82,7 +43,7 @@ public class ThymeleafPaginationInfoTest {
         final Arguments arguments = engine.arguments(engine.context(""));
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(arguments, buildPage(5, 10),
-                "@{/sample/pagination/{page}(page=${page},size=${size})}", "${#query.params(query)}", true, 5);
+                "@{/sample/pagination/{page}(page=${page},size=${size},__${#query.urlexpression(query)}__)}", 5);
 
         // execute.
         assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?size=10&item=sample");

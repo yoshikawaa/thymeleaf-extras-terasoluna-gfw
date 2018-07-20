@@ -38,7 +38,7 @@ Add dependency `thymeleaf-extras-terasoluna-gfw`.
 
 ```xml
 <dependency>
-    <groupId>jp.yoshikawaa.gfw</groupId>
+    <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>thymeleaf-extras-terasoluna-gfw</artifactId>
     <version><!--$VERSION$--></version>
 </dependency>
@@ -66,7 +66,7 @@ Add dialect `TerasolunaGfwDialect` to `SpringTemplateEngine`.
         <property name="templateResolver" ref="templateResolver" />
         <property name="additionalDialects">
             <set>
-                <bean class="jp.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect" />
+                <bean class="io.github.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect" />
             </set>
         </property>
     </bean>
@@ -147,9 +147,7 @@ Can be customized with the following attribute values.
 | last-link-text | caption of link to last page. | `>>` |
 | max-display-count | count of display page number links. | `5` |
 | disabled-href | URL of link inactive. | `javascript:void(0)` |
-| href-tmpl | URL template as `@{/}`. | `` |
-| criteria-query | URL parameters as `param1=a&param2=b`, or expression as `${#query.params(form)}`. | `` |
-| disable-html-escape-of-criteria-query | sanitize `criteria-query` or not. | `false` |
+| href-tmpl | URL template as `@{/}`. If want to build query string from Objects, Maps, can use `#query.urlexpression()`. | `` |
 | enable-link-of-current-page | enable to link to current page or not. | `false` |
 
 ### Transaction Token Attribute Processor
@@ -183,8 +181,16 @@ Support `CR`, `LF`, and `CRLF` as line-break characters.
 
 ### Query Expression Object
 
+Build Query String same as `Functions#query()`.
+
 ```html
-<ul t:pagination="" t:criteria-query="${#query.params(form)}">page links</ul>
+<a th:href="http://example.com/sample?${#query.string(form)}">
 ```
 
-Can use `Functions#query()` method in `terasoluna-gfw-web` as `#query.params()`.
+`#query.string()` is provided for building direct URI. This builds query string with URI encode using `#uris.escapeQueryParam()`.
+
+```html
+<ul t:pagination="" t:href-tmpl="@{/sample(__${#query.urlexpression(form)}__)}">page links</ul>
+```
+
+`#query.urlexpression()` is provided for using into URL Expression `@{}`. This builds query string without URI encode.

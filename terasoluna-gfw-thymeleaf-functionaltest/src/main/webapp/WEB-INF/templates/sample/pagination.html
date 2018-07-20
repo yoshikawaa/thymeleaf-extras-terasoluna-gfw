@@ -17,8 +17,8 @@
                 t:next-link-text="next" t:last-link-text="last"></ul>
             <ul id="pagination-6" t:pagination="" t:max-display-count="5" t:enable-link-of-current-page="true"></ul>
             <ul id="pagination-7" t:pagination="" t:href-tmpl="@{/sample/pagination/{page}(page=${page},size=${size})}"></ul>
-            <ul id="pagination-8" t:pagination="" t:href-tmpl="@{/sample/pagination(page=${page},size=${size})}"
-                t:criteria-query="${#query.params(query)}" t:disable-html-escape-of-criteria-query="true"></ul>
+            <ul id="pagination-8" t:pagination=""
+                t:href-tmpl="@{/sample/pagination(page=${page},size=${size},__${#query.urlexpression(query)}__)}"></ul>
             <ul id="pagination-9" t:pagination="${pagination}"></ul>
         </div>
         <div th:if="${page.content != null}">
