@@ -98,12 +98,9 @@ public class PaginationTagProcessor extends AbstractAttributeRemovalAttributeTag
         final int maxDisplayCount = attrs.getMaxDisplayCount();
         final String disabledHref = attrs.getDisabledHref();
         final String hrefTmpl = attrs.getHrefTmpl();
-        final String criteriaQuery = attrs.getCriteriaQuery();
-        final boolean disableHtmlEscapeOfCriteriaQuery = attrs.isDisableHtmlEscapeOfCriteriaQuery();
         final boolean enableLinkOfCurrentPage = attrs.isEnableLinkOfCurrentPage();
 
-        final ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, page, hrefTmpl, criteriaQuery,
-                disableHtmlEscapeOfCriteriaQuery, maxDisplayCount);
+        final ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, page, hrefTmpl, maxDisplayCount);
 
         final IModelFactory modelFactory = context.getModelFactory();
         final IModel model = modelFactory.createModel();

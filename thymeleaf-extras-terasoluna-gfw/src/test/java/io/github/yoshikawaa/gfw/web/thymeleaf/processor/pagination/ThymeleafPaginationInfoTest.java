@@ -33,53 +33,14 @@ public class ThymeleafPaginationInfoTest {
     }
 
     @Test
-    public void testCriteriaQuery() {
-        // setup.
-        final String template = "<input />";
-        final IEngineContext context = new TerasolunaGfwTestEngine().context(template);
-
-        ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
-                "@{/sample/pagination/{page}(page=${page},size=${size})}", "item=sample", true, 5);
-
-        // execute.
-        assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?size=10&item=sample");
-    }
-
-    @Test
-    public void testCriteriaQuery2() {
-        // setup.
-        final String template = "<input />";
-        final IEngineContext context = new TerasolunaGfwTestEngine().context(template);
-
-        ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
-                "@{/sample/pagination/{page}/{size}(page=${page},size=${size})}", "item=sample", true, 5);
-
-        // execute.
-        assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5/10?item=sample");
-    }
-
-    @Test
-    public void testCriteriaQuery3() {
-        // setup.
-        final String template = "<input />";
-        final IEngineContext context = new TerasolunaGfwTestEngine().context(template);
-
-        ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
-                "@{/sample/pagination/{page}(page=${page})}", "item=sample", true, 5);
-
-        // execute.
-        assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?item=sample");
-    }
-
-    @Test
-    public void testCriteriaQueryExpression() {
+    public void testQuery() {
         // setup.
         final String template = "<input />";
         final Map<String, String> query = Collections.singletonMap("item", "sample");
         final IEngineContext context = new TerasolunaGfwTestEngine().variable("query", query).context(template);
 
         ThymeleafPaginationInfo info = new ThymeleafPaginationInfo(context, buildPage(5, 10),
-                "@{/sample/pagination/{page}(page=${page},size=${size})}", "${#query.params(query)}", true, 5);
+                "@{/sample/pagination/{page}(page=${page},size=${size},__${#query.urlexpression(query)}__)}", 5);
 
         // execute.
         assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?size=10&item=sample");

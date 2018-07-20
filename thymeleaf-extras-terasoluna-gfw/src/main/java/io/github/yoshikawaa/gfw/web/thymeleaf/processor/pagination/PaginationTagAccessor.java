@@ -39,14 +39,11 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
     private static final String ATTRIBUTE_MAX_DISPLAY_COUNT = "max-display-count";
     private static final String ATTRIBUTE_DISABLED_HREF = "disabled-href";
     private static final String ATTRIBUTE_HREF_TMPL = "href-tmpl";
-    private static final String ATTRIBUTE_CRITERIA_QUERY = "criteria-query";
-    private static final String ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY = "disable-html-escape-of-criteria-query";
     private static final String ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE = "enable-link-of-current-page";
 
     private static final String[] ATTRIBUTE_NAMES = { ATTRIBUTE_INNER_ELEMENT, ATTRIBUTE_DISABLED_CLASS,
             ATTRIBUTE_ACTIVE_CLASS, ATTRIBUTE_FIRST_LINK_TEXT, ATTRIBUTE_PREVIOUS_LINK_TEXT, ATTRIBUTE_NEXT_LINK_TEXT,
             ATTRIBUTE_LAST_LINK_TEXT, ATTRIBUTE_MAX_DISPLAY_COUNT, ATTRIBUTE_DISABLED_HREF, ATTRIBUTE_HREF_TMPL,
-            ATTRIBUTE_CRITERIA_QUERY, ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY,
             ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE };
 
     private static final String DEFAULT_FIRST_LINK_TEXT = "<<";
@@ -54,8 +51,6 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
     private static final String DEFAULT_NEXT_LINK_TEXT = ">";
     private static final String DEFAULT_LAST_LINK_TEXT = ">>";
     private static final String DEFAULT_HREF_TMPL = null;
-    private static final String DEFAULT_CRITERIA_QUERY = null;
-    private static final boolean DEFAULT_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY = false;
     private static final boolean DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE = false;
 
     private final String innerElement;
@@ -68,8 +63,6 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
     private final int maxDisplayCount;
     private final String disabledHref;
     private final String hrefTmpl;
-    private final String criteriaQuery;
-    private final boolean disableHtmlEscapeOfCriteriaQuery;
     private final boolean enableLinkOfCurrentPage;
 
     /**
@@ -99,10 +92,6 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
         this.disabledHref = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_DISABLED_HREF,
                 PaginationInfo.DEFAULT_DISABLED_HREF);
         this.hrefTmpl = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_HREF_TMPL, DEFAULT_HREF_TMPL);
-        this.criteriaQuery = ElementTagUtils.getAttributeValue(tag, dialectPrefix, ATTRIBUTE_CRITERIA_QUERY,
-                DEFAULT_CRITERIA_QUERY);
-        this.disableHtmlEscapeOfCriteriaQuery = ElementTagUtils.getAttributeValue(tag, dialectPrefix,
-                ATTRIBUTE_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY, DEFAULT_DISABLE_HTML_ESCAPE_OF_CRITERIA_QUERY);
         this.enableLinkOfCurrentPage = ElementTagUtils.getAttributeValue(tag, dialectPrefix,
                 ATTRIBUTE_ENABLE_LINK_OF_CURRENT_PAGE, DEFAULT_ENABLE_LINK_OF_CURRENT_PAGE);
     }
@@ -183,20 +172,6 @@ public class PaginationTagAccessor implements IAttributeTagAccessor {
      */
     public String getHrefTmpl() {
         return hrefTmpl;
-    }
-
-    /**
-     * @return value of {@code criteria-query} attribute
-     */
-    public String getCriteriaQuery() {
-        return criteriaQuery;
-    }
-
-    /**
-     * @return value of {@code disable-html-escape-of-criteria-query} attribute
-     */
-    public boolean isDisableHtmlEscapeOfCriteriaQuery() {
-        return disableHtmlEscapeOfCriteriaQuery;
     }
 
     /**

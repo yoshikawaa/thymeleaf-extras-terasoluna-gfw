@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationTagAccessor;
 
 public class PaginationTagAccessorTest {
 
@@ -24,8 +23,6 @@ public class PaginationTagAccessorTest {
         template.append("t:max-display-count='5' ");
         template.append("t:disabled-href='disabled' ");
         template.append("t:href-tmpl='@{/sample/pagination/{page}(page=${page},size=${size})}' ");
-        template.append("t:criteria-query='item=sample' ");
-        template.append("t:disable-html-escape-of-criteria-query='true' ");
         template.append("t:enable-link-of-current-page='true' ");
         template.append("/>");
 
@@ -45,13 +42,10 @@ public class PaginationTagAccessorTest {
         assertThat(accessor.getMaxDisplayCount()).isEqualTo(5);
         assertThat(accessor.getDisabledHref()).isEqualTo("disabled");
         assertThat(accessor.getHrefTmpl()).isEqualTo("@{/sample/pagination/{page}(page=${page},size=${size})}");
-        assertThat(accessor.getCriteriaQuery()).isEqualTo("item=sample");
-        assertThat(accessor.isDisableHtmlEscapeOfCriteriaQuery()).isTrue();
         assertThat(accessor.isEnableLinkOfCurrentPage()).isTrue();
         assertThat(accessor.getAttributeNames()).containsSequence("inner-element", "disabled-class", "active-class",
                 "first-link-text", "previous-link-text", "next-link-text", "last-link-text", "max-display-count",
-                "disabled-href", "href-tmpl", "criteria-query", "disable-html-escape-of-criteria-query",
-                "enable-link-of-current-page");
+                "disabled-href", "href-tmpl", "enable-link-of-current-page");
     }
 
 }

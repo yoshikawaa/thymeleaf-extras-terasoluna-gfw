@@ -48,25 +48,7 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
      * @param maxDisplayCount max count of display page links
      */
     public ThymeleafPaginationInfo(ITemplateContext context, Page<?> page, String expression, int maxDisplayCount) {
-        this(context, page, expression, null, false, maxDisplayCount);
-    }
-
-    /**
-     * Create {@link PaginationInfo} with criteria query.
-     * 
-     * @param context template context used to resolve expression
-     * @param page page content
-     * @param expression page links URL expression
-     * @param criteriaQuery criteria query string or expression
-     * @param disableHtmlEscapeOfCriteriaQuery whether or not disable to escape criteria query
-     * @param maxDisplayCount max count of display page links
-     */
-    public ThymeleafPaginationInfo(ITemplateContext context, Page<?> page, String expression, String criteriaQuery,
-            boolean disableHtmlEscapeOfCriteriaQuery, int maxDisplayCount) {
-        super(page, PaginationInfo.DEFAULT_PATH_TEMPLATE, PaginationInfo.DEFAULT_QUERY_TEMPLATE,
-                (ExpressionUtils.isExpression(criteriaQuery))
-                        ? ExpressionUtils.execute(context, criteriaQuery, String.class) : criteriaQuery,
-                disableHtmlEscapeOfCriteriaQuery, maxDisplayCount);
+        super(page, PaginationInfo.DEFAULT_PATH_TEMPLATE, PaginationInfo.DEFAULT_QUERY_TEMPLATE, maxDisplayCount);
 
         this.context = context;
         this.expression = expression;
@@ -99,14 +81,7 @@ public class ThymeleafPaginationInfo extends PaginationInfo {
         }
 
         // resolve expression
-        String pageUrl = ExpressionUtils.execute(context, pageUrlBuilder.toString(), String.class);
-
-        // append criteria query
-        String criteriaQuery = getCriteriaQuery();
-        if (!StringUtils.isEmptyOrWhitespace(criteriaQuery)) {
-            return (pageUrl.contains("?")) ? pageUrl + "&" + criteriaQuery : pageUrl + "?" + criteriaQuery;
-        }
-        return pageUrl;
+        return ExpressionUtils.execute(context, pageUrlBuilder.toString(), String.class);
     }
 
 }
