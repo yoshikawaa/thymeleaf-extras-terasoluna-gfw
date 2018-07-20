@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.terasoluna.gfw</groupId>
         <artifactId>terasoluna-gfw-parent</artifactId>
-        <version>5.3.1.RELEASE</version>
+        <version>5.4.1.RELEASE</version>
         <relativePath></relativePath>
     </parent>
 
@@ -197,6 +197,7 @@
         <maven-war-plugin.version>2.5</maven-war-plugin.version>
         <org.codehaus.mojo.build-helper-maven-plugin.version>1.9.1</org.codehaus.mojo.build-helper-maven-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
+        <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
         <!-- == Dependency Versions == -->
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
         <thymeleaf-spring4.version>3.0.9.RELEASE</thymeleaf-spring4.version>
