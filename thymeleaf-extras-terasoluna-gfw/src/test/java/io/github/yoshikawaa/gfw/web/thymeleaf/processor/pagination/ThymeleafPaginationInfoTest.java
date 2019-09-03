@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import org.junit.Test;
 import org.springframework.data.domain.Page;
@@ -46,14 +46,14 @@ public class ThymeleafPaginationInfoTest {
         assertThat(info.getPageUrl(5)).isEqualTo("/sample/pagination/5?size=10&item=sample");
     }
 
-    private Page<Integer> buildPage(int page, int size) {
+    private Page<Long> buildPage(int page, int size) {
 
-        final Pageable pageable = new PageRequest(page, size);
-        List<Integer> content = IntStream
+        final Pageable pageable = PageRequest.of(page, size);
+        List<Long> content = LongStream
                 .rangeClosed(pageable.getOffset(), pageable.getOffset() + pageable.getPageSize() + 1)
                 .boxed()
                 .collect(Collectors.toList());
-        return new PageImpl<Integer>(content, pageable, 1000);
+        return new PageImpl<Long>(content, pageable, 1000);
     }
 
 }

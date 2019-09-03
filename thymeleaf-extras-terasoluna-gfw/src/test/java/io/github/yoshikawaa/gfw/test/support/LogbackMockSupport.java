@@ -42,8 +42,8 @@ public abstract class LogbackMockSupport {
     protected void assertLogMessage(String message) {
         verify(mockAppender).doAppend(argThat(new ArgumentMatcher<LoggingEvent>() {
             @Override
-            public boolean matches(Object argument) {
-                return ((LoggingEvent) argument).getFormattedMessage().contains(message);
+            public boolean matches(LoggingEvent argument) {
+                return argument.getFormattedMessage().contains(message);
             }
         }));
     }

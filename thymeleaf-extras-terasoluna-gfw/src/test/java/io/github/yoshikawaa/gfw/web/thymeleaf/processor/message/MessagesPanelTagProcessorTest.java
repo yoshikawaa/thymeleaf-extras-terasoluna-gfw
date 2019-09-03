@@ -35,7 +35,7 @@ public class MessagesPanelTagProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert alert-success");
-        assertThat(element.html()).containsSequence("<ul>", "<li>test message 1.</li>",
+        assertThat(element.html()).contains("<ul>", "<li>test message 1.</li>",
                 "<li>test message 2.</li>", "<li>test message 3.</li>", "</ul>");
     }
 
@@ -55,7 +55,7 @@ public class MessagesPanelTagProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert-success");
-        assertThat(element.html()).containsSequence("<li><span>test1</span></li>",
+        assertThat(element.html()).contains("<li><span>test1</span></li>",
                 "<li><span>test2</span></li>", "<li><span>test3</span></li>");
     }
 
@@ -85,7 +85,7 @@ public class MessagesPanelTagProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert alert-warn");
-        assertThat(element.html()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
+        assertThat(element.html()).contains("<ul>", "<li>test message.</li>", "</ul>");
     }
 
     @Test
@@ -100,7 +100,7 @@ public class MessagesPanelTagProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert alert-warn");
-        assertThat(element.html()).containsSequence("<ul>", "<li>test message.</li>", "</ul>");
+        assertThat(element.html()).contains("<ul>", "<li>test message.</li>", "</ul>");
     }
 
     @Test
@@ -115,7 +115,7 @@ public class MessagesPanelTagProcessorTest extends LogbackMockSupport {
 
         // assert.
         assertThat(element.attr("class")).isEqualTo("alert alert-warn");
-        assertThat(element.html()).containsSequence("<ul>", "<li>100</li>", "</ul>");
+        assertThat(element.html()).contains("<ul>", "<li>100</li>", "</ul>");
     }
 
 }

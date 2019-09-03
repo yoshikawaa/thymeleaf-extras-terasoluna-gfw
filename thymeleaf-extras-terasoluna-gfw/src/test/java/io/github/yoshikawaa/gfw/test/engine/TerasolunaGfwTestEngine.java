@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.springframework.context.support.StaticMessageSource;
 import org.thymeleaf.dialect.IDialect;
-import org.thymeleaf.spring4.messageresolver.SpringMessageResolver;
+import org.thymeleaf.spring5.messageresolver.SpringMessageResolver;
 
 import io.github.yoshikawaa.gfw.web.thymeleaf.dialect.TerasolunaGfwDialect;
 
