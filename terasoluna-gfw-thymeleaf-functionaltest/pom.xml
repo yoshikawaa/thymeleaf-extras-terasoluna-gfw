@@ -198,7 +198,7 @@
         <maven-war-plugin.version>2.5</maven-war-plugin.version>
         <org.codehaus.mojo.build-helper-maven-plugin.version>1.9.1</org.codehaus.mojo.build-helper-maven-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
-        <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
         <!-- == Dependency Versions == -->
         <thymeleaf-extras-terasoluna-gfw.version>3.0.0-SNAPSHOT</thymeleaf-extras-terasoluna-gfw.version>
         <!-- == Project Properties == -->
