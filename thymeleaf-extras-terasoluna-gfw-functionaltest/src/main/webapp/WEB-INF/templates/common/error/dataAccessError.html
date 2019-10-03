@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:t="http://www.terasoluna.org">
+<head>
+<meta charset="utf-8">
+<title>Data Access Error!</title>
+<link rel="stylesheet" href="../../../../resources/app/css/styles.css" th:href="@{/resources/app/css/styles.css}">
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Data Access Error!</h1>
+        <div class="error" th:text="${#strings.isEmpty(exceptionCode)} ? #{e.xx.fw.9002} : |[${exceptionCode}] #{e.xx.fw.9002}|"></div>
+        <div t:messages-panel></div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    </div>
+</body>
+</html>

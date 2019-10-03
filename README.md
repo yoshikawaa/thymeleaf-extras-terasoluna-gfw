@@ -1,46 +1,32 @@
-# terasoluna-gfw-thymeleaf
+# thymeleaf-extras-terasoluna-gfw
 
-[![Build Status](https://travis-ci.org/yoshikawaa/terasoluna-gfw-thymeleaf.svg?branch=thymeleaf3)](https://travis-ci.org/yoshikawaa/terasoluna-gfw-thymeleaf)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-thymeleaf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yoshikawaa/terasoluna-gfw-thymeleaf&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/terasoluna-gfw-thymeleaf?utm_source=github.com&utm_medium=referral&utm_content=yoshikawaa/terasoluna-gfw-thymeleaf&utm_campaign=Badge_Coverage)
-[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/https/oss.sonatype.org/io.github.yoshikawaa.gfw/thymeleaf-extras-terasoluna-gfw.svg)](https://oss.sonatype.org/content/repositories/snapshots/io/github/yoshikawaa/gfw/thymeleaf-extras-terasoluna-gfw/)
-[![License](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat)](https://github.com/yoshikawaa/terasoluna-gfw-thymeleaf/blob/thymeleaf3/LICENSE.txt)
+[![Build Status](https://travis-ci.org/yoshikawaa/thymeleaf-extras-terasoluna-gfw.svg?branch=thymeleaf3)](https://travis-ci.org/yoshikawaa/thymeleaf-extras-terasoluna-gfw)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/thymeleaf-extras-terasoluna-gfw?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yoshikawaa/thymeleaf-extras-terasoluna-gfw&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/thymeleaf-extras-terasoluna-gfw?utm_source=github.com&utm_medium=referral&utm_content=yoshikawaa/thymeleaf-extras-terasoluna-gfw&utm_campaign=Badge_Coverage)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.yoshikawaa.gfw/spring-test-terasoluna-gfw.svg)](https://repo.maven.apache.org/maven2/io/github/yoshikawaa/gfw/thymeleaf-extras-terasoluna-gfw/)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat)](https://github.com/yoshikawaa/thymeleaf-extras-terasoluna-gfw/blob/thymeleaf3/LICENSE.txt)
 
-A personal (experimental,hobby) project to create Thymeleaf custom dialect based on TERASOLUNA Framework 5.x JSP tag library.
+Thymeleaf custom dialect based on TERASOLUNA Framework 5.x JSP tag library.
+
+> This is a personal experimental project unrelated to TERASOLUNA. TERASOLUNA is a registered trademark of NTT DATA Corporation.
 
 ## Notes
 
-* Supports upper Java 8.
-* Supports Thymeleaf 3.0 and 2.1.
+* Supports upper Java 8
+* Supports Terasoluna 5.5.1
+* Supports Thymeleaf 3.0
 
 ----
 
 ## Getting Start
 
-### Configure Maven.
-
-(If you use SNAPSHOT version) Add SNAPSHOT repository. (settings.xml or pom.xml)
-
-```xml
-<repositories>
-    <repository>
-        <id>sonatype-snapshots</id>
-        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        <releases><enabled>false</enabled></releases>
-        <snapshots><enabled>true</enabled></snapshots>
-    </repository>
-</repositories>
-```
-
 ### Configure dependency.
-
-Add dependency `thymeleaf-extras-terasoluna-gfw`.
 
 ```xml
 <dependency>
     <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>thymeleaf-extras-terasoluna-gfw</artifactId>
-    <version><!--$VERSION$--></version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -58,6 +44,8 @@ Add dialect `TerasolunaGfwDialect` to `SpringTemplateEngine`.
         return templateEngine;
     }
     ```
+
+    > If you develop with Spring Boot, you have only to define `TerasolunaGfwDialect` bean.
 
 * In XML Namespace
 
@@ -83,20 +71,28 @@ Add xml name space to template HTMLs.
 </html>
 ```
 
-By Default, name space is `t`.
-If you change name space, set `dialectPrefix` to `TerasolunaGfwDialect`.
+> By Default, name space is `t`.
+> If you change name space, set `dialectPrefix` to `TerasolunaGfwDialect`.
 
 ----
 
-## Function References
+## Features
 
-### Messages Panel Attribute Processor
+* Attribute Processor
+  - `t:messages-panel`
+  - `t:pagination`
+  - `t:transaction`
+  - `t:mtext`
+* Expression Object
+  - `#query`
+
+### `t:messages-panel`
+
+Output messages as children elements.
 
 ```html
 <div t:messages-panel>messages</div>
 ```
-
-Output messages as children elements.
 
 By default, the attribute named `resultMessages` is searched in order of request, session, and servlet context and outputted.
 
@@ -112,10 +108,10 @@ Supports a message of the following types.
 * Throwable (as `#getMessage`)
 * String and Any types (as `#toString`)
 
-Can be customized with the following attribute values.
+You can customize with the following attribute values.
 
 | name | description | default |
-|:-----------------------:|:------------------------------------------------------------------------------:|:--------:|
+|------|-------------|---------|
 | messages-panel | source of the messages as expression ex. `${messages}`. | `` |
 | panel-class-name | 1st css class name to add. | `alart` |
 | panel-type-class-prefix | 2nd css class name prefix to add. | `alart-` |
@@ -123,20 +119,20 @@ Can be customized with the following attribute values.
 | outer-element | tag name of list. | `ul` |
 | inner-element | tag name of list element. | `li` |
 
-### Pagination Attribute Processor
+### `t:pagination`
+
+Output `Page` object as pagination links.
 
 ```html
 <ul t:pagination>page links</ul>
 ```
 
-Output `Page` object as pagination links.
-
 By default, the expression `${page}` is interpreted and outputted.
 
-Can be customized with the following attribute values.
+You can customize with the following attribute values.
 
 | name | description | default |
-|:-------------------------------------:|:---------------------------------------------------------------------------------------------:|:--------------------:|
+|------|-------------|---------|
 | pagination | source of the page as expression ex. `${cotents}`. | `${page}` |
 | inner-element | tag name of page link element. | `li` |
 | disabled-class | class name of link inactive. | `disabled` |
@@ -150,36 +146,35 @@ Can be customized with the following attribute values.
 | href-tmpl | URL template as `@{/}`. If want to build query string from Objects, Maps, can use `#query.urlexpression()`. | `` |
 | enable-link-of-current-page | enable to link to current page or not. | `false` |
 
-### Transaction Token Attribute Processor
+### `t:transaction`
+
+Output transaction token to hidden input field named `_TRANSACTION_TOKEN` without `th:action`.
 
 ```html
 <input t:transaction />
 ```
 
-Output transaction token to hidden input field named `_TRANSACTION_TOKEN`.
-
 By default, the attribute named `org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor.NEXT_TOKEN` is searched in order of request, session, and servlet context and outputted.
 
-Give it to the input field when you don't give `th:action` to the form.
-(If you use `th:action`, `TransactionTokenRequestDataValueProcessor` output the hidden fields as well.)
+> If you use `th:action`, `TransactionTokenRequestDataValueProcessor` automatically output the hidden fields as well.
 
-Can be customized with the following attribute values.
+You can customize with the following attribute values.
 
 | name | description | default |
-|:-----------:|:-------------------------------------------------:|:-------:|
+|------|-------------|---------|
 | transaction | source of the token as expression ex. `${token}`. | `` |
 
-### Multi Line Text Attribute Processor
+### `t:mtext`
+
+Escape text and convert line-break characters to `<br>` element.
 
 ```html
 <span t:mtext="${text}">multi-line text</span>
 ```
 
-Escape text and convert line-break characters to `<br>` element.
-
 Support `CR`, `LF`, and `CRLF` as line-break characters.
 
-### Query Expression Object
+### `#query`
 
 Build Query String same as `Functions#query()`.
 

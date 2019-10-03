@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:t="http://www.terasoluna.org">
+<head>
+<meta charset="utf-8">
+<title>Message Panel</title>
+<link rel="stylesheet" href="../../../../resources/app/css/styles.css" th:href="@{/resources/app/css/styles.css}">
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Message Panel</h1>
+        <div>
+            <div id="messages-panel-1" t:messages-panel></div>
+            <div id="messages-panel-2" t:messages-panel t:panel-class-name="message"
+                t:panel-type-class-prefix="message-"></div>
+            <div id="messages-panel-3" t:messages-panel t:panel-class-name="" t:panel-type-class-prefix=""></div>
+            <div id="messages-panel-4" t:messages-panel t:messages-type="warn"></div>
+            <table id="messages-panel-5" t:messages-panel t:outer-element="tr" t:inner-element="td"></table>
+            <div id="messages-panel-6" t:messages-panel t:outer-element="" t:inner-element="span"></div>
+            <div id="messages-panel-7" t:messages-panel t:disable-html-escape="true"></div>
+            <div id="messages-panel-8" t:messages-panel="${customMessage}"></div>
+        </div>
+    </div>
+</body>
+</html>

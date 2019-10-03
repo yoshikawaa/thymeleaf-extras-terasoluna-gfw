@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:t="http://www.terasoluna.org">
+<head>
+<meta charset="utf-8">
+<title>Transaction Token Check</title>
+<link rel="stylesheet" href="../../../../resources/app/css/styles.css" th:href="@{/resources/app/css/styles.css}">
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Transaction Token Check</h1>
+        <form method="post">
+            <input type="submit" value="check" /> <input type="hidden" th:name="${_csrf.parameterName}"
+                th:value="${_csrf.token}" /> <input t:transaction />
+            <!-- if use th:action, output CSRF and transaction token as hidden field by request processor. -->
+        </form>
+        <div th:if="${result != null}">
+            <span th:text="${result}">result</span>
+        </div>
+    </div>
+</body>
+</html>
