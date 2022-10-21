@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 import io.github.yoshikawaa.gfw.test.support.LogbackMockSupport;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.pagination.PaginationTagProcessor;
 
 public class PaginationTagProcessorTest extends LogbackMockSupport {
 

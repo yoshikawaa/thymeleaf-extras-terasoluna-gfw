@@ -7,7 +7,6 @@ import org.thymeleaf.model.IProcessableElementTag;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 import io.github.yoshikawaa.gfw.test.util.ReflectionUtils;
-import io.github.yoshikawaa.gfw.web.thymeleaf.util.ElementTagUtils;
 
 public class ElementTagUtilsTest {
 

@@ -12,7 +12,6 @@ import org.terasoluna.gfw.web.token.transaction.TransactionTokenInterceptor;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
 import io.github.yoshikawaa.gfw.test.support.LogbackMockSupport;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction.TransactionTokenTagProcessor;
 
 public class TransactionTokenTagProcessorTest extends LogbackMockSupport {
 

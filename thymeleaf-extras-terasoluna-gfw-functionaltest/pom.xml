@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>thymeleaf-extras-terasoluna-gfw-functionaltest</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>Thymeleaf Dialect for TERASOLUNA Server Framework for Java (5.x) Functional test</name>
@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.terasoluna.gfw</groupId>
         <artifactId>terasoluna-gfw-parent</artifactId>
-        <version>5.5.1.RELEASE</version>
+        <version>5.7.1.SP1.RELEASE</version>
         <relativePath></relativePath>
     </parent>
 
@@ -195,11 +195,11 @@
 
     <properties>
         <!-- == Maven Plugin Versions == -->
-        <maven-war-plugin.version>2.5</maven-war-plugin.version>
-        <org.codehaus.mojo.build-helper-maven-plugin.version>1.9.1</org.codehaus.mojo.build-helper-maven-plugin.version>
+        <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
+        <org.codehaus.mojo.build-helper-maven-plugin.version>3.3.0</org.codehaus.mojo.build-helper-maven-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
         <!-- == Project Properties == -->
-        <java-version>1.8</java-version>
+        <java-version>11</java-version>
     </properties>
 </project>

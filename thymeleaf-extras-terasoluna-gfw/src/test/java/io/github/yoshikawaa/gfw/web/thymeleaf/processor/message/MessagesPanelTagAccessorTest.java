@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import io.github.yoshikawaa.gfw.test.engine.TerasolunaGfwTestEngine;
-import io.github.yoshikawaa.gfw.web.thymeleaf.processor.message.MessagesPanelTagAccessor;
 
 public class MessagesPanelTagAccessorTest {
 

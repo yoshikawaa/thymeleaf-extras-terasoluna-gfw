@@ -43,7 +43,7 @@ public class ExpressionUtils {
      * @return whether or not be expression
      */
     public static boolean isExpression(String expressionString) {
-        return StringUtils.isEmpty(expressionString) ? false : PATTERN_EXPRESSION.matcher(expressionString).matches();
+        return StringUtils.hasText(expressionString) ? PATTERN_EXPRESSION.matcher(expressionString).matches() : false;
     }
 
     /**

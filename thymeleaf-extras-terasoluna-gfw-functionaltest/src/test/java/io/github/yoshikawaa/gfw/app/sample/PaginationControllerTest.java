@@ -177,7 +177,7 @@ public class PaginationControllerTest extends WebClientTestSupport {
             assertThat(element.getAttribute("class")).isEqualTo(cssClass);
             element = (HtmlElement) element.getFirstChild();
             assertThat(element.getAttribute("href")).isEqualTo(href);
-            assertThat(element.asText()).isEqualTo(text);
+            assertThat(element.asNormalizedText()).isEqualTo(text);
             return this;
         }
 

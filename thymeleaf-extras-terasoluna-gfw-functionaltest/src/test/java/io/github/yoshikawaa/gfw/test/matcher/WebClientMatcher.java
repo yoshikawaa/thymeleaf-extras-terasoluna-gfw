@@ -31,14 +31,14 @@ public class WebClientMatcher {
     public static void hasText(DomNode page, String xpath, String expected) {
         HtmlElement element = page.getFirstByXPath(xpath);
         assertThat(element).isNotNull();
-        assertThat(element.asText()).contains(expected);
+        assertThat(element.asNormalizedText()).contains(expected);
     }
 
     public static void hasTexts(DomNode page, String xpath, String... expected) {
         List<?> elements = page.getByXPath(xpath);
         assertThat(elements).isNotNull();
         assertThat(elements).hasSize(expected.length);
-        assertThat(elements.stream().map(e -> ((HtmlElement) e).asText()).collect(Collectors.toList()))
+        assertThat(elements.stream().map(e -> ((HtmlElement) e).asNormalizedText()).collect(Collectors.toList()))
                 .containsExactly(expected);
     }
 }
