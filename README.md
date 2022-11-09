@@ -1,8 +1,8 @@
 # thymeleaf-extras-terasoluna-gfw
 
-[![Build Status](https://travis-ci.org/yoshikawaa/thymeleaf-extras-terasoluna-gfw.svg?branch=thymeleaf3)](https://travis-ci.org/yoshikawaa/thymeleaf-extras-terasoluna-gfw)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/thymeleaf-extras-terasoluna-gfw?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yoshikawaa/thymeleaf-extras-terasoluna-gfw&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/95e7ad7beb0c4502872cda12213b9e07)](https://www.codacy.com/app/yoshikawaa/thymeleaf-extras-terasoluna-gfw?utm_source=github.com&utm_medium=referral&utm_content=yoshikawaa/thymeleaf-extras-terasoluna-gfw&utm_campaign=Badge_Coverage)
+[![Build Status](https://github.com/yoshikawaa/thymeleaf-extras-terasoluna-gfw/actions/workflows/maven.yml/badge.svg)](https://github.com/yoshikawaa/thymeleaf-extras-terasoluna-gfw/actions)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f9b0a438e13748b2a603f8f9fbb83f6c)](https://www.codacy.com/gh/yoshikawaa/thymeleaf-extras-terasoluna-gfw/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yoshikawaa/thymeleaf-extras-terasoluna-gfw&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/f9b0a438e13748b2a603f8f9fbb83f6c)](https://www.codacy.com/gh/yoshikawaa/thymeleaf-extras-terasoluna-gfw/dashboard?utm_source=github.com&utm_medium=referral&utm_content=yoshikawaa/thymeleaf-extras-terasoluna-gfw&utm_campaign=Badge_Coverage)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.yoshikawaa.gfw/spring-test-terasoluna-gfw.svg)](https://repo.maven.apache.org/maven2/io/github/yoshikawaa/gfw/thymeleaf-extras-terasoluna-gfw/)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat)](https://github.com/yoshikawaa/thymeleaf-extras-terasoluna-gfw/blob/thymeleaf3/LICENSE.txt)
 
