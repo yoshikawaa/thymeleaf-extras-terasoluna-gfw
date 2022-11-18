@@ -1,0 +1,9 @@
+io.github.yoshikawaa.gfw.web.thymeleaf.dialect
+io.github.yoshikawaa.gfw.web.thymeleaf.expression
+io.github.yoshikawaa.gfw.web.thymeleaf.processor
+io.github.yoshikawaa.gfw.web.thymeleaf.processor.message
+io.github.yoshikawaa.gfw.web.thymeleaf.processor.pagination
+io.github.yoshikawaa.gfw.web.thymeleaf.processor.standard
+io.github.yoshikawaa.gfw.web.thymeleaf.processor.token.transaction
+io.github.yoshikawaa.gfw.web.thymeleaf.util
+org.terasoluna.gfw.web.el
