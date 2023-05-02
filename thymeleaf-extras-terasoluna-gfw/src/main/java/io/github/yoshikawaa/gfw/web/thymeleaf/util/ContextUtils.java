@@ -15,13 +15,12 @@
  */
 package io.github.yoshikawaa.gfw.web.thymeleaf.util;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.exceptions.TemplateInputException;
+import org.thymeleaf.web.IWebApplication;
+import org.thymeleaf.web.IWebExchange;
+import org.thymeleaf.web.IWebSession;
 
 /**
  * Utility for handling {@link ITemplateContext}.
@@ -46,16 +45,15 @@ public class ContextUtils {
     public static Object getAttribute(final ITemplateContext context, final String name) {
 
         if (context instanceof IWebContext) {
-            final IWebContext wc = (IWebContext) context;
-            final HttpServletRequest request = wc.getRequest();
-            final HttpSession session = wc.getSession();
-            final ServletContext servletContext = wc.getServletContext();
+            final IWebExchange exchange = ((IWebContext) context).getExchange();
+            final IWebSession session = exchange.getSession();
+            final IWebApplication application = exchange.getApplication();
 
-            Object value = request.getAttribute(name);
+            Object value = exchange.getAttributeValue(name);
             if (value == null)
-                value = (session != null) ? session.getAttribute(name) : null;
+                value = (session != null) ? session.getAttributeValue(name) : null;
             if (value == null)
-                value = servletContext.getAttribute(name);
+                value = (application != null) ? application.getAttributeValue(name) : null;
             return value;
         } else {
             return context.getVariable(name);

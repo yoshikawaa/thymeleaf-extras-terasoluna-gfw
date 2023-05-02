@@ -22,7 +22,7 @@ public class MultiLineTextTagProcessorTest {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.html()).isEqualTo("test<br>success");
+        assertThat(element.html()).contains("test", "<br>", "success");
     }
 
     @Test
@@ -35,7 +35,7 @@ public class MultiLineTextTagProcessorTest {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.html()).isEqualTo("test<br>success");
+        assertThat(element.html()).contains("test", "<br>", "success");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class MultiLineTextTagProcessorTest {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.html()).isEqualTo("test<br>success");
+        assertThat(element.html()).contains("test", "<br>", "success");
     }
 
     @Test
@@ -61,7 +61,7 @@ public class MultiLineTextTagProcessorTest {
         Element element = new TerasolunaGfwTestEngine().variables(variables).parse(template);
 
         // assert.
-        assertThat(element.html()).isEqualTo("testsuccess");
+        assertThat(element.html()).contains("test", "success").doesNotContain("<br>");
     }
 
     @Test

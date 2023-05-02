@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.IContext;
@@ -23,6 +24,7 @@ import org.thymeleaf.engine.TestElementTagBuilder;
 import org.thymeleaf.engine.TestTemplateDataBuilder;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.util.MapUtils;
+import org.thymeleaf.web.servlet.TestWebExchangeBuilder;
 
 public class TestEngine {
 
@@ -94,8 +96,13 @@ public class TestEngine {
     }
 
     public IEngineContext context(String template) {
-        return new WebEngineContext(configuration(), TestTemplateDataBuilder.build(template), null, request, response,
-                servletContext, request.getLocale(), variables);
+        return new WebEngineContext(
+            configuration(),
+            TestTemplateDataBuilder.build(template),
+            null,
+            TestWebExchangeBuilder.build(request, response),
+            RequestContextUtils.getLocale(request),
+            variables);
     }
 
     public IProcessableElementTag tag(String template) {
