@@ -12,9 +12,9 @@ Thymeleaf custom dialect based on TERASOLUNA Framework 5.x JSP tag library.
 
 ## Notes
 
-* Supports upper Java 11
-* Supports Terasoluna 5.7.1.SP1
-* Supports Thymeleaf 3.0.12
+* Supports upper Java 17
+* Supports Terasoluna 5.8.1
+* Supports Thymeleaf 3.1.1
 
 ## Docs
 
