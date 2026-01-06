@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.yoshikawaa.gfw</groupId>
     <artifactId>thymeleaf-extras-terasoluna-gfw</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 
     <packaging>jar</packaging>
 
@@ -51,18 +51,6 @@
         <developerConnection>scm:git:git@github.com:yoshikawaa/thymeleaf-extras-terasoluna-gfw.git</developerConnection>
         <url>git@github.com:yoshikawaa/thymeleaf-extras-terasoluna-gfw.git</url>
     </scm>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <name>Sonatype Nexus Releases</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
@@ -245,6 +233,15 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -256,7 +253,7 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
         <gpg.skip>true</gpg.skip>
-        <terasoluna-gfw.version>5.8.1.RELEASE</terasoluna-gfw.version>
+        <terasoluna-gfw.version>5.10.0.RELEASE</terasoluna-gfw.version>
         <jsoup.version>1.15.4</jsoup.version>
     </properties>
 
